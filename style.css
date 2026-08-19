@@ -1,0 +1,532 @@
+/* Bundle the presentation fonts so builds do not depend on a viewer's machine or
+   an external font provider. */
+@font-face {
+  font-family: 'JetBrains Sans';
+  src: url('/fonts/JetBrainsSans-VF.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Thin.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-ExtraLight.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Light.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Medium.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-SemiBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-ExtraBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+/* Course-specific refinements on top of slidev-theme-kotlin. */
+
+/* Slidev's defaults switch click content in 100ms, which feels abrupt next to
+   Magic Move and hand-drawn annotations. Use one shared, gentle easing for
+   ordinary click reveals and a slightly longer cross-fade between slides. */
+.slidev-vclick-target:not(.slidev-vclick-anim-none) {
+  transition-duration: 280ms;
+  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* When a click replaces a DrawnAnnotation with new content, finish removing
+   the mark before beginning that content's reveal instead of cross-fading the
+   two. `is-fading-out` only lasts for the annotation's 280ms exit fade, and
+   `slidev-vclick-current` limits the delay to the item entering now. */
+.slidev-layout:has(.drawn-annotation.is-fading-out)
+  .slidev-vclick-target.slidev-vclick-current:not(.slidev-vclick-anim-none) {
+  transition-delay: 280ms;
+}
+
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(root) {
+  animation-duration: 480ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root {
+  --slidev-font-sans: 'JetBrains Sans', ui-sans-serif, system-ui, sans-serif;
+  --slidev-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --fundamentals-purple: #7954f6;
+  --fundamentals-pink: #eb55e6;
+  --fundamentals-ink: #1f2023;
+
+  /* Default colour for DrawnAnnotation strokes and labels. Keep the hard
+     fallback: a token that resolves invalid makes the strokes vanish instead
+     of falling back to the text colour. */
+  --drawn-annotation-color: var(--fundamentals-purple, #7954f6);
+
+  /* IntelliJ Light editor and New UI window chrome. */
+  --editor-bg: #fff;
+  --editor-fg: #080808;
+  --editor-title-bg: #f2f3f5;
+  --editor-title-fg: #1f2329;
+  --editor-border: #d1d3d6;
+  --editor-muted: #6c707e;
+  --editor-shadow: rgb(31 32 35 / 12%);
+}
+
+html.dark {
+  --fundamentals-ink: #f5f3ff;
+
+  /* IntelliJ Darcula editor and window chrome. */
+  --editor-bg: #2b2b2b;
+  --editor-fg: #a9b7c6;
+  --editor-title-bg: #3c3f41;
+  --editor-title-fg: #d4d4d4;
+  --editor-border: #515151;
+  --editor-muted: #a5a5a5;
+  --editor-shadow: rgb(0 0 0 / 30%);
+}
+
+.slidev-layout {
+  padding: 3rem 4rem;
+  /* Regular slide copy: 1.5× the original 1.45rem size. */
+  font-size: 2.175rem;
+  line-height: 1.42;
+}
+
+.slidev-layout.fundamentals-slide {
+  padding-right: 11.5rem;
+}
+
+/* Keep every Markdown heading visually distinct from the enlarged body copy. */
+.slidev-layout :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
+}
+
+.slidev-layout h1 {
+  margin-bottom: 1.25rem;
+  font-size: 3.65rem;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.slidev-layout h2 {
+  margin-bottom: 1rem;
+}
+
+.slidev-layout li + li {
+  margin-top: 0.3rem;
+}
+
+.slidev-layout pre {
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.slidev-layout .slidev-code {
+  /* Code: 1.5× the original 1.02rem size. */
+  font-size: 1.53rem !important;
+  line-height: 1.42 !important;
+  border: 1px solid var(--editor-border);
+  border-radius: 0.8rem;
+  background-color: var(--editor-bg) !important;
+  color: var(--editor-fg) !important;
+  box-shadow: 0 0.6rem 1.8rem var(--editor-shadow);
+}
+
+/* The Kotlin Slidev theme hard-codes a dark `.slidev-code` surface. Keep the
+   presentation's editor surface tied to the same mode as the Shiki tokens.
+   This also covers Magic Move, whose generated <pre> has different classes. */
+
+/* Give titled snippets a familiar editor / terminal window chrome. */
+.slidev-layout .slidev-code-wrapper:has(.slidev-code-block-title) {
+  overflow: hidden;
+  border: 1px solid var(--editor-border);
+  border-radius: 0.8rem;
+  background: var(--editor-bg);
+  box-shadow: 0 0.6rem 1.8rem var(--editor-shadow);
+}
+
+/* The global code styling adds its own margin and border; a window needs one
+   continuous surface instead of a second, coloured edge under the title bar. */
+.slidev-layout .slidev-code-wrapper:has(.slidev-code-block-title) pre,
+.slidev-layout .slidev-code-wrapper:has(.slidev-code-block-title) .slidev-code {
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+}
+
+.slidev-layout .slidev-code-wrapper:has(.slidev-code-block-title) .slidev-code-block-title {
+  min-height: 2.35rem;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--editor-border);
+  box-shadow: none;
+  background: var(--editor-title-bg);
+  color: var(--editor-title-fg);
+  font-family: var(--slidev-font-sans);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+/* macOS-style traffic lights make the file/terminal distinction immediate. */
+.slidev-layout .slidev-code-block-title::before {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: 0 0 0.7rem;
+  margin-right: 2.15rem;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 1.1rem 0 #febc2e, 2.2rem 0 #28c840;
+  content: '';
+}
+
+/* The file icon sits after the traffic lights and immediately before the name,
+   like a favicon in a browser tab. */
+.slidev-layout .slidev-code-wrapper[data-title$=".kt"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout .slidev-code-wrapper[data-title$=".java"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout .slidev-code-wrapper[data-title="Terminal"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout .slidev-code-wrapper[data-title="module.yaml"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.45rem;
+  vertical-align: -0.18em;
+  background: center / contain no-repeat;
+  content: '';
+}
+
+/* Magic Move does not expose its title as `data-title`. Its default source
+   snippets are Kotlin; the Gradle and Maven variants override this below. */
+.slidev-layout .slidev-code-wrapper[data-title$=".kt"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/kotlin.svg');
+}
+
+.slidev-layout .slidev-code-wrapper[data-title$=".java"] .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/java.svg');
+}
+
+.slidev-layout .slidev-code-wrapper[data-title="Terminal"] .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/terminal.svg');
+}
+
+/* Use the icon variants designed for IntelliJ's dark editor chrome when
+   night mode is active. */
+html.dark .slidev-layout .slidev-code-wrapper[data-title$=".kt"] .slidev-code-block-title > .leading-1em::before,
+html.dark .slidev-layout .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/kotlin_dark.svg');
+}
+
+html.dark .slidev-layout .slidev-code-wrapper[data-title$=".java"] .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/java_dark.svg');
+}
+
+html.dark .slidev-layout .slidev-code-wrapper[data-title="Terminal"] .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/terminal_dark.svg');
+}
+
+/* Kotlin Toolchain's Amper mark, sourced from:
+   https://kotlin-toolchain.org/latest/images/amper-icon.svg */
+/* Magic Move does not expose its title as `data-title`, so its Amper slide
+   has an explicit class. Slidev's built-in YAML icon must be hidden too. */
+.slidev-layout .slidev-code-wrapper[data-title="module.yaml"] .slidev-code-block-title > :first-child,
+.slidev-layout.amper-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > :first-child {
+  display: none;
+}
+
+.slidev-layout .slidev-code-wrapper[data-title="module.yaml"] .slidev-code-block-title > .leading-1em::before,
+.slidev-layout.amper-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/amper-icon.svg');
+}
+
+/* The dark Magic Move fallback selects the Kotlin icon with greater
+   specificity. Reassert Amper afterwards for its dedicated slide. */
+html.dark .slidev-layout.amper-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/amper-icon.svg');
+}
+
+/* Magic Move does not expose its title as data-title, so the slide classes
+   identify the Gradle and Maven variants. */
+.slidev-layout.gradle-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/gradle.svg');
+}
+
+.slidev-layout.maven-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/maven.svg');
+}
+
+html.dark .slidev-layout.gradle-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/gradle_dark.svg');
+}
+
+html.dark .slidev-layout.maven-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title > .leading-1em::before {
+  background-image: url('/maven_dark.svg');
+}
+
+.slidev-layout .slidev-code-wrapper[data-title="Hello.kt"] .slidev-code-block-title::after {
+  margin-left: auto;
+  color: var(--editor-muted);
+  content: 'Kotlin source';
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+/* Terminal fences are highlighted as Bash by the same IntelliJ Shiki themes
+   as source files. Only the terminal font treatment and title label differ. */
+.slidev-layout .slidev-code-wrapper[data-title="Terminal"] .slidev-code {
+  font-family: 'JetBrains Mono Nerd Font', var(--slidev-font-mono);
+  font-weight: 550;
+}
+
+.slidev-layout .slidev-code-wrapper[data-title="Terminal"] .slidev-code-block-title::after {
+  margin-left: auto;
+  color: var(--editor-muted);
+  content: 'zsh';
+  font-family: var(--slidev-font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* IntelliJ's run icon has separate variants for the presentation's day/night modes. */
+.run-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 0.12em;
+  vertical-align: -0.16em;
+  background: center / contain no-repeat url('/run.svg');
+}
+
+html.dark .run-icon {
+  background-image: url('/run_dark.svg');
+}
+
+.slidev-layout .slidev-code-wrapper[data-title="module.yaml"] .slidev-code-block-title::after {
+  margin-left: auto;
+  color: var(--editor-muted);
+  content: 'Kotlin Toolchain source';
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.slidev-layout.gradle-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title::after {
+  margin-left: auto;
+  color: var(--editor-muted);
+  content: 'Gradle source';
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.slidev-layout.maven-slide .slidev-code-wrapper.slidev-code-magic-move .slidev-code-block-title::after {
+  margin-left: auto;
+  color: var(--editor-muted);
+  content: 'Maven source';
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+/* HTML callouts and Markdown quotes are equivalent presentation elements. */
+.card,
+.slidev-layout blockquote {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.5rem 0 1.2rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgb(121 84 246 / 30%);
+  border-left: 0.35rem solid var(--fundamentals-purple);
+  border-radius: 0.75rem;
+  background: linear-gradient(110deg, rgb(121 84 246 / 12%), rgb(228 72 173 / 7%));
+  color: var(--fundamentals-ink);
+  font-size: inherit;
+  font-weight: 650;
+}
+
+.slidev-layout blockquote > * {
+  margin: 0;
+  line-height: 1.42 !important;
+}
+
+.course-image {
+  display: block;
+  max-height: 85%;
+  margin: 1rem auto 0;
+  object-fit: contain;
+  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
+}
+
+/* Keep the wizard screenshot inside the space left below the slide title. */
+.intellij-new-project-wizard {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 95%;
+  margin: 1rem auto 0;
+  object-fit: contain;
+  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
+}
+
+/* Keep the two portrait wizard screenshots together without letting either
+   one run into the slide title or the bottom edge. */
+.kmp-web-wizard-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  height: calc(100% - 5.5rem);
+  min-height: 0;
+  width: 100%;
+}
+
+.kmp-web-wizard-images img {
+  display: block;
+  height: 100%;
+  max-width: calc(50% - 1rem);
+  min-height: 0;
+  object-fit: contain;
+  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
+}
+
+.fundamentals-slide:has(.course-image + .course-image) .course-image {
+  display: inline-block;
+  width: 45%;
+  max-height: 20rem;
+  margin-right: 2%;
+  vertical-align: middle;
+}
+
+.fundamentals-cover h1 {
+  max-width: 50rem;
+  font-size: 5.2rem !important;
+  background: linear-gradient(120deg, var(--fundamentals-purple), var(--fundamentals-pink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.fundamentals-cover h2 {
+  font-size: 2rem;
+}
+
+.section-slide h1,
+.exercise-slide h1 {
+  max-width: 48rem;
+  font-size: 4.4rem !important;
+}
+
+.slidev-layout ul {
+  position: relative;
+  list-style: none;
+  margin: 1.8rem 0 0;
+  padding: 0;
+}
+
+.slidev-layout ul > li {
+  position: relative;
+  margin: 0;
+  padding: 0.72rem 1.25rem;
+  border-left: 0.3rem solid var(--fundamentals-purple);
+  border-radius: 0 0.65rem 0.65rem 0;
+  background: linear-gradient(90deg, rgb(121 84 246 / 9%), transparent 72%);
+}
+
+.slidev-layout ul > li + li {
+  margin-top: 0.35rem;
+}
+
+.lesson-number {
+  color: var(--fundamentals-purple);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.slidev-layout table {
+  font-size: 1.2rem;
+}
+
+/* Keep the mascot decorative and behind interactive content. */
+.kodee-character {
+  z-index: 0;
+}
+
+.slidev-layout > :not(.kodee-character) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slidev-vclick-target,
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-group(root) {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    animation-duration: 1ms !important;
+  }
+}
+
+@media print {
+  .slidev-layout {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
