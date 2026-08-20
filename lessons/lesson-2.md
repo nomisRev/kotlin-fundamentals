@@ -38,8 +38,8 @@ class: fundamentals-slide
 
 > Read-only values are declared using `val`
 
-<InlineCompilerError :line="4" message="val cannot be reassigned" at="1">
-<InlineCompilerError :line="5" message="val cannot be reassigned" at="1">
+<InlineCompilerError :line="4" text="number" message="val cannot be reassigned" at="1">
+<InlineCompilerError :line="5" text="message" message="val cannot be reassigned" at="1">
 
 ````md magic-move [Values.kt]
 ```kotlin [Values.kt]
@@ -76,7 +76,7 @@ class: fundamentals-slide
 
 > Can be understood as an immutable reference
 
-<InlineCompilerError :line="2" message="error: Val cannot be reassigned" on="0">
+<InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" on="0">
 
 ````md magic-move
 ```kotlin [MutableList.kt]
@@ -110,9 +110,9 @@ class: fundamentals-slide
 
 > Parameters are read-only; object references are passed by value
 
-<InlineCompilerError :line="2" message="error: Val cannot be reassigned" at="0" until="1">
-<InlineCompilerError :line="2" message="Unresolved reference 'remove' on receiver of type List<String>" at="2">
-<InlineCompilerError :line="3" message="Unresolved reference 'add' on receiver of type List<String>" at="2">
+<InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" at="0" until="1">
+<InlineCompilerError text='list.remove("Hello World!")' message="Unresolved reference remove on receiver of type List<String>" at="2">
+<InlineCompilerError text='list.add("Hello Student!")' message="Unresolved reference add on receiver of type List<String>" at="2">
 
 ````md magic-move [ReadOnlyParameters.kt]
 ```kotlin [ReadOnlyParameters.kt]
@@ -282,13 +282,13 @@ class: fundamentals-slide
 
 > Order is important, it can be ambiguous
 
-<InlineCompilerError :line="3" message="error: No value passed for parameter 'c'" until="1">
+<InlineCompilerError text="sum(1, 1)" message="error: No value passed for parameter 'c'" until="1">
 
 ````md magic-move [Sum.kt] {at: 1}
 ```kotlin [Sum.kt]
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
 
-val two = sum (1, 1)
+val two = sum(1, 1)
 ```
 
 ```kotlin [Sum.kt]
@@ -386,7 +386,7 @@ class: fundamentals-slide
 
 > If used as an expression exhaustive branching is enforced
 
-<InlineCompilerError :line="2" message="'if' must have both main and 'else' branches when used as an expression." until="1">
+<InlineCompilerError text="if(a > b) a" message="'if' must have both main and 'else' branches when used as an expression." until="1">
 
 ````md magic-move [Sum.kt]  {at: 1}
 ```kotlin [If.kt]
@@ -458,7 +458,7 @@ class: fundamentals-slide
 
 > When used as expression, **all possible inputs must be covered**.
 
-<InlineCompilerError :line="1" message="'when' expression must be exhaustive. Add an 'else' branch." at="1" until="2">
+<InlineCompilerError text="when(x)" message="'when' expression must be exhaustive. Add an 'else' branch." at="1" until="2">
 
 ````md magic-move [When.kt]
 ```kotlin  [When.kt]
@@ -613,7 +613,7 @@ class: fundamentals-slide
 
 > At least 1 execution always takes place.
 
-<DrawnAnnotation text="while (y != null)" label="Y is visible here" :at="1">
+<DrawnAnnotation text="while (y != null)" label="y (variables) from within do { } is accessible in while(...). Outside normal { } scope." :at="1">
 
 ```kotlin [DoWhile.kt]
 fun retrieveData(): Int? = null
@@ -667,18 +667,21 @@ class: fundamentals-slide
 
 # Null Safety
 
-> Nullability is a first class concept in Kotlin. Use `?`.
+<DrawnAnnotation text="?" label="Nullability modifier helps to make nullability explicit at a type level" on="1">
+<InlineCompilerError text="null" message="null can not be a value of a non-null" on="0">
 
-> Nullability modifier helps to make nullability explicit at a type level.
-
-<InlineCompilerError :line="2" message="error: Null can not be a value of a non-null">
-
+````md magic-move [Nullable.kt]
 ```kotlin [Nullable.kt]
-val nullable: String? = null
-val nonNullable: String = null
+val valueOrNull: String = null
 ```
 
+```kotlin [Nullable.kt]
+val valueOrNull: String? = null
+```
+````
+
 </InlineCompilerError>
+</DrawnAnnotation>
 
 <!--
 In Kotlin, the type system distinguishes between references that can hold null (nullable references), 
