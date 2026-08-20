@@ -13,7 +13,7 @@ class: fundamentals-slide
 
 # Variables
 
-> Variables are defined with the `var` keyword
+> Mutable variables are declared using `var`
 
 ````md magic-move [Var.kt]
 ```kotlin [Var.kt]
@@ -22,35 +22,11 @@ var message: String = "Hello World!"
 ```
 
 ```kotlin [Var.kt]
-var number = 42
-var message = "Hello World!"
-```
-````
+var number: Int = 42
+var message: String = "Hello World!"
 
----
-class: fundamentals-slide
----
-
-# Variables
-
-> `var` can be reassigned or mutated
-
-````md magic-move [Mutation.kt]
-```kotlin [Mutation.kt]
-var count = 0
-count = 1
-
-println(count) // 1
-```
-
-```kotlin [Mutation.kt]
-var count = 0
-count = 1
-
-println(count) // 1
-
-count += 1
-println(count) // 2
+number += 1
+message = "Hello from Kotlin!"
 ```
 ````
 
@@ -60,9 +36,10 @@ class: fundamentals-slide
 
 # Read-only values
 
-> Define **read-only** value using `val`
+> Read-only values are declared using `val`
 
-<InlineCompilerError :line="4" message="error: Val cannot be reassigned" at="1">
+<InlineCompilerError :line="4" message="val cannot be reassigned" at="1">
+<InlineCompilerError :line="5" message="val cannot be reassigned" at="1">
 
 ````md magic-move [Values.kt]
 ```kotlin [Values.kt]
@@ -73,10 +50,12 @@ val message = "Hello World!"
 val number = 42
 val message = "Hello World!"
 
+number += 1
 message = "Hello from Kotlin!"
 ```
 ````
 
+</InlineCompilerError>
 </InlineCompilerError>
 
 <!--
@@ -97,24 +76,22 @@ class: fundamentals-slide
 
 > Can be understood as an immutable reference
 
-<InlineCompilerError :line="2" message="error: Val cannot be reassigned">
+<InlineCompilerError :line="2" message="error: Val cannot be reassigned" on="0">
 
+````md magic-move
 ```kotlin [MutableList.kt]
 val mutableList = mutableListOf("Hello World!")
 mutableList = mutableListOf("Hello Student!")
 ```
 
-</InlineCompilerError>
-
-> It is possible to change mutable objects
-
 ```kotlin [MutableList.kt]
 val mutableList = mutableListOf("Hello World!")
 mutableList.remove("Hello World!")
 mutableList.add("Hello Student!")
-
-println(mutableList) // [Hello Student!]
 ```
+````
+
+</InlineCompilerError>
 
 <!--
 It is important to note that `val` implies read-only.
