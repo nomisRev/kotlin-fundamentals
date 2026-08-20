@@ -44,7 +44,6 @@ class: section-slide
 
 ---
 class: kotlin-history-slide
-kodee: false
 ---
 
 <KotlinHistory />

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
-import kodeeSitting from 'slidev-theme-kotlin/assets/kodee-sitting.svg?url'
-
 const { $clicks } = useSlideContext()
 const stage = computed(() => Math.min($clicks.value, 5))
 </script>
@@ -75,8 +73,6 @@ const stage = computed(() => Math.min($clicks.value, 5))
 
     </svg>
 
-    <img class="kodee" :src="kodeeSitting" alt="" aria-hidden="true" />
-    <div class="help">Click / → to advance · ← to go back</div>
   </div>
 </template>
 
@@ -91,9 +87,7 @@ const stage = computed(() => Math.min($clicks.value, 5))
   font-family: 'JetBrains Sans', Arial, sans-serif;
 }
 
-/* The SVG is self-contained, so it does not inherit the slide's text colour
-   automatically when Slidev switches to night mode. The background is left
-   transparent on purpose so the slide's own surface shows through. */
+/* Keep the component transparent so the theme owns the slide surface. */
 html.dark .kotlin-history {
   --history-event: #f5f3ff;
 }
@@ -136,28 +130,6 @@ svg { display: block; width: 100%; height: 100%; }
 .timeline.build.shown { transform: scaleY(1); transition-delay: 0ms; }
 
 .click-marker { position: absolute; width: 0; height: 0; overflow: hidden; }
-.kodee {
-  position: absolute;
-  right: 0;
-  bottom: -42px;
-  z-index: 1;
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  pointer-events: none;
-}
-.help {
-  position: absolute;
-  right: 22px;
-  top: 18px;
-  z-index: 2;
-  padding: 8px 11px;
-  color: #fff;
-  background: #201b2dba;
-  border-radius: 5px;
-  font: 14px 'JetBrains Sans', Arial, sans-serif;
-  opacity: .75;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .build, .timeline.build { transition-duration: 1ms !important; }
