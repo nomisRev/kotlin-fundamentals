@@ -20,6 +20,12 @@ const props = withDefaults(defineProps<{
   shadow: true,
 })
 
+// Files in `public/` are served under Vite's configured base path (for
+// example, `/kotlin-fundamentals/` on GitHub Pages), not the domain root.
+const imageUrl = computed(() => props.src.startsWith('/')
+  ? `${import.meta.env.BASE_URL}${props.src.slice(1)}`
+  : props.src)
+
 const imageStyle = computed(() => ({
   objectFit: props.fit,
   objectPosition: props.position,
@@ -30,7 +36,7 @@ const imageStyle = computed(() => ({
   <div class="fill-image">
     <img
       v-bind="$attrs"
-      :src="src"
+      :src="imageUrl"
       :alt="alt"
       class="fill-image__image"
       :class="{ 'fill-image__image--shadow': shadow }"
