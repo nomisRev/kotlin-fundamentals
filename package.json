@@ -10,11 +10,11 @@
   },
   "dependencies": {
     "@slidev/cli": "52.19.1",
-    "roughjs": "^4.6.6",
-    "slidev-theme-kotlin": "file:../slidedev-theme-kotlin",
-    "vue": "^3.5.22"
+    "roughjs": "4.6.6",
+    "slidev-theme-kotlin": "0.10.0",
+    "vue": "3.5.41"
   },
   "devDependencies": {
-    "playwright-chromium": "^1.62.1"
+    "playwright-chromium": "1.62.1"
   }
 }
