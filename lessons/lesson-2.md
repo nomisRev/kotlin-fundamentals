@@ -13,7 +13,9 @@ class: fundamentals-slide
 
 # Variables
 
-> Mutable variables are declared using `var`
+<DrawnAnnotation text="var" on="0" label="Mutable variables are declared using `var`">
+<DrawnAnnotation text=" =" on="1">
+<DrawnAnnotation text=" =" occurrence="2" on="1" label="Type can be inferred by compiler">
 
 ````md magic-move [Var.kt]
 ```kotlin [Var.kt]
@@ -22,13 +24,22 @@ var message: String = "Hello World!"
 ```
 
 ```kotlin [Var.kt]
-var number: Int = 42
-var message: String = "Hello World!"
+var number = 42
+var message = "Hello World!"
+```
+
+```kotlin [Var.kt]
+var number = 42
+var message = "Hello World!"
 
 number += 1
 message = "Hello from Kotlin!"
 ```
 ````
+
+</DrawnAnnotation>
+</DrawnAnnotation>
+</DrawnAnnotation>
 
 ---
 class: fundamentals-slide
@@ -36,17 +47,11 @@ class: fundamentals-slide
 
 # Read-only values
 
-> Read-only values are declared using `val`
-
-<InlineCompilerError :line="4" text="number" message="val cannot be reassigned" at="1">
-<InlineCompilerError :line="5" text="message" message="val cannot be reassigned" at="1">
+<DrawnAnnotation text="val" on="0" label="Read-only values are declared using `val`">
+<InlineCompilerError :line="4" text="number" message="val cannot be reassigned" on="1">
+<InlineCompilerError :line="5" text="message" message="val cannot be reassigned" on="1">
 
 ````md magic-move [Values.kt]
-```kotlin [Values.kt]
-val number: Int = 42
-val message: String = "Hello World!"
-```
-
 ```kotlin [Values.kt]
 val number = 42
 val message = "Hello World!"
@@ -63,6 +68,7 @@ message = "Hello from Kotlin!"
 
 </InlineCompilerError>
 </InlineCompilerError>
+</DrawnAnnotation>
 
 <!--
 Variables can be defined as read-only using the val keyword instead of var.
