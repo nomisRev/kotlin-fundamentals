@@ -11,7 +11,7 @@
   "dependencies": {
     "@slidev/cli": "52.19.1",
     "roughjs": "4.6.6",
-    "slidev-theme-kotlin": "0.10.0",
+    "slidev-theme-kotlin": "file:../slidev/kotlin-theme",
     "vue": "3.5.41"
   },
   "devDependencies": {

@@ -300,7 +300,7 @@ class: fundamentals-slide
 
 <DrawnAnnotation on="0" text="b: Int = 0">
 <InlineCompilerError text="sum(1, 1)" message="error: No value passed for parameter 'c'" on="0">
-<DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler" placement="down">
+<DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler">
 
 ````md magic-move [Sum.kt] {at: 1}
 ```kotlin [Sum.kt]
@@ -470,8 +470,8 @@ class: fundamentals-slide
 # Control flow - if
 
 <InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression." at="0" until="2">
-<DrawnAnnotation text="): Int =" label="'if' is used as an expression, and a value is expected" on="1" >
-<DrawnAnnotation text=") {" label="'if' blocks can contain more statements." on="4" placement="right">
+<DrawnAnnotation text="): Int =" label="'if' is used as an expression, and a value is expected" on="1" placement="right">
+<DrawnAnnotation text=") {" label="'if' blocks can contain more statements." on="4">
 <DrawnAnnotation text="second" occurrence="2" label="last expression is used as return value" on="4" placement="right">
 
 ````md magic-move [If.kt]
