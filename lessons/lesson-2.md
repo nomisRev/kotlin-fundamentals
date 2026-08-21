@@ -15,7 +15,7 @@ class: fundamentals-slide
 
 <DrawnAnnotation text="var" on="0" label="Mutable variables are declared using `var`">
 <DrawnAnnotation text=" =" on="1">
-<DrawnAnnotation text=" =" occurrence="2" on="1" label="Type can be inferred by compiler">
+<DrawnAnnotation text=" =" :occurrence="2" on="1" label="Type can be inferred by compiler">
 
 ````md magic-move [Var.kt]
 ```kotlin [Var.kt]
@@ -176,8 +176,8 @@ class: fundamentals-slide
 
 # Returns
 
-<DrawnAnnotation on=0 occurrence="2" text="Unit" label="Return Unit when there is no output">
-<DrawnAnnotation on=1 text=") {" label="Using `Unit` explicitly is optional">
+<DrawnAnnotation on=0 :occurrence="2" text="Unit" label="Return Unit when there is no output" placement="right">
+<DrawnAnnotation on=1 text=") {" label="Using `Unit` explicitly is optional" placement="right">
 <DrawnAnnotation on=2 text="val unit: Unit = " label="Functions always return a value">
 
 ````md magic-move [Unit.kt]
@@ -472,7 +472,7 @@ class: fundamentals-slide
 <InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression." at="0" until="2">
 <DrawnAnnotation text="): Int =" label="'if' is used as an expression, and a value is expected" on="1" placement="right">
 <DrawnAnnotation text=") {" label="'if' blocks can contain more statements." on="4">
-<DrawnAnnotation text="second" occurrence="2" label="last expression is used as return value" on="4" placement="right">
+<DrawnAnnotation text="second" :occurrence="2" label="last expression is used as return value" on="4" placement="right">
 
 ````md magic-move [If.kt]
 ```kotlin [If.kt]
@@ -550,13 +550,13 @@ class: fundamentals-slide
 
 # Control flow - when with subject
 
-<DrawnAnnotation text="condition" occurrence="2" label="when can work over a given value." on="0" >
+<DrawnAnnotation text="condition" :occurrence="2" label="when can work over a given value." on="0" placement="right">
 <InlineCompilerError text="when(x)" message="'when' expression must be exhaustive. Add an 'else' branch." at="1" until="2">
-<DrawnAnnotation text="when(x)" label="'when' doesn't require exhaustiveness when used as statement" on="3" >
+<DrawnAnnotation text="when(x)" label="'when' doesn't require exhaustiveness when used as statement" on="3" placement="right">
 <DrawnAnnotation text="3, 4" label="branches can be combined." on="4" >
 <DrawnAnnotation text="in 3..10" label="ranges can be used for matching the branches" on="6" >
 <DrawnAnnotation text="specialValue()" label="arbitrary expressiosn can be used for matching the branches" on="7" >
-<DrawnAnnotation text="val x = calculate()" label="Define a value 'when' matching it" on="8" >
+<DrawnAnnotation text="val x = calculate()" label="Define a value 'when' matching it" on="8" placement="right">
 
 ````md magic-move [When.kt]
 ```kotlin  [When.kt]
@@ -771,7 +771,7 @@ class: fundamentals-slide
 # Safe call operator
 
 <DrawnAnnotation text="?." label="Safely access nullable values" on="0"  placement="right">
-<DrawnAnnotation text="?." occurrence="2" on="0" >
+<DrawnAnnotation text="?." :occurrence="2" on="0" >
 
 ```kotlin [Nullable.kt]
 var nullable: String? = "Hello World!"
@@ -787,7 +787,7 @@ println(nullable?.length)
 </DrawnAnnotation>
 
 ---
-class: fundamentals-slide
+class: fundamentals-slide npe-slide
 ---
 
 # !! operator
@@ -806,12 +806,7 @@ Exception in thread "main" java.lang.NullPointerException
 
 </DrawnAnnotation>
 
-<style>
-.slidev-code code.language-console,
-.slidev-code code.language-console * {
-  color: #ef4444 !important;
-}
-</style>
+
 
 ---
 class: fundamentals-slide smart-cast-slide
@@ -843,11 +838,7 @@ println(length)  //-1
 </DrawnAnnotation>
 </DrawnAnnotation>
 
-<style>
-.smart-cast-slide .slidev-code code.language-kotlin > .line:nth-of-type(3) > span:last-child {
-  background: linear-gradient(#dcf8df, #dcf8df) 2ch center / 8ch 100% no-repeat;
-}
-</style>
+
 
 ---
 layout: intro class: exercise-slide kodee: heart
@@ -896,21 +887,7 @@ println($$"$$name owes you 100$") //John.length owes you 100$
 </DrawnAnnotation>
 </DrawnAnnotation>
 
-<style>
-/* Shiki splits the opening quote and first `$` of `$$name` into one token.
-   Paint that two-character token per glyph so the quote stays a string green
-   while both interpolation dollars match the blue `name` token. */
-:global(.multi-dollar-template .shiki-magic-move-item[style*="--shiki-light: #067D17"][style*="--smm-stagger: 1ms"]) {
-  color: transparent !important;
-  background: linear-gradient(to right, #067d17 0 50%, #0033b3 50% 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
 
-:global(html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6AAB73"][style*="--smm-stagger: 1ms"]) {
-  background: linear-gradient(to right, #6aab73 0 50%, #cf8e6d 50% 100%);
-}
-</style>
 
 <!--
 String literals may contain pieces of code that are evaluated and whose results are concatenated into the string.
@@ -924,12 +901,12 @@ class: fundamentals-slide
 
 > Contains no escaping and can contain newlines and any other characters
 
-<DrawnAnnotation text="&quot;&quot;&quot;" label="A raw string is delimited by a triple quote" on="0">
-<DrawnAnnotation text="&quot;&quot;&quot;" occurrence="2" on="0">
-<DrawnAnnotation text="trimIndent()" on="1" label="Trim leading whitespace">
-<DrawnAnnotation text="trimMargin()" on="2" label="Trim before delimiter (default) `|`">
-<DrawnAnnotation text="const" on="3" label="Compile-time constant">
-<DrawnAnnotation text="const" on="3" occurrence="2">
+<DrawnAnnotation text="&quot;&quot;&quot;" on="0">
+<DrawnAnnotation text="&quot;&quot;&quot;" :occurrence="2" on="0" label="A raw string is delimited by a triple quote">
+<DrawnAnnotation text="trimIndent()" on="1" label="Trim leading whitespace" placement="down">
+<DrawnAnnotation text="trimMargin()" on="2" label="Trim before delimiter (default) `|`" placement="down">
+<DrawnAnnotation text="const" on="3">
+<DrawnAnnotation text="const" on="3" :occurrence="2" label="Compile-time constant">
 
 ````md magic-move
 ```kotlin [MultiString.kt]

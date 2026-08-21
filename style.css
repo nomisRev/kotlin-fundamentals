@@ -524,6 +524,32 @@ html.dark .run-icon {
   }
 }
 
+/* Styles for slides imported from lessons/lesson-2.md live globally because
+   Slidev 52.19's dev import guard misresolves generated scoped-style modules
+   for imported Markdown as filesystem-root paths. */
+.npe-slide .slidev-code code.language-console,
+.npe-slide .slidev-code code.language-console * {
+  color: #ef4444 !important;
+}
+
+.smart-cast-slide .slidev-code code.language-kotlin > .line:nth-of-type(3) > span:last-child {
+  background: linear-gradient(#dcf8df, #dcf8df) 2ch center / 8ch 100% no-repeat;
+}
+
+/* Shiki splits the opening quote and first `$` of `$$name` into one token.
+   Paint that two-character token per glyph so the quote stays a string green
+   while both interpolation dollars match the blue `name` token. */
+.multi-dollar-template .shiki-magic-move-item[style*="--shiki-light: #067D17"][style*="--smm-stagger: 1ms"] {
+  color: transparent !important;
+  background: linear-gradient(to right, #067d17 0 50%, #0033b3 50% 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6AAB73"][style*="--smm-stagger: 1ms"] {
+  background: linear-gradient(to right, #6aab73 0 50%, #cf8e6d 50% 100%);
+}
+
 @media print {
   .slidev-layout {
     print-color-adjust: exact;
