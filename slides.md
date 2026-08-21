@@ -51,3 +51,6 @@ class: kotlin-history-slide
 ---
 src: ./lessons/lesson-1.md
 ---
+---
+src: ./lessons/lesson-2.md
+---
