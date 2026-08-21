@@ -89,7 +89,8 @@ class: fundamentals-slide
 > Can be understood as an immutable reference
 
 <InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" on="0">
-<DrawnAnnotation text="remove" on="1" label="A mutable value can still be mutated">
+<DrawnAnnotation text="remove" on="1">
+<DrawnAnnotation text="add" on="1" label="A mutable value can still be mutated">
 <InlineCompilerError text='remove' message="Unresolved reference remove on receiver of type List<String>" at="2">
 <InlineCompilerError text='add' message="Unresolved reference add on receiver of type List<String>" at="2">
 
@@ -115,6 +116,7 @@ mutableList.add("Hello Student!")
 </InlineCompilerError>
 </InlineCompilerError>
 </DrawnAnnotation>
+</DrawnAnnotation>
 </InlineCompilerError>
 
 <!--
@@ -135,7 +137,8 @@ class: fundamentals-slide
 > Parameters are read-only; object references are passed by value
 
 <InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" at="0" until="1">
-<DrawnAnnotation text="remove" on="1" label="A mutable value can still be mutated">
+<DrawnAnnotation text="remove" on="1">
+<DrawnAnnotation text="add" on="1" label="A mutable value can still be mutated">
 <InlineCompilerError text='remove' message="Unresolved reference remove on receiver of type List<String>" at="2">
 <InlineCompilerError text='add' message="Unresolved reference add on receiver of type List<String>" at="2">
 
@@ -163,6 +166,7 @@ fun changeGreeting(list: List<String>) {
 
 </InlineCompilerError>
 </InlineCompilerError>
+</DrawnAnnotation>
 </DrawnAnnotation>
 </InlineCompilerError>
 
@@ -294,8 +298,9 @@ class: fundamentals-slide
 
 > Order is important, it can be ambiguous
 
+<DrawnAnnotation on="0" text="b: Int = 0">
 <InlineCompilerError text="sum(1, 1)" message="error: No value passed for parameter 'c'" on="0">
-<DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler">
+<DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler" placement="down">
 
 ````md magic-move [Sum.kt] {at: 1}
 ```kotlin [Sum.kt]
@@ -313,6 +318,7 @@ val two = sum(1, c = 1)
 
 </DrawnAnnotation>
 </InlineCompilerError>
+</DrawnAnnotation>
 
 ---
 class: fundamentals-slide
