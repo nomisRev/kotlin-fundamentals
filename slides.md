@@ -1,6 +1,7 @@
 ---
 theme: kotlin
 transition: view-transition
+magicMoveDuration: 500
 layout: cover
 class: fundamentals-cover
 canvasWidth: 1440
@@ -53,4 +54,7 @@ src: ./lessons/lesson-1.md
 ---
 ---
 src: ./lessons/lesson-2.md
+---
+---
+src: ./lessons/lesson-3.md
 ---

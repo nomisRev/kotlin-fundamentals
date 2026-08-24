@@ -302,7 +302,7 @@ class: fundamentals-slide
 <InlineCompilerError text="sum(1, 1)" message="error: No value passed for parameter 'c'" on="0">
 <DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler">
 
-````md magic-move [Sum.kt] {at: 1}
+````md magic-move [Sum.kt]
 ```kotlin [Sum.kt]
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
 
@@ -451,7 +451,9 @@ Must be last parameter. Compiler can't disambiguate when the varargs end, and th
 -->
 
 ---
-layout: intro class: exercise-slide kodee: heart
+layout: intro
+class: exercise-slide
+kodee: heart
 ---
 
 <div class="lesson-number">Exercise</div>
@@ -725,7 +727,9 @@ for (d in 1..10) {
 ```
 
 ---
-layout: intro class: exercise-slide kodee: heart
+layout: intro
+class: exercise-slide
+kodee: heart
 ---
 
 <div class="lesson-number">Exercise</div>
@@ -841,7 +845,9 @@ println(length)  //-1
 
 
 ---
-layout: intro class: exercise-slide kodee: heart
+layout: intro
+class: exercise-slide
+kodee: heart
 ---
 
 <div class="lesson-number">Exercise</div>
@@ -860,10 +866,12 @@ class: fundamentals-slide
 # String templates
 
 <DrawnAnnotation text="$name" label="Use `$` to substitute variables" on="0">
-<DrawnAnnotation text=${name.length} label="Use `${...}` to substitute arbitrary expressions" on="1">
-<DrawnAnnotation text=$$ label="Change substitute symbol with a multi-dollar symbol" on="2">
+<DrawnAnnotation text="${name.length}" label="Use `${...}` to substitute arbitrary expressions" on="1">
+<DrawnAnnotation text="$$" label="Change substitute symbol with a multi-dollar symbol" on="2">
 
-````md magic-move [StringTemplate.kt] { class: 'multi-dollar-template' }
+<div class="multi-dollar-template">
+
+````md magic-move [StringTemplate.kt]
 ```kotlin [StringTemplate.kt]
 val name = "John"
 
@@ -882,6 +890,8 @@ val name = "John"
 println($$"$$name owes you 100$") //John.length owes you 100$
 ```
 ````
+
+</div>
 
 </DrawnAnnotation>
 </DrawnAnnotation>
@@ -954,7 +964,9 @@ const val text = """
 </DrawnAnnotation>
 
 ---
-layout: intro class: exercise-slide kodee: heart
+layout: intro
+class: exercise-slide
+kodee: heart
 ---
 
 <div class="lesson-number">Exercise</div>
