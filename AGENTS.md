@@ -1,4 +1,4 @@
 - Use `agent-browser --help` CLI to check the slides but make sure to close it when you are done
 - You can find Slidev SKILLS here, node_modules/@slidev/cli/skills/slidev/SKILL.md
 - In doubt read code in node_modules to understand the libraries you need to work with
-- slidev-theme-kotlin can be found in ../slidev-theme-kotlin
+- slidev-theme-kotlin can be found in ../slidedev-theme-kotlin

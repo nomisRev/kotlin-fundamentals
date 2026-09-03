@@ -110,6 +110,10 @@
      of falling back to the text colour. */
   --drawn-annotation-color: var(--fundamentals-purple, #7954f6);
 
+  /* Code windows are sized by column count, never by an explicit font size.
+     The published theme (0.12.1) still defaults to 68; the next release
+     defaults to 80, after which this line can go. */
+  --code-window-columns: 80;
 }
 
 html.dark {
@@ -151,12 +155,6 @@ html.dark {
 .slidev-layout pre {
   margin-top: 0.8rem;
   margin-bottom: 0.8rem;
-}
-
-.slidev-layout .slidev-code {
-  /* Code: 1.5× the original 1.02rem size. */
-  font-size: 1.53rem !important;
-  line-height: 1.42 !important;
 }
 
 /* IntelliJ's run icon has separate variants for the presentation's day/night modes. */
