@@ -1,7 +1,6 @@
 ---
 theme: kotlin
 transition: view-transition
-magicMoveDuration: 500
 layout: cover
 class: fundamentals-cover
 canvasWidth: 1440
@@ -26,22 +25,21 @@ kodee: welcome
 
 ## From first expression to expressive Kotlin APIs
 
+Kotlin 2.4.10 · JVM 21 · IntelliJ IDEA
+
 ---
 layout: intro
-class: section-slide
+class: section-slide agenda-slide
+kodee: wave
 ---
 
 # Course topics
 
-<v-clicks>
-
-- Intro to the Kotlin language
-- Kotlin’s type system
-- Extension functions, lambdas and collection API
-- Domain Specific Languages
-- Coroutines
-
-</v-clicks>
+1. Intro to the Kotlin language
+2. Kotlin’s type system
+3. Extension functions, lambdas and collection API
+4. Domain Specific Languages
+5. Coroutines
 
 ---
 class: kotlin-history-slide

@@ -1,127 +1,155 @@
 ---
 layout: intro
 class: section-slide
+kodee: wave
 ---
+
+<!-- @formatter:off -->
 
 <div class="lesson-number">Lesson 2</div>
 
 # Kotlin Syntax
 
+## Values, functions and control flow
+
 ---
-class: fundamentals-slide
----
 
-# Variables
+# Variables hold mutable state
 
-<DrawnAnnotation text="var" on="0" label="Mutable variables are declared using `var`">
-<DrawnAnnotation text=" =" on="1">
-<DrawnAnnotation text=" =" :occurrence="2" on="1" label="Type can be inferred by compiler">
+<DrawnAnnotation text="var" label="Mutable variables are declared using `var`" />
 
-````md magic-move [Var.kt]
-```kotlin [Var.kt]
+```kotlin
 var number: Int = 42
 var message: String = "Hello World!"
 ```
 
-```kotlin [Var.kt]
+---
+magic-move
+---
+
+# Variables hold mutable state
+
+<DrawnAnnotation text=" =" />
+<DrawnAnnotation text=" =" :occurrence="2" label="The type can be inferred by the compiler" />
+
+```kotlin
 var number = 42
 var message = "Hello World!"
 ```
 
-```kotlin [Var.kt]
+---
+magic-move
+---
+
+# Variables hold mutable state
+
+<DrawnAnnotation text="number += 1" label="Reassign as often as you like" />
+<DrawnAnnotation text="message = &quot;Hello from Kotlin!&quot;" />
+
+```kotlin
 var number = 42
 var message = "Hello World!"
 
 number += 1
 message = "Hello from Kotlin!"
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
 
 ---
-class: fundamentals-slide
----
 
-# Read-only values
+# A value is assigned once
 
-<DrawnAnnotation text="val" on="0" label="Read-only values are declared using `val`">
-<InlineCompilerError :line="4" text="number" message="val cannot be reassigned" on="1">
-<InlineCompilerError :line="5" text="message" message="val cannot be reassigned" on="1">
+<DrawnAnnotation text="val" label="Read-only values are declared using `val`" />
 
-````md magic-move [Values.kt]
-```kotlin [Values.kt]
+```kotlin
 val number = 42
 val message = "Hello World!"
 ```
 
-```kotlin [Values.kt]
+---
+magic-move
+---
+
+# A value is assigned once
+
+<InlineCompilerError :line="4" text="number" message="'val' cannot be reassigned.">
+<InlineCompilerError :line="5" text="message" message="'val' cannot be reassigned.">
+
+```kotlin
 val number = 42
 val message = "Hello World!"
 
 number += 1
 message = "Hello from Kotlin!"
 ```
-````
 
 </InlineCompilerError>
 </InlineCompilerError>
-</DrawnAnnotation>
 
 <!--
 Variables can be defined as read-only using the val keyword instead of var.
 Apart from the keyword change, the syntax remains the same.
 
 However, this simple change has a big impact. The variable cannot be reassigned after the
-initialization, and trying to do so will result in a compilation error. 
+initialization, and trying to do so will result in a compilation error.
 
-Try to use read-only variables when possible as mutability adds a layer of complexity to reason with code.  
+Try to use read-only variables when possible as mutability adds a layer of complexity to reason with code.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Read-only variables
+# Read-only is not immutable
 
-> Can be understood as an immutable reference
+> `val` is an immutable reference
 
-<InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" on="0">
-<DrawnAnnotation text="remove" on="1">
-<DrawnAnnotation text="add" on="1" label="A mutable value can still be mutated">
-<InlineCompilerError text='remove' message="Unresolved reference remove on receiver of type List<String>" at="2">
-<InlineCompilerError text='add' message="Unresolved reference add on receiver of type List<String>" at="2">
+<InlineCompilerError :line="2" text="mutableList" message="'val' cannot be reassigned.">
 
-````md magic-move [MutableList.kt]
-```kotlin [MutableList.kt]
+```kotlin
 val mutableList: MutableList<String> = mutableListOf("Hello World!")
 mutableList = mutableListOf("Hello Student!")
 ```
 
-```kotlin [MutableList.kt]
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Read-only is not immutable
+
+> `val` is an immutable reference
+
+<DrawnAnnotation text="remove" />
+<DrawnAnnotation text="add" label="A mutable value can still be mutated" />
+
+```kotlin
 val mutableList: MutableList<String> = mutableListOf("Hello World!")
 mutableList.remove("Hello World!")
 mutableList.add("Hello Student!")
 ```
 
-```kotlin [MutableList.kt]
+---
+magic-move
+---
+
+# Read-only is not immutable
+
+> `val` is an immutable reference
+
+<InlineCompilerError text="remove" message="Unresolved reference 'remove'.">
+<InlineCompilerError text="add" message="Unresolved reference 'add'.">
+
+```kotlin
 val list: List<String> = listOf("Hello World!")
-mutableList.remove("Hello World!")
-mutableList.add("Hello Student!")
+list.remove("Hello World!")
+list.add("Hello Student!")
 ```
-````
 
 </InlineCompilerError>
-</InlineCompilerError>
-</DrawnAnnotation>
-</DrawnAnnotation>
 </InlineCompilerError>
 
 <!--
 It is important to note that `val` implies read-only.
-If a mutable structure is assigned, the variable cannot be mutated (reassigned), but the actual structure can. 
+If a mutable structure is assigned, the variable cannot be mutated (reassigned), but the actual structure can.
 
 In the example, we have a mutable list which contains Hello World.
 If we want to replace the message to greet the student instead, the variable cannot be reassigned.
@@ -129,59 +157,67 @@ However, as it is a mutable list, we can modify the messages.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Read-only parameters
+# Parameters are values, not variables
 
-> Parameters are read-only; object references are passed by value
+> Object references are passed by value
 
-<InlineCompilerError :line="2" text="mutableList" message="val cannot be reassigned" at="0" until="1">
-<DrawnAnnotation text="remove" on="1">
-<DrawnAnnotation text="add" on="1" label="A mutable value can still be mutated">
-<InlineCompilerError text='remove' message="Unresolved reference remove on receiver of type List<String>" at="2">
-<InlineCompilerError text='add' message="Unresolved reference add on receiver of type List<String>" at="2">
+<InlineCompilerError :line="2" text="mutableList" message="'val' cannot be reassigned.">
 
-````md magic-move [ReadOnlyParameters.kt]
-```kotlin [ReadOnlyParameters.kt]
+```kotlin
 fun changeGreeting(mutableList: MutableList<String>) {
   mutableList = mutableListOf("Hello Student!")
 }
 ```
 
-```kotlin [ReadOnlyParameters.kt]
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Parameters are values, not variables
+
+> Object references are passed by value
+
+<DrawnAnnotation text="remove" />
+<DrawnAnnotation text="add" label="A mutable value can still be mutated" />
+
+```kotlin
 fun changeGreeting(mutableList: MutableList<String>) {
   mutableList.remove("Hello World!")
   mutableList.add("Hello Student!")
 }
 ```
 
-```kotlin [ReadOnlyParameters.kt]
+---
+magic-move
+---
+
+# Parameters are values, not variables
+
+> Object references are passed by value
+
+<InlineCompilerError text="remove" message="Unresolved reference 'remove'.">
+<InlineCompilerError text="add" message="Unresolved reference 'add'.">
+
+```kotlin
 fun changeGreeting(list: List<String>) {
   list.remove("Hello World!")
   list.add("Hello Student!")
 }
 ```
-````
 
 </InlineCompilerError>
-</InlineCompilerError>
-</DrawnAnnotation>
-</DrawnAnnotation>
 </InlineCompilerError>
 
 ---
-class: fundamentals-slide
----
 
-# Returns
+# Every function returns a value
 
-<DrawnAnnotation on=0 :occurrence="2" text="Unit" label="Return Unit when there is no output" placement="right">
-<DrawnAnnotation on=1 text=") {" label="Using `Unit` explicitly is optional" placement="right">
-<DrawnAnnotation on=2 text="val unit: Unit = " label="Functions always return a value">
+<DrawnAnnotation text="Unit" :occurrence="2" label="Return `Unit` when there is no output" placement="down" />
 
-````md magic-move [Unit.kt]
-```kotlin [Unit.kt]
+```kotlin
 fun helloWorld(): Unit {
   println("Hello World!")
   return Unit
@@ -190,7 +226,15 @@ fun helloWorld(): Unit {
 helloWorld()
 ```
 
-```kotlin [Unit.kt]
+---
+magic-move
+---
+
+# Every function returns a value
+
+<DrawnAnnotation text=") {" label="Writing `Unit` explicitly is optional" placement="down" />
+
+```kotlin
 fun helloWorld() {
   println("Hello World!")
 }
@@ -198,67 +242,100 @@ fun helloWorld() {
 helloWorld()
 ```
 
-```kotlin [Unit.kt]
+---
+magic-move
+---
+
+# Every function returns a value
+
+<DrawnAnnotation text="val unit: Unit = " label="There are no procedures, only functions" />
+
+```kotlin
 fun helloWorld() {
   println("Hello World!")
 }
 
 val unit: Unit = helloWorld()
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
 
 <!--
-Unit expresses that a function does not return any useful value. 
+Unit expresses that a function does not return any useful value.
 It is a type declared in the language, and it has only one value - Unit.
 
 There are no procedures in Kotlin. Every function returns a value.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Use meaningful return values
+# Return values are meant to be used
 
-> Experimental in Kotlin 2.3.0; enable with `-Xreturn-value-checker=full`.
+> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-```kotlin [Calculator.kt]
+<DrawnAnnotation text="@MustUseReturnValues" />
+<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" />
+
+```kotlin
 @MustUseReturnValues
 class Calculator {
-    fun calculate(): Int = 42
+  fun calculate(): Int = 42
 }
 
 fun example(calculator: Calculator) {
-    calculator.calculate()            // warning: result is ignored
-    val result = calculator.calculate() // result is used
+  calculator.calculate()
+  val result = calculator.calculate()
 }
 ```
 
-`@MustUseReturnValues` marks APIs; `@IgnorableReturnValue` opts out when ignoring a result is intentional.
-
 ---
-class: fundamentals-slide
+magic-move
 ---
 
-# Function body declaration
+# Return values are meant to be used
 
-> Functions can be declared using block body style or as a single expression
+> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-````md magic-move [Sum.kt]
-```kotlin [Sum.kt]
+<DrawnAnnotation text="@IgnorableReturnValue" />
+<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional" placement="down" />
+
+```kotlin
+@MustUseReturnValues
+class Calculator {
+  private var total = 0
+  fun calculate(): Int = total
+
+  @IgnorableReturnValue
+  fun add(value: Int): Calculator = apply { total += value }
+}
+
+fun example(calculator: Calculator) {
+  calculator.add(1)
+  val result = calculator.calculate()
+}
+```
+
+---
+
+# Expression bodies drop the block
+
+<DrawnAnnotation text="return a + b" label="A block body needs an explicit `return`" />
+
+```kotlin
 fun sum(a: Int, b: Int): Int {
-    return a + b
+  return a + b
 }
 ```
 
-```kotlin [Sum.kt]
+---
+magic-move
+---
+
+# Expression bodies drop the block
+
+<DrawnAnnotation text="= a + b" label="A single expression, no braces and no `return`" />
+
+```kotlin
 fun sum(a: Int, b: Int): Int = a + b
 ```
-````
 
 <!--
 Function block body contains multiple statements.
@@ -266,177 +343,216 @@ Function expression body contains a single expression.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Default arguments
+# Default arguments replace overloads
 
-<DrawnAnnotation on="0" text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for optional 'c: Int' parameter">
-<DrawnAnnotation at="1" until="3" text="c: Int =" label="Assign an expression after parameter type">
-<DrawnAnnotation on="2" text="a + b" label="Can reference previous parameters 'a' & 'b'" color="#eb55e6">
+<DrawnAnnotation text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for an optional `c`" />
 
-````md magic-move [Sum.kt]
-```kotlin [Sum.kt]
+```kotlin
 fun sum(a: Int, b: Int, c: Int): Int = a + b + c
 
 fun sum(a: Int, b: Int): Int = sum(a, b, 0)
 ```
 
-```kotlin [Sum.kt]
+---
+magic-move
+---
+
+# Default arguments replace overloads
+
+<DrawnAnnotation text="c: Int =" label="Assign an expression after the parameter type" />
+
+```kotlin
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
 ```
 
-```kotlin [Sum.kt]
+---
+magic-move
+---
+
+# Default arguments replace overloads
+
+<DrawnAnnotation text="a + b" label="Defaults can reference the earlier parameters `a` and `b`" />
+
+```kotlin
 fun sum(a: Int, b: Int, c: Int = a + b): Int = a + b + c
 ```
 
-```kotlin [Sum.kt]
+---
+magic-move
+---
+
+# Default arguments replace overloads
+
+<DrawnAnnotation text="sum(1, 1)" label="`c` falls back to its default" />
+<DrawnAnnotation text="sum(1, 1, 1)" />
+
+```kotlin
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
 
 val two = sum(1, 1)
 val three = sum(1, 1, 1)
 ```
 
-```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-
 <!--
 In Kotlin you can avoid overloads assigning default arguments to any number of parameters.
 A default argument is defined assigning an expression after the parameter type.
-The function will use the default argument when the caller does not provide the parameter with one.  
-    
+The function will use the default argument when the caller does not provide the parameter with one.
+
 Default arguments can be used to add functionality to APIs keeping retro-compatibility as it does not break client code.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Default arguments
+# Defaults in the middle need names
 
-> Order is important, it can be ambiguous
+<DrawnAnnotation text="b: Int = 0" />
+<InlineCompilerError text="sum(1, 1)" message="No value passed for parameter 'c'.">
 
-<DrawnAnnotation on="0" text="b: Int = 0">
-<InlineCompilerError text="sum(1, 1)" message="error: No value passed for parameter 'c'" on="0">
-<DrawnAnnotation on="1" text="c = " label="Use explicit named parameter to help the compiler">
-
-````md magic-move [Sum.kt]
-```kotlin [Sum.kt]
+```kotlin
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
 
 val two = sum(1, 1)
 ```
 
-```kotlin [Sum.kt]
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Defaults in the middle need names
+
+<DrawnAnnotation text="c = " label="Name the argument to help the compiler" />
+
+```kotlin
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
 
 val two = sum(1, c = 1)
 ```
-````
-
-</DrawnAnnotation>
-</InlineCompilerError>
-</DrawnAnnotation>
 
 ---
-class: fundamentals-slide
+
+# Named arguments clarify the call
+
+<DrawnAnnotation text="length: Int = message.length" label="Defaults can depend on earlier parameters" />
+
+```kotlin
+fun print(
+  message: String,
+  offset: Int = 0,
+  length: Int = message.length,
+) { /*...*/ }
+```
+
+---
+magic-move
 ---
 
-# Named parameters
+# Named arguments clarify the call
 
-> Call a function with a named parameter to identify and clarify arguments
+<DrawnAnnotation text="offset = 6, length = 6" label="Name the arguments to say what each value means" />
 
-````md magic-move [Print.kt]
-```kotlin [Print.kt]
+```kotlin
 fun print(
   message: String,
   offset: Int = 0,
-  length: Int = message.length
+  length: Int = message.length,
 ) { /*...*/ }
+
+print("Hello World!", offset = 6, length = 6) // World!
 ```
 
-```kotlin [Print.kt]
+---
+magic-move
+---
+
+# Named arguments clarify the call
+
+<DrawnAnnotation text="length = 5" label="Skip a defaulted parameter entirely" />
+
+```kotlin
 fun print(
   message: String,
   offset: Int = 0,
-  length: Int = message.length
+  length: Int = message.length,
 ) { /*...*/ }
 
-println("Hello World!", offset = 6, length = 6) //World!
+print("Hello World!", offset = 6, length = 6) // World!
+print("Hello World!", length = 5)             // Hello
 ```
 
-```kotlin [Print.kt]
+---
+magic-move
+---
+
+# Named arguments clarify the call
+
+<DrawnAnnotation text="length = 6, message" label="Named arguments can come in any order" />
+
+```kotlin
 fun print(
   message: String,
   offset: Int = 0,
-  length: Int = message.length
+  length: Int = message.length,
 ) { /*...*/ }
 
-println("Hello World!", offset = 6, length = 6) //World!
-
-println("Hello World!", length = 5)              //Hello
+print("Hello World!", offset = 6, length = 6) // World!
+print("Hello World!", length = 5)             // Hello
+print(length = 6, message = "Hello World!", offset = 6)
 ```
-
-```kotlin [Print.kt]
-fun print(
-  message: String,
-  offset: Int = 0,
-  length: Int = message.length
-) { /*...*/ }
-
-println("Hello World!", offset = 6, length = 6) //World!
-
-println("Hello World!", length = 5)              //Hello
-
-println(length = 6, message = "Hello World!", offset = 6)
-```
-````
 
 <!--
-When calling a function, you can name one or more of its arguments. 
-This may be helpful when a function has many arguments, and it's difficult to associate a value with an argument, 
+When calling a function, you can name one or more of its arguments.
+This may be helpful when a function has many arguments, and it's difficult to associate a value with an argument,
 especially if it's a boolean or null value.
 
-When you use named arguments in a function call, you can freely change the order they are listed in, and if you want 
+When you use named arguments in a function call, you can freely change the order they are listed in, and if you want
 to use their default values you can just leave them out altogether.
 i.e: read("Hello World!", offset = 6, 6) - Mixing named and positioned arguments is not allowed
 -->
 
 ---
-class: fundamentals-slide
+
+# Varargs take any number of arguments
+
+<DrawnAnnotation text="vararg" label="Any number of arguments of the same type" />
+
+```kotlin
+fun sum(vararg numbers: Int): Int = numbers.sum()
+
+val six = sum(1, 2, 3)
+val twentyOne = sum(1, 2, 3, 4, 5, 6)
+```
+
+---
+magic-move
 ---
 
-# Variable arguments
+# Varargs take any number of arguments
 
-<DrawnAnnotation text="vararg" label="Accepts a variable number of arguments of the same parameter type" on="0">
-<DrawnAnnotation text="*list" label="Spread operator copies elements into a new array" on="1">
-<DrawnAnnotation text="Iterable<Int>" label="Explicit support for Iterable" on="2" placement="right">
-<DrawnAnnotation text="[1, 2, 3]" on="3">
-<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="Collection literals (experimental 2.4.x)" on="3" placement="right">
+<DrawnAnnotation text="*array" label="The spread operator copies the elements into a new array" />
 
-````md magic-move
-```kotlin [VarArg.kt]
-fun sum(vararg numbers: Int): Int = TODO()
-
-val six = sum(1, 2, 3)
-val twentyOne = sum(1, 2, 3, 4, 5, 6)
-```
-
-```kotlin [VarArg.kt]
-fun sum(vararg numbers: Int): Int = TODO()
+```kotlin
+fun sum(vararg numbers: Int): Int = numbers.sum()
 
 val six = sum(1, 2, 3)
 val twentyOne = sum(1, 2, 3, 4, 5, 6)
 
-val list = listOf(1, 2, 3, 4, 5, 6)
-val spread = sum(*list)
+val array = intArrayOf(1, 2, 3, 4, 5, 6)
+val spread = sum(*array)
 ```
 
-```kotlin [VarArg.kt]
+---
+magic-move
+---
+
+# Varargs take any number of arguments
+
+<DrawnAnnotation text="Iterable<Int>" />
+<DrawnAnnotation text="sum(list)" label="The explicit overload takes any collection" placement="down" />
+
+```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
 fun sum(numbers: Iterable<Int>): Int = numbers.sum()
 
@@ -447,7 +563,16 @@ val list = listOf(1, 2, 3, 4, 5, 6)
 val spread = sum(list)
 ```
 
-```kotlin [VarArg.kt]
+---
+magic-move
+---
+
+# Varargs take any number of arguments
+
+<DrawnAnnotation text="[1, 2, 3]" />
+<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="Collection literals, experimental in Kotlin 2.4" placement="down" />
+
+```kotlin
 fun sum(numbers: Iterable<Int>): Int = numbers.sum()
 
 val six = sum([1, 2, 3])
@@ -456,20 +581,13 @@ val twentyOne = sum([1, 2, 3, 4, 5, 6])
 val list = listOf(1, 2, 3, 4, 5, 6)
 val spread = sum(list)
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
 
 <!--
 Simplifies the caller side by avoiding collections at all
 
 Visible type for caller is Int. Inside the function body it is Array<Int>
 Only one varargs is allowed.
-Must be last parameter. Compiler can't disambiguate when the varargs end, and the other parameters start. 
+Must be last parameter. Compiler can't disambiguate when the varargs end, and the other parameters start.
 -->
 
 ---
@@ -484,139 +602,173 @@ kodee: heart
 
 - Write functions using
     - expression bodies
-    - defaults parameters
+    - default parameters
     - named arguments
 
 ---
-class: fundamentals-slide
----
 
-# Control flow - if
+# `if` is an expression
 
-<InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression." at="0" until="2">
-<DrawnAnnotation text="): Int =" label="'if' is used as an expression, and a value is expected" on="1" placement="right">
-<DrawnAnnotation text=") {" label="'if' blocks can contain more statements." on="4">
-<DrawnAnnotation text="second" :occurrence="2" label="last expression is used as return value" on="4" placement="right">
+<InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression.">
 
-````md magic-move [If.kt]
-```kotlin [If.kt]
+```kotlin
 fun max(a: Int, b: Int) =
-    if(a > b) a
+  if (a > b) a
 ```
 
-```kotlin [If.kt]
-fun max(a: Int, b: Int): Int =
-    if(a > b) a
-```
-
-```kotlin [If.kt]
-fun max(a: Int, b: Int) =
-    if(a > b) a else b
-```
-
-```kotlin [If.kt]
-fun max(a: Int, b: Int) =
-    if(a > b) a else b
-
-fun main() {
-    val two = max(1, 2)
-}
-```
-
-```kotlin [If.kt]
-fun max(a: Int, b: Int) =
-    if (first > second) {
-        println("First")
-        first
-    } else {
-        println("Second")
-        second
-    }
-
-fun main() {
-    val two = max(1, 2)
-}
-```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
 </InlineCompilerError>
 
 ---
-class: fundamentals-slide
+magic-move
 ---
 
-# Control flow - when
+# `if` is an expression
 
-<DrawnAnnotation text="when" label="A powerful switch-case statement." on="1" >
+<InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression.">
+<DrawnAnnotation text="): Int =" label="A value is expected, so `if` is used as an expression" placement="down" />
 
-````md magic-move [Max.kt]
-```kotlin [Max.kt]
-fun max(a: Int, b: Int) =
-    if(a > b) a
+```kotlin
+fun max(a: Int, b: Int): Int =
+  if (a > b) a
 ```
 
-```kotlin [Max.kt]
-fun max(a: Int, b: Int) = when {
-    a > b -> a
-    else -> b
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# `if` is an expression
+
+<DrawnAnnotation text="else b" label="Both branches supply the value" placement="down" />
+
+```kotlin
+fun max(a: Int, b: Int): Int =
+  if (a > b) a else b
+
+val two = max(1, 2)
+```
+
+---
+magic-move
+---
+
+# `if` is an expression
+
+<DrawnAnnotation text=") {" />
+<DrawnAnnotation text="second" :occurrence="3" label="The last expression is the value of the block" placement="down" />
+
+```kotlin
+fun max(first: Int, second: Int): Int =
+  if (first > second) {
+    println("First")
+    first
+  } else {
+    println("Second")
+    second
+  }
+
+val two = max(1, 2)
+```
+
+---
+
+# `when` replaces `if` chains
+
+```kotlin
+fun max(a: Int, b: Int): Int =
+  if (a > b) a else b
+```
+
+---
+magic-move
+---
+
+# `when` replaces `if` chains
+
+<DrawnAnnotation text="when" label="A more powerful switch-case" />
+
+```kotlin
+fun max(a: Int, b: Int): Int = when {
+  a > b -> a
+  else -> b
 }
 ```
-````
-
-</DrawnAnnotation>
 
 ---
-class: fundamentals-slide
----
 
-# Control flow - when with subject
+# `when` matches on a subject
 
-<DrawnAnnotation text="condition" :occurrence="2" label="when can work over a given value." on="0" placement="right">
-<InlineCompilerError text="when(x)" message="'when' expression must be exhaustive. Add an 'else' branch." at="1" until="2">
-<DrawnAnnotation text="when(x)" label="'when' doesn't require exhaustiveness when used as statement" on="3" placement="right">
-<DrawnAnnotation text="3, 4" label="branches can be combined." on="4" >
-<DrawnAnnotation text="in 3..10" label="ranges can be used for matching the branches" on="6" >
-<DrawnAnnotation text="specialValue()" label="arbitrary expressiosn can be used for matching the branches" on="7" >
-<DrawnAnnotation text="val x = calculate()" label="Define a value 'when' matching it" on="8" placement="right">
+<DrawnAnnotation text="condition" :occurrence="2" label="`when` can match a given value" placement="down" />
 
-````md magic-move [When.kt]
-```kotlin  [When.kt]
-fun print(condition: Boolean) = when(condition) {
+```kotlin
+fun print(condition: Boolean) = when (condition) {
   true -> println("Encountered $condition")
   false -> println("Encountered $condition")
 }
 ```
 
-```kotlin [When.kt]
-fun describe(x: Int) = when(x) {
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<InlineCompilerError text="when (x)" message="'when' expression must be exhaustive. Add an 'else' branch.">
+
+```kotlin
+fun describe(x: Int) = when (x) {
   1 -> "x == 1"
   2 -> "x == 2"
 }
 ```
 
-```kotlin [When.kt]
-fun describe(x: Int) = when(x) {
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="else ->" label="`else` covers every other value" />
+
+```kotlin
+fun describe(x: Int) = when (x) {
   1 -> "x == 1"
   2 -> "x == 2"
   else -> "x is neither 1 nor 2"
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="when (x)" label="A `when` statement does not need to be exhaustive" placement="down" />
+
+```kotlin
 fun describe(x: Int) {
-  when(x) {
+  when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
   }
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="3, 4" label="Branches can be combined" />
+
+```kotlin
 fun describe(x: Int) {
-  when(x) {
+  when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
     3, 4 -> println("3 or 4")
@@ -624,20 +776,36 @@ fun describe(x: Int) {
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="-> {" label="A branch can be a block" placement="down" />
+
+```kotlin
 fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
     3, 4 -> {
-        println("Multiline code block!")
-        println("3 or 4")
+      println("Multiline code block!")
+      println("3 or 4")
     }
   }
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="in 3..10" label="Ranges match with `in`" />
+
+```kotlin
 fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
@@ -647,7 +815,15 @@ fun describe(x: Int) {
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="specialValue()" label="Arbitrary expressions can be matched" />
+
+```kotlin
 fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
@@ -657,141 +833,157 @@ fun describe(x: Int) {
 }
 ```
 
-```kotlin [When.kt]
+---
+magic-move
+---
+
+# `when` matches on a subject
+
+<DrawnAnnotation text="val x = calculate()" label="Bind the subject to a value while matching" placement="down" />
+
+```kotlin
 when (val x = calculate()) {
   1 -> println("x == 1")
   2 -> println("x == 2")
   specialValue() -> println("x matches the special value")
 }
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</InlineCompilerError>
-</DrawnAnnotation>
 
 ---
-class: fundamentals-slide
----
 
-# Guard conditions in `when`
+# Guards add a condition to a match
 
-> Add an `if` guard when a type or value match needs one more condition.
+> Stable since Kotlin 2.2.0
 
-```kotlin [Feed.kt]
+<DrawnAnnotation text="if !animal.mouseHunter" label="The guard runs only when the type match succeeds" />
+<DrawnAnnotation text="is Animal.Cat ->" label="Still needed, the guard alone is not exhaustive" />
+
+```kotlin
 sealed interface Animal {
-    data class Cat(val mouseHunter: Boolean) : Animal
-    data class Dog(val breed: String) : Animal
+  data class Cat(val mouseHunter: Boolean) : Animal
+  data class Dog(val breed: String) : Animal
 }
 
 fun feed(animal: Animal) = when (animal) {
-    is Animal.Dog -> "Feed the ${animal.breed}"
-    is Animal.Cat if !animal.mouseHunter -> "Feed the cat"
-    is Animal.Cat -> "Leave the cat alone"
+  is Animal.Dog -> "Feed the ${animal.breed}"
+  is Animal.Cat if !animal.mouseHunter -> "Feed the cat"
+  is Animal.Cat -> "Leave the cat alone"
 }
 ```
 
-The primary condition is checked first; the guard runs only when that condition matches. Guard conditions became stable in Kotlin 2.2.0.
-
----
-class: fundamentals-slide
 ---
 
-# Data-flow-based exhaustiveness
+# Exhaustiveness follows the data flow
 
-> The compiler can use earlier checks and early returns when checking a later `when`.
+> Stable since Kotlin 2.3.0
 
-```kotlin [Permissions.kt]
+<DrawnAnnotation text="if (role == UserRole.ADMIN) return 99" />
+<DrawnAnnotation text="UserRole.GUEST -> 1" label="No `else` needed, the early return already handled `ADMIN`" placement="down" />
+
+```kotlin
 enum class UserRole { ADMIN, MEMBER, GUEST }
 
 fun permission(role: UserRole): Int {
-    if (role == UserRole.ADMIN) return 99
+  if (role == UserRole.ADMIN) return 99
 
-    return when (role) {
-        UserRole.MEMBER -> 10
-        UserRole.GUEST -> 1
-    }
-}
-```
-
-No redundant `else` is needed: the `if` already handles `ADMIN`. This was experimental in Kotlin 2.2.20 and became stable in Kotlin 2.3.0.
-
----
-class: fundamentals-slide
----
-
-# Control flow - for loop
-
-> Can iterate over collections, ranges, and similar structures.
-
-```kotlin [For.kt]
-fun main() {
-    for (item in ["One", "Two", "Three"]) print("$item, ") // One, Two, Three,
-    for (item in 1..10) print("$item, ") // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    for (item in 1..<10) print("$item, ") // 1, 2, 3, 4, 5, 6, 7, 8, 9,
-    for (item in 6 downTo 0 step 2) print("$item, ") // 6, 4, 2, 0,
+  return when (role) {
+    UserRole.MEMBER -> 10
+    UserRole.GUEST -> 1
+  }
 }
 ```
 
 ---
-class: fundamentals-slide
+
+# `for` walks collections and ranges
+
+<DrawnAnnotation text="1..<10" label="Open-ended range" />
+<DrawnAnnotation text="6 downTo 0 step 2" label="Ranges step in either direction" />
+
+```kotlin
+for (item in ["One", "Two", "Three"]) print("$item, ") // One, Two, Three,
+for (item in 1..10) print("$item, ")     // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+for (item in 1..<10) print("$item, ")    // 1, 2, 3, 4, 5, 6, 7, 8, 9,
+for (item in 6 downTo 0 step 2) print("$item, ") // 6, 4, 2, 0,
+```
+
 ---
 
-# Control flow - while loop
+# `while` checks before every iteration
 
-```kotlin [While.kt]
+```kotlin
 var x = 0
 while (x < 10) {
-    print("$x, ")
-    x++
-} // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+  print("$x, ")
+  x++
+} // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 ```
 
 ---
-class: fundamentals-slide
----
 
-# Control flow - while loop
+# `do` runs the body once before checking
 
-<DrawnAnnotation text="while (y != null)" label="Always executed once before condition is checked" on="0">
+<DrawnAnnotation text="while (y != null)" label="The condition is checked after the first run" />
 
-```kotlin [DoWhile.kt]
+```kotlin
 fun retrieveData(): Int? = null
 
 do {
-    println("Runs!")
-    val y = retrieveData()
+  println("Runs!")
+  val y = retrieveData()
 } while (y != null)
 ```
 
-</DrawnAnnotation>
-
----
-class: fundamentals-slide
 ---
 
-# Control flow - continue / break
+# `continue`, `break` and `return` steer a loop
 
-> `continue` -> skips to the next iteration
+<DrawnAnnotation text="continue" label="Skip to the next iteration" />
 
-> `break` -> stops the loop
+```kotlin
+fun printOdd() {
+  for (d in 1..10) {
+    if (d % 2 == 0) continue
+    print("$d, ")
+  }
+  println("done")
+} // 1, 3, 5, 7, 9, done
+```
 
-> `return` -> returns from closest enclosing function
+---
+magic-move
+---
 
-> (TODO: better examples or skip?)
+# `continue`, `break` and `return` steer a loop
 
-```kotlin [NestedFor.kt]
-for (d in 1..10) {
-    if (d % 2 == 0) {
-        continue // try break and return here
-    } else {
-        print("$d, ")
-    }
-}
+<DrawnAnnotation text="break" label="Stop the loop" />
+
+```kotlin
+fun printOdd() {
+  for (d in 1..10) {
+    if (d % 2 == 0) break
+    print("$d, ")
+  }
+  println("done")
+} // 1, done
+```
+
+---
+magic-move
+---
+
+# `continue`, `break` and `return` steer a loop
+
+<DrawnAnnotation text="return" label="Leave the closest enclosing function" />
+
+```kotlin
+fun printOdd() {
+  for (d in 1..10) {
+    if (d % 2 == 0) return
+    print("$d, ")
+  }
+  println("done")
+} // 1,
 ```
 
 ---
@@ -804,113 +996,109 @@ kodee: heart
 
 # Control flow
 
-- Rewrite an `if` chain as a `when` expression.
-- Iterate over a range and experiment with `continue` and `break`.
+- Rewrite an `if` chain as a `when` expression
+- Iterate over a range and experiment with `continue` and `break`
 
 ---
-class: fundamentals-slide
----
 
-# Null Safety
+# Nullability is part of the type
 
-<DrawnAnnotation text="?" label="Nullability modifier helps to make nullability explicit at a type level" on="1">
-<InlineCompilerError text="null" message="null can not be a value of a non-null" on="0">
+<InlineCompilerError text="null" message="Null cannot be a value of a non-null type 'String'.">
 
-````md magic-move [Nullable.kt]
-```kotlin [Nullable.kt]
+```kotlin
 val valueOrNull: String = null
 ```
 
-```kotlin [Nullable.kt]
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Nullability is part of the type
+
+<DrawnAnnotation text="?" label="The nullability modifier makes it explicit in the type" />
+
+```kotlin
 val valueOrNull: String? = null
 ```
-````
-
-</InlineCompilerError>
-</DrawnAnnotation>
 
 <!--
-In Kotlin, the type system distinguishes between references that can hold null (nullable references), 
+In Kotlin, the type system distinguishes between references that can hold null (nullable references),
 and those that cannot (non-null references).
 
 To allow nulls, we can declare a variable as nullable string, written String?
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Safe call operator
+# Safe calls short-circuit on `null`
 
-<DrawnAnnotation text="?." label="Safely access nullable values" on="0"  placement="right">
-<DrawnAnnotation text="?." :occurrence="2" on="0" >
+<DrawnAnnotation text="?." />
+<DrawnAnnotation text="?." :occurrence="2" label="A safe call yields `null` instead of throwing" placement="down" />
 
-```kotlin [Nullable.kt]
+```kotlin
 var nullable: String? = "Hello World!"
 println(nullable?.length)
-//12
+// 12
 
 nullable = null
 println(nullable?.length)
-//null  
+// null
 ```
 
-</DrawnAnnotation>
-</DrawnAnnotation>
-
----
-class: fundamentals-slide npe-slide
 ---
 
-# !! operator
+# `!!` trades safety for an exception
 
-<DrawnAnnotation text="!!." label="Forcefully unwrap nullable type" on="0" placement="right">
+<DrawnAnnotation text="!!." label="Forcefully unwrap the nullable type" placement="down" />
 
-```kotlin [Nullable.kt]
+```kotlin
 val nullable: String? = null
 
 println(nullable!!.length)
 ```
 
-```console
-Exception in thread "main" java.lang.NullPointerException
-```
+<v-clicks>
 
-</DrawnAnnotation>
+<div class="stacktrace" aria-label="Application stack trace">
+  <div>Exception in thread "main" <span class="stacktrace-link">java.lang.NullPointerException</span></div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;at <span class="stacktrace-link">NullableKt.main(Nullable.kt:3)</span></div>
+</div>
 
-
+</v-clicks>
 
 ---
-class: fundamentals-slide smart-cast-slide
+class: smart-cast-slide
 ---
 
-# Smart casting
+# A null check smart-casts the type
 
-<DrawnAnnotation text="nullable.length" label="safe non-null access after smart-cast" :on="0">
-<DrawnAnnotation text="?:" label="When left side is null then fallback on right side" :on="1">
+<DrawnAnnotation text="nullable.length" label="Non-null access after the check" />
 
-````md magic-move [SmartCast.kt]
-```kotlin [SmartCast.kt]
+```kotlin
 val nullable: String? = null
 val length =
-    if (nullable != null) nullable.length
-    else -1
+  if (nullable != null) nullable.length
+  else -1
 
-println(length)  //-1
+println(length) // -1
 ```
 
-```kotlin [SmartCast.kt]
+---
+magic-move
+---
+
+# A null check smart-casts the type
+
+<DrawnAnnotation text="?:" label="Elvis: when the left side is `null`, fall back to the right side" />
+
+```kotlin
 val nullable: String? = null
 val length = nullable?.length ?: -1
 
-println(length)  //-1
+println(length) // -1
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-
-
 
 ---
 layout: intro
@@ -922,72 +1110,64 @@ kodee: heart
 
 # Null safety
 
-- By explicit about nullability and enforce null safety
+- Be explicit about nullability and enforce null safety
 - Provide a default with `?:`
-- Rely on != null & smart-casting
-- `!!` should be avoided at all costs. It's a code smell for unhandled cases.
+- Rely on `!= null` and smart-casting
+- Avoid `!!` at all costs, it is a code smell for unhandled cases
 
 ---
-class: fundamentals-slide
+
+# Strings interpolate with `$`
+
+<DrawnAnnotation text="$name" label="`$` substitutes a variable" />
+
+```kotlin
+val name = "John"
+
+println("Hello $name!") // Hello John!
+```
+
+---
+magic-move
 ---
 
-# String templates
+# Strings interpolate with `$`
 
-<DrawnAnnotation text="$name" label="Use `$` to substitute variables" on="0">
-<DrawnAnnotation text="${name.length}" label="Use `${...}` to substitute arbitrary expressions" on="1">
-<DrawnAnnotation text="$$" label="Change substitute symbol with a multi-dollar symbol" on="2">
+<DrawnAnnotation text="${name.length}" label="`${...}` substitutes any expression" />
 
-<div class="multi-dollar-template">
-
-````md magic-move [StringTemplate.kt]
-```kotlin [StringTemplate.kt]
+```kotlin
 val name = "John"
 
-println("Hello $name!") //Hello John!
+println("$name.length is ${name.length}") // John.length is 4
 ```
 
-```kotlin [StringTemplate.kt]
+---
+magicMove: true
+class: multi-dollar-template
+---
+
+# Strings interpolate with `$`
+
+<DrawnAnnotation text="$$" label="A multi-dollar prefix changes the interpolation symbol" />
+
+```kotlin
 val name = "John"
 
-println("$name.length is ${name.length}") //John.length is 4
+println($$"$$name owes you 100$") // John owes you 100$
 ```
-
-```kotlin [StringTemplate.kt]
-val name = "John"
-
-println($$"$$name owes you 100$") //John.length owes you 100$
-```
-````
-
-</div>
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-
-
 
 <!--
 String literals may contain pieces of code that are evaluated and whose results are concatenated into the string.
 -->
 
 ---
-class: fundamentals-slide
----
 
-# Multiline strings
+# Raw strings need no escaping
 
-> Contains no escaping and can contain newlines and any other characters
+<DrawnAnnotation text="&quot;&quot;&quot;" />
+<DrawnAnnotation text="&quot;&quot;&quot;" :occurrence="2" label="A raw string is delimited by triple quotes" />
 
-<DrawnAnnotation text="&quot;&quot;&quot;" on="0">
-<DrawnAnnotation text="&quot;&quot;&quot;" :occurrence="2" on="0" label="A raw string is delimited by a triple quote">
-<DrawnAnnotation text="trimIndent()" on="1" label="Trim leading whitespace" placement="down">
-<DrawnAnnotation text="trimMargin()" on="2" label="Trim before delimiter (default) `|`" placement="down">
-<DrawnAnnotation text="const" on="3">
-<DrawnAnnotation text="const" on="3" :occurrence="2" label="Compile-time constant">
-
-````md magic-move
-```kotlin [MultiString.kt]
+```kotlin
 val name = "John"
 
 val text = """
@@ -996,7 +1176,15 @@ val text = """
 """
 ```
 
-```kotlin [MultiString.kt]
+---
+magic-move
+---
+
+# Raw strings need no escaping
+
+<DrawnAnnotation text="trimIndent()" label="Trim the common leading whitespace" placement="down" />
+
+```kotlin
 val name = "John"
 
 val text = """
@@ -1005,7 +1193,15 @@ val text = """
 """.trimIndent()
 ```
 
-```kotlin [MultiString.kt]
+---
+magic-move
+---
+
+# Raw strings need no escaping
+
+<DrawnAnnotation text="trimMargin()" label="Trim up to the `|` margin" placement="down" />
+
+```kotlin
 val name = "John"
 
 val text = """
@@ -1014,22 +1210,24 @@ val text = """
 """.trimMargin()
 ```
 
-```kotlin [MultiString.kt]
+---
+magic-move
+---
+
+# Raw strings need no escaping
+
+> `const val` is a compile-time constant, inlined where it is used
+
+<DrawnAnnotation text="const" />
+
+```kotlin
 const val name = "John"
 
-const val text = """
+val text = """
     |for (c in "$name")
     |    print(c)
 """.trimMargin()
 ```
-````
-
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
-</DrawnAnnotation>
 
 ---
 layout: intro
@@ -1041,6 +1239,5 @@ kodee: heart
 
 # Strings
 
-- Build a string with template expressions.
-- Format a multiline string using `trimIndent()` or `trimMargin()`.
-
+- Build a string with template expressions
+- Format a multiline string using `trimIndent()` or `trimMargin()`

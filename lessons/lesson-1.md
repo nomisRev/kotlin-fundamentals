@@ -1,6 +1,7 @@
 ---
 layout: intro
 class: section-slide
+kodee: wave
 ---
 
 <!-- @formatter:off -->
@@ -9,76 +10,77 @@ class: section-slide
 
 # Introduction to Kotlin
 
----
-class: fundamentals-slide
----
-
-# How to start writing Kotlin
-
-* Kotlin LSP makes Kotlin available everywhere including CLI
-    * IntelliJ IDEA is most used, and most powerful IDE for Kotlin
-
-<v-clicks at="1">
-
-* Coding agents: Junie, Claude, Codex, OpenCode, ...
-    * Can use Kotlin LSP to navigate, and refactor code
-
-</v-clicks>
+## From compiler to first program
 
 ---
-class: fundamentals-slide
+
+# Write Kotlin in any editor
+
+- **Kotlin LSP** brings Kotlin to every editor and the CLI
+- **IntelliJ IDEA** is the most used and most powerful Kotlin IDE
+- **Coding agents** (Junie, Claude, Codex, OpenCode, ...) navigate and refactor through the LSP
+
 ---
 
-# Using Kotlin compiler manually
+# The compiler is all you need
 
-<DrawnAnnotation type="underline" text="fun main()" label="Entrypoint into your Kotlin program" :on="0">
+<DrawnAnnotation text="fun main()" label="Entrypoint into your Kotlin program" />
 
-```kotlin [Hello.kt]
+```kotlin
 fun main() {
-    println("Hello, World!")
+  println("Hello, World!")
 }
 ```
 
-</DrawnAnnotation>
+---
+magic-move
+---
 
-<v-click at="1">
+# The compiler is all you need
 
-<div class="h8" />
+> Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation type="underline" text="-include-runtime" label="Make jar self-contained by including Kotlin Std jar" :on="1">
+<DrawnAnnotation text="-include-runtime" label="Make the jar self-contained by including the Kotlin stdlib" />
 
-> Kotlin compiles to java compatible bytecode
+```kotlin
+fun main() {
+  println("Hello, World!")
+}
+```
 
-```bash [Terminal]
+```bash
 $ kotlinc Hello.kt -include-runtime -d hello.jar
 ```
 
-</DrawnAnnotation>
+---
+magic-move
+---
 
-</v-click>
+# The compiler is all you need
 
-<div class="h8" />
+> Kotlin compiles to Java compatible bytecode
 
-<v-click at="2">
+<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" />
 
-```bash [Terminal]
+```kotlin
+fun main() {
+  println("Hello, World!")
+}
+```
+
+```bash
+$ kotlinc Hello.kt -include-runtime -d hello.jar
 $ java -jar hello.jar
 # Hello, World!
 ```
 
-</v-click>
-
----
-class: fundamentals-slide
 ---
 
-# The Kotlin Toolchain
+# The Kotlin Toolchain installs in one line
 
 > Build JVM, Android, iOS, multiplatform, and server-side applications
 
-<div class="h-8"></div>
-
-```bash [Terminal]
+```bash
 sdk install kotlintoolchain
 
 curl -fsSL https://kotl.in/install.sh | sh
@@ -87,12 +89,12 @@ powershell -ExecutionPolicy ByPass -c "irm 'https://kotl.in/install.ps1' | iex"
 ```
 
 ---
-class: fundamentals-slide
+class: wide-code-slide
 ---
 
-# The Kotlin Toolchain
+# `kotlin init` scaffolds a project
 
-```bash [Terminal]
+```bash
 simonvergauwen@Simons-MacBook-Pro ~/D/tmp> kotlin init
 Select a project template:
   Android application (Jetpack Compose)
@@ -119,17 +121,24 @@ Select a project template:
 ```
 
 ---
-class: fundamentals-slide amper-slide
+
+# A module is one YAML file
+
+<DrawnAnnotation text="jvm/app" label="The product type says what the module builds" />
+
+```yaml toolchain
+product: jvm/app
+```
+
+---
+magic-move
 ---
 
-<DrawnAnnotation type="underline" text="- ./shared" label="Depend on other Kotlin Toolchain module" :on="2" insert>
+# A module is one YAML file
 
-````md magic-move [module.yaml]
-```yaml [module.yaml]
-product: jvm/app
-```
+<DrawnAnnotation text="- ./shared" label="Depend on another module of this project" />
 
-```yaml [module.yaml]
+```yaml toolchain
 product: jvm/app
 
 dependencies:
@@ -137,51 +146,83 @@ dependencies:
   - ./shared
 ```
 
-```yaml [module.yaml]
+---
+magic-move
+---
+
+# A module is one YAML file
+
+<DrawnAnnotation text="test-dependencies" label="Only on the test classpath" />
+
+```yaml toolchain
 product: jvm/app
 
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
   - ./shared
-  
+
 test-dependencies:
   - org.testcontainers:testcontainers:2.0.5
 ```
 
-```yaml [module.yaml]
+---
+magic-move
+---
+
+# A module is one YAML file
+
+<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" />
+
+```yaml toolchain
 product: jvm/app
 
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
   - ./shared
-  
+
 test-dependencies:
   - org.testcontainers:testcontainers:2.0.5
-  
+
 settings:
   kotlin:
-    version: 2.2.21
+    version: 2.4.10
 ```
 
-```yaml [module.yaml]
+---
+magic-move
+---
+
+# A module is one YAML file
+
+<DrawnAnnotation text="mainClass" label="Entry point of a `jvm/app`" />
+
+```yaml toolchain
 product: jvm/app
 
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
   - ./shared
-  
+
 test-dependencies:
   - org.testcontainers:testcontainers:2.0.5
-  
+
 settings:
   kotlin:
-    version: 2.2.21
+    version: 2.4.10
   jvm:
     mainClass: org.jetbrains.example.MainKt
     release: 17
 ```
 
-```yaml [module.yaml]
+---
+magic-move
+---
+
+# A module is one YAML file
+
+<DrawnAnnotation text="apply:" />
+
+```yaml toolchain
 product: jvm/app
 
 apply:
@@ -190,87 +231,107 @@ apply:
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
   - ./shared
-  
+
 test-dependencies:
   - org.testcontainers:testcontainers:2.0.5
 
 settings:
   kotlin:
-    version: 2.2.21
+    version: 2.4.10
   jvm:
     release: 17
 ```
-````
 
-</DrawnAnnotation>
+<!--
+A module template shares settings across modules: the Kotlin version and JVM release
+move out of module.yaml into shared.module-template.yaml, and every module applies it.
+-->
 
 ---
-class: fundamentals-slide
----
 
-# Web Wizard
+# The KMP web wizard
 
 <div class="kmp-web-wizard-images">
-  <img src="/kmp-wizard-new-project.png" class="kmp-web-wizard-new-project" alt="Kotlin Multiplatform Wizard New Project form with Android and iOS targets selected" />
-  <img src="/kmp-wizard-template-gallery.png" class="kmp-web-wizard-template-gallery" alt="Kotlin Multiplatform Wizard template gallery showing shared-UI and native-UI app templates" />
+  <img src="/kmp-wizard-new-project.png" alt="Kotlin Multiplatform Wizard New Project form with Android and iOS targets selected" />
+  <img src="/kmp-wizard-template-gallery.png" alt="Kotlin Multiplatform Wizard template gallery showing shared-UI and native-UI app templates" />
 </div>
 
 ---
-class: fundamentals-slide
----
 
-# IntelliJ @ https://www.jetbrains.com/idea/
+# IntelliJ IDEA
 
-<div class="card"> Community (FREE) & Ultimate (paid) version available </div>
+> Community (free) and Ultimate (paid) editions at jetbrains.com/idea
 
 <FillImage src="/intellij.png" alt="IntelliJ IDEA displaying a Kotlin project tree and ProfileRoutes.kt in the editor" />
 
 ---
-class: fundamentals-slide
----
 
-# IntelliJ New Project Wizard
+# IntelliJ's new project wizard
 
 <FillImage src="/intellij_create_project.png" alt="IntelliJ IDEA New Project dialog with Kotlin selected as the build system and Ktor server application selected as the template" />
 
 ---
-class: fundamentals-slide gradle-slide
+
+# Build system: Gradle
+
+<DrawnAnnotation text="kotlin(&quot;jvm&quot;) version &quot;2.4.10&quot;" label="The Kotlin Gradle plugin is the only requirement" />
+
+```kotlin gradle
+plugins {
+  kotlin("jvm") version "2.4.10"
+}
+```
+
+---
+magic-move
 ---
 
 # Build system: Gradle
 
-````md magic-move [build.gradle.kts]
-```kotlin [build.gradle.kts]
-plugins {
-    kotlin("jvm") version "2.4.10"
-}
-```
+<DrawnAnnotation text="org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0" label="Maven coordinates, resolved from Maven Central" />
 
-```kotlin [build.gradle.kts]
+```kotlin gradle
 plugins {
-    kotlin("jvm") version "2.4.10"
+  kotlin("jvm") version "2.4.10"
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
 }
 ```
 
-```kotlin [build.gradle.kts]
+---
+magic-move
+---
+
+# Build system: Gradle
+
+<DrawnAnnotation text="project(&quot;:shared&quot;)" label="Depend on another module of this build" />
+
+```kotlin gradle
 plugins {
-    kotlin("jvm") version "2.4.10"
+  kotlin("jvm") version "2.4.10"
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
-    implementation(project(":shared"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation(project(":shared"))
 }
 ```
 
-```kotlin [build.gradle.kts]
+---
+magic-move
+---
+
+# Build system: Gradle
+
+<DrawnAnnotation text="application" />
+<DrawnAnnotation text="mainClass" />
+
+```kotlin gradle
 plugins {
-    kotlin("jvm") version "2.4.10"
-    application
+  kotlin("jvm") version "2.4.10"
+  application
 }
 
 application {
@@ -278,15 +339,23 @@ application {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
-    implementation(project(":shared"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation(project(":shared"))
 }
 ```
 
-```kotlin [build.gradle.kts]
+---
+magic-move
+---
+
+# Build system: Gradle
+
+<DrawnAnnotation text="jvmToolchain(21)" />
+
+```kotlin gradle
 plugins {
-    kotlin("jvm") version "2.4.10"
-    application
+  kotlin("jvm") version "2.4.10"
+  application
 }
 
 application {
@@ -294,141 +363,124 @@ application {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
-    implementation(project(":shared"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation(project(":shared"))
 }
 
 kotlin {
-    jvmToolchain(21)
+  jvmToolchain(21)
 }
 ```
-````
 
 ---
-class: fundamentals-slide maven-slide
+class: maven-slide
 ---
 
 # Build system: Maven
 
-````md magic-move [pom.xml]
-```xml [pom.xml]
+<DrawnAnnotation text="kotlin-maven-plugin" />
+
+```xml maven
 <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>2.4.10</version>
-        <extensions>true</extensions>
-        <executions>...</executions>
-      </plugin>
-    </plugins>
+  <plugins>
+    <plugin>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-maven-plugin</artifactId>
+      <version>2.4.10</version>
+      <extensions>true</extensions>
+      <executions>...</executions>
+    </plugin>
+  </plugins>
 </build>
 ```
 
-```xml [pom.xml]
+---
+magicMove: true
+class: maven-slide
+---
+
+# Build system: Maven
+
+<DrawnAnnotation text="kotlin-stdlib" label="Maven needs the stdlib declared explicitly" placement="down" />
+
+```xml maven
 <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>2.4.10</version>
-        <extensions>true</extensions>
-        <executions>...</executions>
-      </plugin>
-    </plugins>
+  <plugins>
+    <plugin>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-maven-plugin</artifactId>
+      <version>2.4.10</version>
+      <extensions>true</extensions>
+      <executions>...</executions>
+    </plugin>
+  </plugins>
 </build>
 
 <dependencies>
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <version>2.4.10</version>
-    </dependency>
+  <dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-stdlib</artifactId>
+    <version>2.4.10</version>
+  </dependency>
 </dependencies>
 ```
-````
 
----
-class: fundamentals-slide
 ---
 
 # Start writing Kotlin
 
 > Add a Kotlin file in the `src` directory of any **Kotlin Toolchain** module
 
-<div class="h-8"></div>
+<DrawnAnnotation text="package org.jetbrains.example" label="Packages organize Kotlin files logically" />
 
-<DrawnAnnotation text="package org.jetbrains.example" label="Add packages to organize Kotlin files logically" :at="1">
-
-```kotlin [src/Main.kt]
+```kotlin
 package org.jetbrains.example
 
 fun main() {
-    println("My first Kotlin program!")
+  println("My first Kotlin program!")
 }
 ```
 
-</DrawnAnnotation>
-
----
-class: fundamentals-slide
 ---
 
 # Running our first Kotlin program
 
-<div class="card">With our main class configured in our build</div>
+> With the main class configured in the build
 
-```bash [Terminal]
+<DrawnAnnotation text="-Dexec.mainClass" label="Maven has no `run` task, so name the class" />
+
+```bash
 kotlin run
 ./gradlew run
 mvn exec:java -Dexec.mainClass="org.jetbrains.example.MainKt"
 ```
 
 ---
-class: fundamentals-slide
----
 
 # Running our first Kotlin program
 
-<div class="card">We just need to write a <b>main</b> function in any Kotlin file.</div>
+> Any Kotlin file with a `main` function will do
 
 <FillImage src="/intellij-hello-kotlin.png" alt="IntelliJ IDEA showing a Kotlin main function and the successful program output in the Run tool window" />
 
 ---
-class: fundamentals-slide
----
 
 # Running our first Kotlin program
 
-<DrawnAnnotation source-type="circle"
-selector="[data-run-configuration]"
-target="[data-screenshot]"
-target-type="circle"
-:target-x="92.8"
-:target-y="5.5"
-:target-radius="1.5"
-:at="2"
->
-<DrawnAnnotation source-type="circle"
-selector="[data-gutter-run]"
-target="[data-screenshot]"
-target-type="circle"
-:target-x="4.3"
-:target-y="43.94"
-:target-radius="2.15"
-:at="1"
->
+<DrawnAnnotation source-type="circle" selector="[data-run-configuration]" target="[data-screenshot]" target-type="circle" :target-x="92.8" :target-y="5.5" :target-radius="1.5" at="1" passive>
+<DrawnAnnotation source-type="circle" selector="[data-gutter-run]" target="[data-screenshot]" target-type="circle" :target-x="4.3" :target-y="43.94" :target-radius="2.15">
 
-  <div class="card">Click on the gutter run icon <span class="run-icon" data-gutter-run role="img" aria-label="Run"></span> next to the main function.</div>
-  <img src="/intellij-hello-kotlin-run.png" data-screenshot class="course-image" alt="Kotlin main function in IntelliJ IDEA with the gutter Run icon and toolbar run configuration visible" />
+> Click the gutter run icon <span class="run-icon" data-gutter-run role="img" aria-label="Run"></span> next to the `main` function
+
+<img src="/intellij-hello-kotlin-run.png" data-screenshot class="course-image" alt="Kotlin main function in IntelliJ IDEA with the gutter Run icon and toolbar run configuration visible" />
 
 </DrawnAnnotation>
 
-  <v-click at="2">
+<v-click at="1">
 
-  > Afterwards you can click on the Run Configuration <span class="run-icon" data-run-configuration role="img" aria-label="Run"></span> icon.
+> Afterwards the run configuration <span class="run-icon" data-run-configuration role="img" aria-label="Run"></span> icon does the same
 
-  </v-click>
+</v-click>
 
 </DrawnAnnotation>
 
@@ -443,8 +495,7 @@ kodee: heart
 # Create a Kotlin project
 
 - Create a Kotlin Toolchain Kotlin/JVM project
-    - Use CLI, IntelliJ Wizard or KMP Web Wizard.
+    - Use the CLI, the IntelliJ wizard or the KMP web wizard
 - Add a package and a `main` function (if missing)
     - Make it `println("My first Kotlin Program!")`
-- Run it from CLI, and/or IntelliJ
-
+- Run it from the CLI and/or IntelliJ

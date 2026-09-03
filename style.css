@@ -1,5 +1,7 @@
-/* Bundle the presentation fonts so builds do not depend on a viewer's machine or
-   an external font provider. */
+/* Bundle the presentation fonts: the deck is published on GitHub Pages, so a
+   viewer's machine cannot be expected to have JetBrains Sans installed. The
+   headmatter's `fonts.provider: none` keeps Slidev from loading the Google
+   fallbacks on top of these faces. */
 @font-face {
   font-family: 'JetBrains Sans';
   src: url('/fonts/JetBrainsSans-VF.ttf') format('truetype');
@@ -73,31 +75,6 @@
 }
 
 /* Course-specific refinements on top of slidev-theme-kotlin. */
-
-/* Timing scale: 300ms for click reveals, 500ms for code/page/Kodee motion.
-   Keeping these values close means a click does not finish far before the
-   content it introduces has arrived. */
-.slidev-vclick-target:not(.slidev-vclick-anim-none) {
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-/* When a click replaces a DrawnAnnotation with new content, finish removing
-   the mark before beginning that content's reveal instead of cross-fading the
-   two. `is-fading-out` only lasts for the annotation's 300ms exit fade, and
-   `slidev-vclick-current` limits the delay to the item entering now. */
-.slidev-layout:has(.drawn-annotation.is-fading-out)
-  .slidev-vclick-target.slidev-vclick-current:not(.slidev-vclick-anim-none) {
-  transition-delay: 280ms;
-}
-
-::view-transition-old(root),
-::view-transition-new(root),
-::view-transition-group(root) {
-  animation-duration: 500ms;
-  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
 :root {
   --slidev-font-sans: 'JetBrains Sans', ui-sans-serif, system-ui, sans-serif;
   --slidev-font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -118,21 +95,29 @@
 
 html.dark {
   --fundamentals-ink: #f5f3ff;
+}
 
+/* Timing scale: 300ms for click reveals, 500ms for code/page/Kodee motion.
+   Keeping these values close means a click does not finish far before the
+   content it introduces has arrived. */
+.slidev-vclick-target:not(.slidev-vclick-anim-none) {
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(root) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .slidev-layout {
   padding: 3rem 4rem;
-  /* Regular slide copy: 1.5× the original 1.45rem size. */
   font-size: 2.175rem;
   line-height: 1.42;
 }
 
-.slidev-layout.fundamentals-slide {
-  padding-right: 4.5rem;
-}
-
-/* Keep every Markdown heading visually distinct from the enlarged body copy. */
 .slidev-layout :is(h1, h2, h3, h4, h5, h6) {
   font-weight: 700;
 }
@@ -157,87 +142,30 @@ html.dark {
   margin-bottom: 0.8rem;
 }
 
-/* IntelliJ's run icon has separate variants for the presentation's day/night modes. */
-.run-icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin: 0 0.12em;
-  vertical-align: -0.16em;
-  background: center / contain no-repeat url('/run.svg');
+.slidev-layout table {
+  font-size: 1.2rem;
 }
 
-html.dark .run-icon {
-  background-image: url('/run_dark.svg');
-}
-
-/* HTML callouts and Markdown quotes are equivalent presentation elements. */
-.card,
+/* Quotes are compact ledes: one gradient left rail, no box. */
 .slidev-layout blockquote {
+  position: relative;
   width: fit-content;
   max-width: 100%;
   margin: 0.5rem 0 1.2rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid rgb(121 84 246 / 30%);
-  border-left: 0.35rem solid var(--fundamentals-purple);
-  border-radius: 0.75rem;
-  background: linear-gradient(110deg, rgb(121 84 246 / 12%), rgb(228 72 173 / 7%));
+  padding: 0.7rem 1rem 0.7rem 1.1rem;
+  border: 0;
+  border-left: 0.28rem solid var(--fundamentals-purple);
+  border-image: linear-gradient(180deg, #7954f6 0%, #8053f4 42%, #9a4def 67%, #d74ae5 100%) 1;
+  background: transparent !important;
   color: var(--fundamentals-ink);
   font-size: inherit;
   font-weight: 650;
+  line-height: 1.35;
 }
 
-.slidev-layout blockquote > * {
+.slidev-layout blockquote p {
   margin: 0;
-  line-height: 1.42 !important;
-}
-
-.course-image {
-  display: block;
-  max-height: 85%;
-  margin: 1rem auto 0;
-  object-fit: contain;
-  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
-}
-
-/* Keep the wizard screenshot inside the space left below the slide title. */
-.intellij-new-project-wizard {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  max-height: 95%;
-  margin: 1rem auto 0;
-  object-fit: contain;
-  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
-}
-
-/* Keep the two portrait wizard screenshots together without letting either
-   one run into the slide title or the bottom edge. */
-.kmp-web-wizard-images {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1rem, 3vw, 3rem);
-  height: calc(100% - 5.5rem);
-  min-height: 0;
-  width: 100%;
-}
-
-.kmp-web-wizard-images img {
-  display: block;
-  height: 100%;
-  max-width: calc(50% - 1rem);
-  min-height: 0;
-  object-fit: contain;
-  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
-}
-
-.fundamentals-slide:has(.course-image + .course-image) .course-image {
-  display: inline-block;
-  width: 45%;
-  max-height: 20rem;
-  margin-right: 2%;
-  vertical-align: middle;
+  line-height: inherit;
 }
 
 .fundamentals-cover h1 {
@@ -259,36 +187,12 @@ html.dark .run-icon {
   font-size: 4.4rem !important;
 }
 
-.slidev-layout ul {
-  position: relative;
-  list-style: none;
-  margin: 1.8rem 0 0;
-  padding: 0;
-}
-
-.slidev-layout ul > li {
-  position: relative;
-  margin: 0;
-  padding: 0.72rem 1.25rem;
-  border-left: 0.3rem solid var(--fundamentals-purple);
-  border-radius: 0 0.65rem 0.65rem 0;
-  background: linear-gradient(90deg, rgb(121 84 246 / 9%), transparent 72%);
-}
-
-.slidev-layout ul > li + li {
-  margin-top: 0.35rem;
-}
-
 .lesson-number {
   color: var(--fundamentals-purple);
   font-size: 1.2rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-}
-
-.slidev-layout table {
-  font-size: 1.2rem;
 }
 
 /* Keep the mascot decorative and behind interactive content. */
@@ -299,6 +203,155 @@ html.dark .run-icon {
 .slidev-layout > :not(.kodee-character) {
   position: relative;
   z-index: 1;
+}
+
+/* Agenda: a numbered rail whose markers run from purple to pink. */
+.agenda-slide ol {
+  --numbered-list-rule: rgb(121 84 246 / 22%);
+  counter-reset: numbered-list-item;
+  position: relative;
+  display: grid;
+  gap: 0;
+  max-width: 48rem;
+  margin: 1.55rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.agenda-slide ol > li {
+  counter-increment: numbered-list-item;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 3.45rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 3.15rem;
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  border-bottom: 1px solid var(--numbered-list-rule);
+  color: var(--fundamentals-ink);
+  font-size: 1.38rem;
+  font-weight: 680;
+  letter-spacing: -0.012em;
+}
+
+.agenda-slide ol > li::before {
+  align-self: center;
+  content: counter(numbered-list-item, decimal-leading-zero);
+  font-family: var(--slidev-font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 1;
+  text-align: left;
+  color: var(--numbered-list-marker, var(--fundamentals-purple));
+}
+
+@supports (color: color-mix(in oklch, red calc(sibling-index() * 1%), blue)) {
+  .agenda-slide ol > li::before {
+    --numbered-list-progress: calc((sibling-index() - 1) / max(1, sibling-count() - 1));
+    --numbered-list-marker: color-mix(
+      in oklch,
+      #7954f6 calc((1 - var(--numbered-list-progress)) * 100%),
+      #d74ae5 calc(var(--numbered-list-progress) * 100%)
+    );
+  }
+}
+
+html.dark .agenda-slide ol {
+  --numbered-list-rule: rgb(121 84 246 / 34%);
+}
+
+/* Lesson 1: IntelliJ's run icon has separate variants for day/night mode. */
+.run-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 0.12em;
+  vertical-align: -0.16em;
+  background: center / contain no-repeat url('/run.svg');
+}
+
+html.dark .run-icon {
+  background-image: url('/run_dark.svg');
+}
+
+.course-image {
+  display: block;
+  max-height: 85%;
+  margin: 1rem auto 0;
+  object-fit: contain;
+  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
+}
+
+/* Lesson 1: keep the two portrait wizard screenshots together without letting
+   either one run into the slide title or the bottom edge. */
+.kmp-web-wizard-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  height: calc(100% - 5.5rem);
+  min-height: 0;
+  width: 100%;
+}
+
+.kmp-web-wizard-images img {
+  display: block;
+  height: 100%;
+  max-width: calc(50% - 1rem);
+  min-height: 0;
+  object-fit: contain;
+  box-shadow: 0 0.4rem 1.1rem rgb(31 32 35 / 18%);
+}
+
+/* Lesson 2: runtime failure. Deliberately unboxed: this is IDE console
+   output, not a code sample. */
+.stacktrace {
+  margin: 1.15rem 0 0;
+  color: #8b0000;
+  font-family: var(--slidev-font-mono);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.63;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.stacktrace-link {
+  color: #767982;
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.1em;
+}
+
+html.dark .stacktrace {
+  color: #ff8f8f;
+}
+
+html.dark .stacktrace-link {
+  color: #b9bbc2;
+}
+
+/* Lesson 2: smart cast. IntelliJ paints a smart-cast receiver green; the
+   selector reproduces that on the third line's last token. */
+.smart-cast-slide .slidev-code code.language-kotlin > .line:nth-of-type(3) > span:last-child {
+  background: linear-gradient(#dcf8df, #dcf8df) 2ch center / 8ch 100% no-repeat;
+}
+
+/* Lesson 2: multi-dollar string templates. Shiki splits the opening quote and
+   first `$` of `$$name` into one token. Paint that two-character token per
+   glyph so the quote stays a string green while both interpolation dollars
+   match the blue `name` token. */
+.multi-dollar-template .shiki-magic-move-item[style*="--shiki-light: #067D17"][style*="--smm-stagger: 1ms"] {
+  color: transparent !important;
+  background: linear-gradient(to right, #067d17 0 50%, #0033b3 50% 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6AAB73"][style*="--smm-stagger: 1ms"] {
+  background: linear-gradient(to right, #6aab73 0 50%, #cf8e6d 50% 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -312,35 +365,14 @@ html.dark .run-icon {
   }
 }
 
-/* Styles for slides imported from lessons/lesson-2.md live globally because
-   Slidev 52.19's dev import guard misresolves generated scoped-style modules
-   for imported Markdown as filesystem-root paths. */
-.npe-slide .slidev-code code.language-console,
-.npe-slide .slidev-code code.language-console * {
-  color: #ef4444 !important;
-}
-
-.smart-cast-slide .slidev-code code.language-kotlin > .line:nth-of-type(3) > span:last-child {
-  background: linear-gradient(#dcf8df, #dcf8df) 2ch center / 8ch 100% no-repeat;
-}
-
-/* Shiki splits the opening quote and first `$` of `$$name` into one token.
-   Paint that two-character token per glyph so the quote stays a string green
-   while both interpolation dollars match the blue `name` token. */
-.multi-dollar-template .shiki-magic-move-item[style*="--shiki-light: #067D17"][style*="--smm-stagger: 1ms"] {
-  color: transparent !important;
-  background: linear-gradient(to right, #067d17 0 50%, #0033b3 50% 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6AAB73"][style*="--smm-stagger: 1ms"] {
-  background: linear-gradient(to right, #6aab73 0 50%, #cf8e6d 50% 100%);
-}
-
 @media print {
   .slidev-layout {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
 }
+
+/* Lesson 1: a terminal listing and a Maven POM need more columns than the
+   deck default to fit the slide. */
+.wide-code-slide { --code-window-columns: 112; }
+.maven-slide { --code-window-columns: 96; }
