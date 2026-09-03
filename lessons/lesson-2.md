@@ -222,6 +222,28 @@ There are no procedures in Kotlin. Every function returns a value.
 class: fundamentals-slide
 ---
 
+# Use meaningful return values
+
+> Experimental in Kotlin 2.3.0; enable with `-Xreturn-value-checker=full`.
+
+```kotlin [Calculator.kt]
+@MustUseReturnValues
+class Calculator {
+    fun calculate(): Int = 42
+}
+
+fun example(calculator: Calculator) {
+    calculator.calculate()            // warning: result is ignored
+    val result = calculator.calculate() // result is used
+}
+```
+
+`@MustUseReturnValues` marks APIs; `@IgnorableReturnValue` opts out when ignoring a result is intentional.
+
+---
+class: fundamentals-slide
+---
+
 # Function body declaration
 
 > Functions can be declared using block body style or as a single expression
@@ -651,6 +673,52 @@ when (val x = calculate()) {
 </DrawnAnnotation>
 </InlineCompilerError>
 </DrawnAnnotation>
+
+---
+class: fundamentals-slide
+---
+
+# Guard conditions in `when`
+
+> Add an `if` guard when a type or value match needs one more condition.
+
+```kotlin [Feed.kt]
+sealed interface Animal {
+    data class Cat(val mouseHunter: Boolean) : Animal
+    data class Dog(val breed: String) : Animal
+}
+
+fun feed(animal: Animal) = when (animal) {
+    is Animal.Dog -> "Feed the ${animal.breed}"
+    is Animal.Cat if !animal.mouseHunter -> "Feed the cat"
+    is Animal.Cat -> "Leave the cat alone"
+}
+```
+
+The primary condition is checked first; the guard runs only when that condition matches. Guard conditions became stable in Kotlin 2.2.0.
+
+---
+class: fundamentals-slide
+---
+
+# Data-flow-based exhaustiveness
+
+> The compiler can use earlier checks and early returns when checking a later `when`.
+
+```kotlin [Permissions.kt]
+enum class UserRole { ADMIN, MEMBER, GUEST }
+
+fun permission(role: UserRole): Int {
+    if (role == UserRole.ADMIN) return 99
+
+    return when (role) {
+        UserRole.MEMBER -> 10
+        UserRole.GUEST -> 1
+    }
+}
+```
+
+No redundant `else` is needed: the `if` already handles `ADMIN`. This was experimental in Kotlin 2.2.20 and became stable in Kotlin 2.3.0.
 
 ---
 class: fundamentals-slide

@@ -5,3 +5,8 @@ root = true
 [*.md]
 ij_formatter_tags_enabled = true
 ij_markdown_keep_line_breaks_inside_text_blocks = true
+
+[{*.kt,*.kts}]
+indent_size = 2
+indent_style = space
+ij_kotlin_indent_size = 2
