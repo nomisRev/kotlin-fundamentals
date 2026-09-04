@@ -6,6 +6,7 @@ class: fundamentals-cover
 canvasWidth: 1440
 aspectRatio: 16/9
 colorSchema: both
+favicon: /favicon.svg
 fonts:
   sans: JetBrains Sans
   mono: JetBrains Mono

@@ -24,7 +24,7 @@ kodee: wave
 
 # The compiler is all you need
 
-<DrawnAnnotation text="fun main()" label="Entrypoint into your Kotlin program" />
+<DrawnAnnotation text="fun main()" label="Entrypoint into your Kotlin program" :connect="false"/>
 
 ```kotlin
 fun main() {
@@ -40,7 +40,7 @@ magic-move
 
 > Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation text="-include-runtime" label="Make the jar self-contained by including the Kotlin stdlib" />
+<DrawnAnnotation text="-include-runtime" label="Make the jar self-contained by including the Kotlin stdlib" :connect="false"/>
 
 ```kotlin
 fun main() {
@@ -60,7 +60,7 @@ magic-move
 
 > Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" />
+<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" :connect="false"/>
 
 ```kotlin
 fun main() {
@@ -124,7 +124,7 @@ Select a project template:
 
 # A module is one YAML file
 
-<DrawnAnnotation text="jvm/app" label="The product type says what the module builds" />
+<DrawnAnnotation text="jvm/app" label="The product type says what the module builds" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -136,7 +136,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="- ./shared" label="Depend on another module of this project" />
+<DrawnAnnotation text="- ./shared" label="Depend on another module of this project" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -152,7 +152,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="test-dependencies" label="Only on the test classpath" />
+<DrawnAnnotation text="test-dependencies" label="Only on the test classpath" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -171,7 +171,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" />
+<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" :geometry="{ label: { x: 0.4153, y: 0.6084 }, connector: { type: 'quadratic', start: { x: 0.1597, y: 0.6595 }, control: { x: 0.1992, y: 0.6599 }, end: { x: 0.2285, y: 0.6207 } } }" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -194,7 +194,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="mainClass" label="Entry point of a `jvm/app`" />
+<DrawnAnnotation text="mainClass" label="Entry point of a `jvm/app`" :geometry="{ label: { x: 0.3928, y: 0.8680 }, connector: { type: 'quadratic', start: { x: 0.2071, y: 0.8368 }, control: { x: 0.2423, y: 0.8295 }, end: { x: 0.2661, y: 0.8609 } } }" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -220,7 +220,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="apply:" />
+<DrawnAnnotation text="apply:" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -274,7 +274,7 @@ move out of module.yaml into shared.module-template.yaml, and every module appli
 
 # Build system: Gradle
 
-<DrawnAnnotation text="kotlin(&quot;jvm&quot;) version &quot;2.4.10&quot;" label="The Kotlin Gradle plugin is the only requirement" />
+<DrawnAnnotation text="kotlin(&quot;jvm&quot;) version &quot;2.4.10&quot;" label="The Kotlin Gradle plugin is the only requirement" :connect="false"/>
 
 ```kotlin gradle
 plugins {
@@ -288,7 +288,7 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0" label="Maven coordinates, resolved from Maven Central" />
+<DrawnAnnotation text="org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0" label="Maven coordinates, resolved from Maven Central" :connect="false"/>
 
 ```kotlin gradle
 plugins {
@@ -306,7 +306,7 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="project(&quot;:shared&quot;)" label="Depend on another module of this build" />
+<DrawnAnnotation text="project(&quot;:shared&quot;)" label="Depend on another module of this build" :connect="false"/>
 
 ```kotlin gradle
 plugins {
@@ -325,8 +325,8 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="application" />
-<DrawnAnnotation text="mainClass" />
+<DrawnAnnotation text="application" :connect="false"/>
+<DrawnAnnotation text="mainClass" :connect="false"/>
 
 ```kotlin gradle
 plugins {
@@ -350,7 +350,7 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="jvmToolchain(21)" />
+<DrawnAnnotation text="jvmToolchain(21)" :connect="false"/>
 
 ```kotlin gradle
 plugins {
@@ -378,7 +378,7 @@ class: maven-slide
 
 # Build system: Maven
 
-<DrawnAnnotation text="kotlin-maven-plugin" />
+<DrawnAnnotation text="kotlin-maven-plugin" :connect="false"/>
 
 ```xml maven
 <build>
@@ -401,7 +401,7 @@ class: maven-slide
 
 # Build system: Maven
 
-<DrawnAnnotation text="kotlin-stdlib" label="Maven needs the stdlib declared explicitly" placement="down" />
+<DrawnAnnotation text="kotlin-stdlib" label="Maven needs the stdlib declared explicitly" :geometry="{ label: { x: 0.5352, y: 0.8730 } }" :connect="false"/>
 
 ```xml maven
 <build>
@@ -431,7 +431,7 @@ class: maven-slide
 
 > Add a Kotlin file in the `src` directory of any **Kotlin Toolchain** module
 
-<DrawnAnnotation text="package org.jetbrains.example" label="Packages organize Kotlin files logically" />
+<DrawnAnnotation text="package org.jetbrains.example" label="Packages organize Kotlin files logically" :geometry="{ label: { x: 0.4735, y: 0.4589 } }" :connect="false"/>
 
 ```kotlin
 package org.jetbrains.example
@@ -447,7 +447,7 @@ fun main() {
 
 > With the main class configured in the build
 
-<DrawnAnnotation text="-Dexec.mainClass" label="Maven has no `run` task, so name the class" />
+<DrawnAnnotation text="-Dexec.mainClass" label="Maven has no `run` task, so name the class" :connect="false"/>
 
 ```bash
 kotlin run
@@ -467,8 +467,8 @@ mvn exec:java -Dexec.mainClass="org.jetbrains.example.MainKt"
 
 # Running our first Kotlin program
 
-<DrawnAnnotation source-type="circle" selector="[data-run-configuration]" target="[data-screenshot]" target-type="circle" :target-x="92.8" :target-y="5.5" :target-radius="1.5" at="1" passive>
-<DrawnAnnotation source-type="circle" selector="[data-gutter-run]" target="[data-screenshot]" target-type="circle" :target-x="4.3" :target-y="43.94" :target-radius="2.15">
+<DrawnAnnotation source-type="circle" selector="[data-run-configuration]" target="[data-screenshot]" target-type="circle" :target-x="92.8" :target-y="5.5" :target-radius="1.5" at="1" passive :connect="false">
+<DrawnAnnotation source-type="circle" selector="[data-gutter-run]" target="[data-screenshot]" target-type="circle" :target-x="4.3" :target-y="43.94" :target-radius="2.15" :connect="false">
 
 > Click the gutter run icon <span class="run-icon" data-gutter-run role="img" aria-label="Run"></span> next to the `main` function
 

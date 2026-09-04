@@ -30,7 +30,7 @@ than every standard-library type.
 
 # A class needs no body
 
-<DrawnAnnotation text="class Person" label="No body and no explicit constructor" />
+<DrawnAnnotation text="class Person" label="No body and no explicit constructor" :geometry="{ label: { x: 0.2409, y: 0.2793 } }" :connect="false"/>
 
 ```kotlin
 class Person
@@ -42,7 +42,7 @@ magic-move
 
 # A class needs no body
 
-<DrawnAnnotation text="Person()" label="No `new`, call the constructor like a function" />
+<DrawnAnnotation text="Person()" label="No `new`, call the constructor like a function" :geometry="{ label: { x: 0.3398, y: 0.3727 } }" :connect="false"/>
 
 ```kotlin
 class Person
@@ -70,7 +70,7 @@ magic-move
 
 # Classes are final by default
 
-<DrawnAnnotation text="open" label="Explicit opt in to inheritance, prefer composition" />
+<DrawnAnnotation text="open" label="Explicit opt in to inheritance, prefer composition" :geometry="{ label: { x: 0.3242, y: 0.3762 }, connector: { type: 'quadratic', start: { x: 0.1016, y: 0.2278 }, control: { x: 0.1033, y: 0.2838 }, end: { x: 0.1016, y: 0.3496 } } }" :connect="false"/>
 
 ```kotlin
 open class MyClass
@@ -82,7 +82,7 @@ class MySubClass : MyClass()
 
 # The primary constructor is the class header
 
-<DrawnAnnotation text="constructor" label="The keyword is optional when there are no modifiers" />
+<DrawnAnnotation text="constructor" label="The keyword is optional when there are no modifiers" :geometry="{ label: { x: 0.3894, y: 0.4756 } }" :connect="false"/>
 
 ```kotlin
 class Person constructor(name: String, age: Int) {
@@ -98,7 +98,21 @@ magic-move
 
 # The primary constructor is the class header
 
-<DrawnAnnotation text="val name: String" label="Constructor parameters can declare properties directly" placement="down" />
+```kotlin
+class Person @MyAnnotation constructor(name: String, age: Int) {
+  val name: String = name
+  var age: Int = age
+}
+val person = Person("Olivia", 42)
+```
+
+---
+magic-move
+---
+
+# The primary constructor is the class header
+
+<DrawnAnnotation text="val name: String" label="Constructor parameters can declare properties directly" :connect="false"/>
 
 ```kotlin
 class Person(val name: String, var age: Int)
@@ -110,7 +124,7 @@ val person = Person("Olivia", 42)
 
 # Properties follow their keyword
 
-<DrawnAnnotation text="person.age = 43" label="A `var` property can be read and reassigned" placement="down" />
+<DrawnAnnotation text="person.age = 43" label="A `var` property can be read and reassigned" :geometry="{ label: { x: 0.2737, y: 0.5267 } }" :connect="false"/>
 <InlineCompilerError :line="6" message="'val' cannot be reassigned.">
 
 ```kotlin
@@ -128,8 +142,8 @@ person.name = "Ada"
 
 # Properties become getters and setters in Java
 
-<DrawnAnnotation text="getState();" label="A public Kotlin `val` exposes a Java getter" placement="down" />
-<DrawnAnnotation text="setCount(2);" label="A public Kotlin `var` exposes a getter and a setter" placement="down" />
+<DrawnAnnotation text="getState();" label="A public Kotlin `val` exposes a Java getter" :geometry="{ label: { x: 0.5895, y: 0.4373 } }" :connect="false"/>
+<DrawnAnnotation text="setCount(2);" label="A public Kotlin `var` exposes a getter and a setter" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.3597, y: 0.5056 } }" :connect="false"/>
 
 ```kotlin
 class MyClass(val state: String, var count: Int)
@@ -148,8 +162,8 @@ class JavaUsage {
 
 # Initializers run in declaration order
 
-<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" placement="down" />
-<DrawnAnnotation text="require(age >= 0)" label="Validate before the instance escapes" placement="down" />
+<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" :connect="false"/>
+<DrawnAnnotation text="require(age >= 0)" label="Validate before the instance escapes" :connect="false"/>
 
 ```kotlin
 class Person(name: String, age: Int) {
@@ -166,9 +180,9 @@ class Person(name: String, age: Int) {
 
 # Member functions see the instance
 
-<DrawnAnnotation text="fun introduce" />
-<DrawnAnnotation text="$name" />
-<DrawnAnnotation text="person.introduce" label="Member functions are called on an instance and see its properties" placement="down" />
+<DrawnAnnotation text="fun introduce" :connect="false"/>
+<DrawnAnnotation text="$name" :connect="false"/>
+<DrawnAnnotation text="person.introduce" label="Member functions are called on an instance and see its properties" :connect="false"/>
 
 ```kotlin
 class Person(val name: String, var age: Int) {
@@ -198,8 +212,7 @@ magic-move
 
 # Setters are customizable
 
-<DrawnAnnotation text="set(value)" label="Customize how a `var` is written" placement="down" />
-<DrawnAnnotation text="field += value" label="`field` is the property's backing field" placement="down" />
+<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3516, y: 0.4172 } }" :connect="false"/>
 
 ```kotlin
 class TextBuffer {
@@ -216,7 +229,7 @@ magic-move
 
 # Setters are customizable
 
-<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" placement="down" />
+<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.2707, y: 0.7476 } }" :connect="false"/>
 
 ```kotlin
 class TextBuffer {
@@ -236,8 +249,8 @@ println(buffer.text) // Hello, world!
 
 # A getter can compute the value
 
-<DrawnAnnotation text="get()" label="A custom getter runs on every access" placement="down" />
-<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" placement="down" />
+<DrawnAnnotation text="get()" label="A custom getter runs on every access" on="0" :geometry="{ label: { x: 0.2431, y: 0.5099 } }" :connect="false"/>
+<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" on="1" :geometry="{ label: { x: 0.4171, y: 0.5199 } }" :connect="false"/>
 
 ```kotlin
 class TextBuffer {
@@ -254,7 +267,7 @@ magic-move
 
 # A getter can compute the value
 
-<DrawnAnnotation text="println(buffer.isEmpty) // false" label="The value follows `text`" placement="down" />
+<DrawnAnnotation text="println(buffer.isEmpty) // false" label="The value follows `text`" :connect="false"/>
 
 ```kotlin
 class TextBuffer {
@@ -274,8 +287,8 @@ println(buffer.isEmpty) // false
 
 # Expose the read, keep the write
 
-<DrawnAnnotation text="private set" />
-<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" placement="down" />
+<DrawnAnnotation text="private set" :connect="false"/>
+<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :connect="false"/>
 
 ```kotlin
 class Connection {
@@ -294,7 +307,8 @@ magic-move
 
 # Expose the read, keep the write
 
-<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" placement="down" />
+<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4461, y: 0.7157 } }"/>
+<InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
 
 ```kotlin
 class Connection {
@@ -307,9 +321,13 @@ class Connection {
 }
 
 val connection = Connection()
+println(connection.isOpen) // false
 connection.open()
 println(connection.isOpen) // true
+connection.isOpen = false
 ```
+
+</InlineCompilerError>
 
 ---
 
@@ -317,8 +335,23 @@ println(connection.isOpen) // true
 
 > One shared instance, not a home for mutable global state
 
-<DrawnAnnotation text="object" label="Define a single, named instance" />
-<DrawnAnnotation text="Environment.current" label="Access its members without constructing anything" placement="down" />
+<DrawnAnnotation text="object" label="Define a single, named instance" :connect="false"/>
+
+```kotlin
+object Environment {
+  var current = "production"
+}
+```
+
+---
+magic-move
+---
+
+# An `object` is a single instance
+
+> One shared instance, not a home for mutable global state
+
+<DrawnAnnotation text="Environment.current" label="Access its members without constructing anything" :connect="false"/>
 
 ```kotlin
 object Environment {
@@ -332,8 +365,8 @@ println(Environment.current) // production
 
 # Data classes generate the boilerplate
 
-<DrawnAnnotation text="data class" />
-<DrawnAnnotation text="user == User(&quot;Ada&quot;, 36)" label="`equals`, `hashCode` and `toString` for free" placement="down" />
+<DrawnAnnotation text="data class" :connect="false"/>
+<DrawnAnnotation text="user == User(&quot;Ada&quot;, 36)" label="`equals`, `hashCode` and `toString` for free" :connect="false"/>
 
 ```kotlin
 data class User(val name: String, val age: Int)
@@ -351,7 +384,7 @@ magic-move
 
 # Data classes generate the boilerplate
 
-<DrawnAnnotation text="copy" label="A new instance with some properties replaced" />
+<DrawnAnnotation text="copy" label="A new instance with some properties replaced" :connect="false"/>
 
 ```kotlin
 data class User(val name: String, val age: Int)
@@ -372,7 +405,7 @@ println(user == newValue)        // false
 
 # Positional destructuring is fragile
 
-<DrawnAnnotation text="(username, email)" label="Components are matched by position" />
+<DrawnAnnotation text="(username, email)" label="Components are matched by position" :connect="false" :geometry="{ label: { x: 0.4291, y: 0.5808 } }"/>
 
 ```kotlin
 data class User(val username: String, val email: String)
@@ -390,7 +423,7 @@ magic-move
 
 # Positional destructuring is fragile
 
-<DrawnAnnotation text="(username, email)" label="A new property in the middle silently changes `email`" color="red" />
+<DrawnAnnotation text="(username, email)" label="A new property in the middle silently changes `email`" color="red" :connect="false" :geometry="{ label: { x: 0.4132, y: 0.5789 } }"/>
 
 ```kotlin
 data class User(val username: String, val displayName: String, val email: String)
@@ -408,8 +441,8 @@ println(email)    // kotliner
 
 > Preview in Kotlin 2.4
 
-<DrawnAnnotation text="email" :occurrence="2" />
-<DrawnAnnotation text="email" :occurrence="3" label="Destructured by name, not by position" />
+<DrawnAnnotation text="email" :occurrence="2" :connect="false"/>
+<DrawnAnnotation text="email" :occurrence="3" label="Destructured by name, not by position" :connect="false" :geometry="{ label: { x: 0.4035, y: 0.6797 } }"/>
 
 ```kotlin
 data class User(val username: String, val displayName: String, val email: String)
@@ -429,7 +462,7 @@ magic-move
 
 > Preview in Kotlin 2.4
 
-<DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" />
+<DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" :connect="false"/>
 
 ```kotlin
 data class User(val username: String, val displayName: String, val email: String)
@@ -449,7 +482,7 @@ magic-move
 
 > Preview in Kotlin 2.4
 
-<DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" />
+<DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" :connect="false"/>
 
 ```kotlin
 data class User(val username: String, val displayName: String, val email: String)
@@ -465,9 +498,9 @@ println(mail) // alice@example.com
 
 # Interfaces define capabilities
 
-<DrawnAnnotation text="val sides: Int" />
-<DrawnAnnotation text="fun draw() =" label="A default implementation" placement="down" />
-<DrawnAnnotation text="override val sides" label="Implementers provide `sides`, the interface has no backing field" placement="down" />
+<DrawnAnnotation text="fun draw() =" label="A default implementation" :connect="false" on="0" :geometry="{ label: { x: 0.3386, y: 0.3941 } }"/>
+<DrawnAnnotation text="val sides: Int" :connect="false" on="1" />
+<DrawnAnnotation text="override val sides" label="Implementers provide `sides`, the interface has no backing field" :connect="false" on="1" :geometry="{ label: { x: 0.7193, y: 0.5072, width: 0.3825 } }"/>
 
 ```kotlin
 interface Shape {
@@ -489,7 +522,7 @@ Polygon(6).draw() // Drawing a 6-sided shape
 >
 > `super<T>` picks which default implementation to call
 
-<DrawnAnnotation text="super<Clickable>" />
+<DrawnAnnotation text="super<Clickable>" :connect="false"/>
 
 ```kotlin
 interface Clickable {
@@ -514,8 +547,8 @@ class Button : Clickable, Focusable {
 
 > Subclasses live in the same module and package
 
-<DrawnAnnotation text="sealed class" />
-<DrawnAnnotation text="when (state)" label="Exhaustive without `else`" placement="down" />
+<DrawnAnnotation text="sealed class" :connect="false"/>
+<DrawnAnnotation text="when (state)" label="Exhaustive without `else`" :connect="false"/>
 
 ```kotlin
 sealed class UiState {
@@ -537,8 +570,8 @@ fun message(state: UiState) = when (state) {
 
 > No shared superclass or state, alternatives can have unrelated hierarchies
 
-<DrawnAnnotation text="sealed interface" />
-<DrawnAnnotation text="when (result)" label="Exhaustive without `else`" placement="down" />
+<DrawnAnnotation text="sealed interface" :connect="false"/>
+<DrawnAnnotation text="when (result)" label="Exhaustive without `else`" :connect="false"/>
 
 ```kotlin
 sealed interface Result<out T>
@@ -558,9 +591,9 @@ fun describe(result: Result<String>) = when (result) {
 
 > Each entry is a singleton object
 
-<DrawnAnnotation text="enum class" />
-<DrawnAnnotation text="when (direction)" />
-<DrawnAnnotation text="Direction.WEST -> &quot;←&quot;" label="Exhaustive, every entry is known" placement="down" />
+<DrawnAnnotation text="enum class" :connect="false"/>
+<DrawnAnnotation text="when (direction)" :connect="false"/>
+<DrawnAnnotation text="Direction.WEST -> &quot;←&quot;" label="Exhaustive, every entry is known" :connect="false"/>
 
 ```kotlin
 enum class Direction { NORTH, SOUTH, EAST, WEST }
@@ -579,8 +612,8 @@ fun arrow(direction: Direction) = when (direction) {
 
 # Enum entries carry data
 
-<DrawnAnnotation text="val code: Int" />
-<DrawnAnnotation text="HttpStatus.entries" label="Iterate every entry, `valueOf(&quot;OK&quot;)` looks one up by name" />
+<DrawnAnnotation text="val code: Int" :connect="false"/>
+<DrawnAnnotation text="HttpStatus.entries" label="Iterate every entry, `valueOf(&quot;OK&quot;)` looks one up by name" :connect="false"/>
 
 ```kotlin
 enum class HttpStatus(val code: Int) {
@@ -600,7 +633,7 @@ for (status in HttpStatus.entries) {
 
 > Experimental since Kotlin 2.2.0 behind `-Xcontext-sensitive-resolution`
 
-<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject" />
+<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject" :connect="false"/>
 
 ```kotlin
 enum class Problem { CONNECTION, AUTHENTICATION, DATABASE }

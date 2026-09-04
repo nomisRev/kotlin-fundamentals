@@ -16,7 +16,7 @@ kodee: wave
 
 # Variables hold mutable state
 
-<DrawnAnnotation text="var" label="Mutable variables are declared using `var`" />
+<DrawnAnnotation text="var" label="Mutable variables are declared using `var`" :connect="false"/>
 
 ```kotlin
 var number: Int = 42
@@ -29,8 +29,8 @@ magic-move
 
 # Variables hold mutable state
 
-<DrawnAnnotation text=" =" />
-<DrawnAnnotation text=" =" :occurrence="2" label="The type can be inferred by the compiler" />
+<DrawnAnnotation text=" =" :connect="false"/>
+<DrawnAnnotation text=" =" :occurrence="2" label="The type can be inferred by the compiler" :geometry="{ label: { x: 0.2117, y: 0.3517 }, connector: { type: 'quadratic', start: { x: 0.1934, y: 0.2791 }, control: { x: 0.1914, y: 0.3083 }, end: { x: 0.1934, y: 0.3300 } } }" :connect="false"/>
 
 ```kotlin
 var number = 42
@@ -43,8 +43,8 @@ magic-move
 
 # Variables hold mutable state
 
-<DrawnAnnotation text="number += 1" label="Reassign as often as you like" />
-<DrawnAnnotation text="message = &quot;Hello from Kotlin!&quot;" />
+<DrawnAnnotation text="number += 1" label="Reassign as often as you like" :geometry="{ label: { x: 0.1499, y: 0.5280 }, connector: { type: 'quadratic', start: { x: 0.1354, y: 0.4274 }, control: { x: 0.1228, y: 0.4661 }, end: { x: 0.1355, y: 0.4993 } } }" :connect="false"/>
+<DrawnAnnotation text="message = &quot;Hello from Kotlin!&quot;" :connect="false"/>
 
 ```kotlin
 var number = 42
@@ -58,7 +58,7 @@ message = "Hello from Kotlin!"
 
 # A value is assigned once
 
-<DrawnAnnotation text="val" label="Read-only values are declared using `val`" />
+<DrawnAnnotation text="val" label="Read-only values are declared using `val`" :connect="false"/>
 
 ```kotlin
 val number = 42
@@ -118,8 +118,8 @@ magic-move
 
 > `val` is an immutable reference
 
-<DrawnAnnotation text="remove" />
-<DrawnAnnotation text="add" label="A mutable value can still be mutated" />
+<DrawnAnnotation text="remove" :connect="false"/>
+<DrawnAnnotation text="add" label="A mutable value can still be mutated" :connect="false"/>
 
 ```kotlin
 val mutableList: MutableList<String> = mutableListOf("Hello World!")
@@ -180,8 +180,8 @@ magic-move
 
 > Object references are passed by value
 
-<DrawnAnnotation text="remove" />
-<DrawnAnnotation text="add" label="A mutable value can still be mutated" />
+<DrawnAnnotation text="remove" :connect="false"/>
+<DrawnAnnotation text="add" label="A mutable value can still be mutated" :connect="false"/>
 
 ```kotlin
 fun changeGreeting(mutableList: MutableList<String>) {
@@ -215,7 +215,7 @@ fun changeGreeting(list: List<String>) {
 
 # Every function returns a value
 
-<DrawnAnnotation text="Unit" :occurrence="2" label="Return `Unit` when there is no output" placement="down" />
+<DrawnAnnotation text="Unit" :occurrence="2" label="Return `Unit` when there is no output" :geometry="{ label: { x: 0.2702, y: 0.5817 }, connector: { type: 'quadratic', start: { x: 0.1861, y: 0.3296 }, control: { x: 0.2134, y: 0.4381 }, end: { x: 0.1993, y: 0.5481 } } }" :connect="false"/>
 
 ```kotlin
 fun helloWorld(): Unit {
@@ -232,7 +232,7 @@ magic-move
 
 # Every function returns a value
 
-<DrawnAnnotation text=") {" label="Writing `Unit` explicitly is optional" placement="down" />
+<DrawnAnnotation text=") {" label="Writing `Unit` explicitly is optional" :connect="false"/>
 
 ```kotlin
 fun helloWorld() {
@@ -248,7 +248,7 @@ magic-move
 
 # Every function returns a value
 
-<DrawnAnnotation text="val unit: Unit = " label="There are no procedures, only functions" />
+<DrawnAnnotation text="val unit: Unit = " label="There are no procedures, only functions" :connect="false"/>
 
 ```kotlin
 fun helloWorld() {
@@ -271,8 +271,8 @@ There are no procedures in Kotlin. Every function returns a value.
 
 > Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="@MustUseReturnValues" />
-<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" />
+<DrawnAnnotation text="@MustUseReturnValues" :connect="false"/>
+<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" :connect="false"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -294,8 +294,8 @@ magic-move
 
 > Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="@IgnorableReturnValue" />
-<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional" placement="down" />
+<DrawnAnnotation text="@IgnorableReturnValue" :connect="false"/>
+<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional" :connect="false"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -317,7 +317,7 @@ fun example(calculator: Calculator) {
 
 # Expression bodies drop the block
 
-<DrawnAnnotation text="return a + b" label="A block body needs an explicit `return`" />
+<DrawnAnnotation text="return a + b" label="A block body needs an explicit `return`" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int {
@@ -331,7 +331,7 @@ magic-move
 
 # Expression bodies drop the block
 
-<DrawnAnnotation text="= a + b" label="A single expression, no braces and no `return`" />
+<DrawnAnnotation text="= a + b" label="A single expression, no braces and no `return`" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
@@ -346,7 +346,7 @@ Function expression body contains a single expression.
 
 # Default arguments replace overloads
 
-<DrawnAnnotation text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for an optional `c`" />
+<DrawnAnnotation text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for an optional `c`" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int, c: Int): Int = a + b + c
@@ -360,7 +360,7 @@ magic-move
 
 # Default arguments replace overloads
 
-<DrawnAnnotation text="c: Int =" label="Assign an expression after the parameter type" />
+<DrawnAnnotation text="c: Int =" label="Assign an expression after the parameter type" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
@@ -372,7 +372,7 @@ magic-move
 
 # Default arguments replace overloads
 
-<DrawnAnnotation text="a + b" label="Defaults can reference the earlier parameters `a` and `b`" />
+<DrawnAnnotation text="a + b" label="Defaults can reference the earlier parameters `a` and `b`" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int, c: Int = a + b): Int = a + b + c
@@ -384,8 +384,8 @@ magic-move
 
 # Default arguments replace overloads
 
-<DrawnAnnotation text="sum(1, 1)" label="`c` falls back to its default" />
-<DrawnAnnotation text="sum(1, 1, 1)" />
+<DrawnAnnotation text="sum(1, 1)" label="`c` falls back to its default" :connect="false"/>
+<DrawnAnnotation text="sum(1, 1, 1)" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
@@ -406,7 +406,7 @@ Default arguments can be used to add functionality to APIs keeping retro-compati
 
 # Defaults in the middle need names
 
-<DrawnAnnotation text="b: Int = 0" />
+<DrawnAnnotation text="b: Int = 0" :connect="false"/>
 <InlineCompilerError text="sum(1, 1)" message="No value passed for parameter 'c'.">
 
 ```kotlin
@@ -423,7 +423,7 @@ magic-move
 
 # Defaults in the middle need names
 
-<DrawnAnnotation text="c = " label="Name the argument to help the compiler" />
+<DrawnAnnotation text="c = " label="Name the argument to help the compiler" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
@@ -435,7 +435,7 @@ val two = sum(1, c = 1)
 
 # Named arguments clarify the call
 
-<DrawnAnnotation text="length: Int = message.length" label="Defaults can depend on earlier parameters" />
+<DrawnAnnotation text="length: Int = message.length" label="Defaults can depend on earlier parameters" :connect="false"/>
 
 ```kotlin
 fun print(
@@ -451,7 +451,7 @@ magic-move
 
 # Named arguments clarify the call
 
-<DrawnAnnotation text="offset = 6, length = 6" label="Name the arguments to say what each value means" />
+<DrawnAnnotation text="offset = 6, length = 6" label="Name the arguments to say what each value means" :connect="false"/>
 
 ```kotlin
 fun print(
@@ -469,7 +469,7 @@ magic-move
 
 # Named arguments clarify the call
 
-<DrawnAnnotation text="length = 5" label="Skip a defaulted parameter entirely" />
+<DrawnAnnotation text="length = 5" label="Skip a defaulted parameter entirely" :connect="false"/>
 
 ```kotlin
 fun print(
@@ -488,7 +488,7 @@ magic-move
 
 # Named arguments clarify the call
 
-<DrawnAnnotation text="length = 6, message" label="Named arguments can come in any order" />
+<DrawnAnnotation text="length = 6, message" label="Named arguments can come in any order" :connect="false"/>
 
 ```kotlin
 fun print(
@@ -516,7 +516,7 @@ i.e: read("Hello World!", offset = 6, 6) - Mixing named and positioned arguments
 
 # Varargs take any number of arguments
 
-<DrawnAnnotation text="vararg" label="Any number of arguments of the same type" />
+<DrawnAnnotation text="vararg" label="Any number of arguments of the same type" :geometry="{ label: { x: 0.2891, y: 0.4462 } }" :connect="false"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
@@ -531,7 +531,7 @@ magic-move
 
 # Varargs take any number of arguments
 
-<DrawnAnnotation text="*array" label="The spread operator copies the elements into a new array" />
+<DrawnAnnotation text="*array" label="The spread operator copies the elements into a new array" :geometry="{ label: { x: 0.5147, y: 0.5676 } }" :connect="false"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
@@ -549,8 +549,8 @@ magic-move
 
 # Varargs take any number of arguments
 
-<DrawnAnnotation text="Iterable<Int>" />
-<DrawnAnnotation text="sum(list)" label="The explicit overload takes any collection" placement="down" />
+<DrawnAnnotation text="Iterable<Int>" :connect="false"/>
+<DrawnAnnotation text="sum(list)" label="The explicit overload takes any `Iterable`" :geometry="{ label: { x: 0.3722, y: 0.6131 } }" :connect="false"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
@@ -569,8 +569,8 @@ magic-move
 
 # Varargs take any number of arguments
 
-<DrawnAnnotation text="[1, 2, 3]" />
-<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="Collection literals, experimental in Kotlin 2.4" placement="down" />
+<DrawnAnnotation text="[1, 2, 3]" :connect="false"/>
+<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="Collection literals, experimental in Kotlin 2.4" :connect="false"/>
 
 ```kotlin
 fun sum(numbers: Iterable<Int>): Int = numbers.sum()
@@ -625,7 +625,7 @@ magic-move
 # `if` is an expression
 
 <InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression.">
-<DrawnAnnotation text="): Int =" label="A value is expected, so `if` is used as an expression" placement="down" />
+<DrawnAnnotation text="): Int =" label="A value is expected, so `if` is used as an expression" :geometry="{ label: { x: 0.5659, y: 0.3489 } }" :connect="false"/>
 
 ```kotlin
 fun max(a: Int, b: Int): Int =
@@ -640,13 +640,11 @@ magic-move
 
 # `if` is an expression
 
-<DrawnAnnotation text="else b" label="Both branches supply the value" placement="down" />
+<DrawnAnnotation text="else b" label="Both branches supply the value" :geometry="{ label: { x: 0.4450, y: 0.3079 } }" :connect="false"/>
 
 ```kotlin
 fun max(a: Int, b: Int): Int =
   if (a > b) a else b
-
-val two = max(1, 2)
 ```
 
 ---
@@ -655,8 +653,8 @@ magic-move
 
 # `if` is an expression
 
-<DrawnAnnotation text=") {" />
-<DrawnAnnotation text="second" :occurrence="3" label="The last expression is the value of the block" placement="down" />
+<DrawnAnnotation text=") {" :connect="false"/>
+<DrawnAnnotation text="second" :occurrence="3" label="The last expression is the value of the block" :geometry="{ label: { x: 0.3082, y: 0.6127 } }" :connect="false"/>
 
 ```kotlin
 fun max(first: Int, second: Int): Int =
@@ -667,8 +665,6 @@ fun max(first: Int, second: Int): Int =
     println("Second")
     second
   }
-
-val two = max(1, 2)
 ```
 
 ---
@@ -686,7 +682,7 @@ magic-move
 
 # `when` replaces `if` chains
 
-<DrawnAnnotation text="when" label="A more powerful switch-case" />
+<DrawnAnnotation text="when" label="A more powerful switch-case" :geometry="{ label: { x: 0.5378, y: 0.2719 } }" :connect="false"/>
 
 ```kotlin
 fun max(a: Int, b: Int): Int = when {
@@ -699,7 +695,7 @@ fun max(a: Int, b: Int): Int = when {
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="condition" :occurrence="2" label="`when` can match a given value" placement="down" />
+<DrawnAnnotation text="condition" :occurrence="2" :connect="false"/>
 
 ```kotlin
 fun print(condition: Boolean) = when (condition) {
@@ -731,7 +727,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="else ->" label="`else` covers every other value" />
+<DrawnAnnotation text="else ->" label="`else` covers every other value" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) = when (x) {
@@ -747,7 +743,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="when (x)" label="A `when` statement does not need to be exhaustive" placement="down" />
+<DrawnAnnotation text="when (x)" label="A `when` statement does not need to be exhaustive" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -764,7 +760,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="3, 4" label="Branches can be combined" />
+<DrawnAnnotation text="3, 4" label="Branches can be combined" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -782,7 +778,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="-> {" label="A branch can be a block" placement="down" />
+<DrawnAnnotation text="-> {" label="A branch can be a block" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -803,7 +799,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="in 3..10" label="Ranges match with `in`" />
+<DrawnAnnotation text="in 3..10" label="Ranges match with `in`" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -821,7 +817,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="specialValue()" label="Arbitrary expressions can be matched" />
+<DrawnAnnotation text="specialValue()" label="Arbitrary expressions can be matched" :connect="false"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -839,7 +835,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="val x = calculate()" label="Bind the subject to a value while matching" placement="down" />
+<DrawnAnnotation text="val x = calculate()" label="Bind the subject to a value while matching" :connect="false"/>
 
 ```kotlin
 when (val x = calculate()) {
@@ -855,8 +851,8 @@ when (val x = calculate()) {
 
 > Stable since Kotlin 2.2.0
 
-<DrawnAnnotation text="if !animal.mouseHunter" label="The guard runs only when the type match succeeds" />
-<DrawnAnnotation text="is Animal.Cat ->" label="Still needed, the guard alone is not exhaustive" />
+<DrawnAnnotation text="if !animal.mouseHunter" label="The guard runs only when the type match succeeds" :geometry="{ label: { x: 0.7071, y: 0.6928, width: 0.3308 }, connector: { type: 'quadratic', start: { x: 0.4826, y: 0.6602 }, control: { x: 0.5354, y: 0.6690 }, end: { x: 0.5780, y: 0.6907 } } }" :connect="false"/>
+<DrawnAnnotation text="is Animal.Cat ->" label="Still needed, the guard alone is not exhaustive" :geometry="{ label: { x: 0.2722, y: 0.8044 } }" :connect="false"/>
 
 ```kotlin
 sealed interface Animal {
@@ -877,8 +873,8 @@ fun feed(animal: Animal) = when (animal) {
 
 > Stable since Kotlin 2.3.0
 
-<DrawnAnnotation text="if (role == UserRole.ADMIN) return 99" />
-<DrawnAnnotation text="UserRole.GUEST -> 1" label="No `else` needed, the early return already handled `ADMIN`" placement="down" />
+<DrawnAnnotation text="if (role == UserRole.ADMIN) return 99" :connect="false"/>
+<DrawnAnnotation text="UserRole.GUEST -> 1" label="No `else` needed, the early return already handled `ADMIN`" :geometry="{ label: { x: 0.5861, y: 0.6086, width: 0.3150 }, connector: { type: 'quadratic', start: { x: 0.0941, y: 0.6858 }, control: { x: 0.3763, y: 0.7027 }, end: { x: 0.4286, y: 0.6317 } } }" :connect="false"/>
 
 ```kotlin
 enum class UserRole { ADMIN, MEMBER, GUEST }
@@ -897,8 +893,8 @@ fun permission(role: UserRole): Int {
 
 # `for` walks collections and ranges
 
-<DrawnAnnotation text="1..<10" label="Open-ended range" />
-<DrawnAnnotation text="6 downTo 0 step 2" label="Ranges step in either direction" />
+<DrawnAnnotation text="1..<10" label="Open-ended range" :geometry="{ label: { x: 0.2289, y: 0.4305 } }" :connect="false"/>
+<DrawnAnnotation text="6 downTo 0 step 2" label="Ranges step in either direction with steps" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.4706, y: 0.4985 } }" :connect="false"/>
 
 ```kotlin
 for (item in ["One", "Two", "Three"]) print("$item, ") // One, Two, Three,
@@ -923,7 +919,7 @@ while (x < 10) {
 
 # `do` runs the body once before checking
 
-<DrawnAnnotation text="while (y != null)" label="The condition is checked after the first run" />
+<DrawnAnnotation text="while (y != null)" label="The condition is checked after the first run" :connect="false"/>
 
 ```kotlin
 fun retrieveData(): Int? = null
@@ -938,7 +934,7 @@ do {
 
 # `continue`, `break` and `return` steer a loop
 
-<DrawnAnnotation text="continue" label="Skip to the next iteration" />
+<DrawnAnnotation text="continue" label="Skip to the next iteration" :geometry="{ label: { x: 0.4477, y: 0.3704 } }" :connect="false"/>
 
 ```kotlin
 fun printOdd() {
@@ -956,7 +952,7 @@ magic-move
 
 # `continue`, `break` and `return` steer a loop
 
-<DrawnAnnotation text="break" label="Stop the loop" />
+<DrawnAnnotation text="break" label="Stop the loop" :geometry="{ label: { x: 0.4064, y: 0.3448 } }" :connect="false"/>
 
 ```kotlin
 fun printOdd() {
@@ -974,7 +970,7 @@ magic-move
 
 # `continue`, `break` and `return` steer a loop
 
-<DrawnAnnotation text="return" label="Leave the closest enclosing function" />
+<DrawnAnnotation text="return" label="Leave the closest enclosing function" :geometry="{ label: { x: 0.5132, y: 0.3561 } }" :connect="false"/>
 
 ```kotlin
 fun printOdd() {
@@ -1017,7 +1013,7 @@ magic-move
 
 # Nullability is part of the type
 
-<DrawnAnnotation text="?" label="The nullability modifier makes it explicit in the type" />
+<DrawnAnnotation text="?" label="The nullability modifier makes it explicit in the type" :geometry="{ label: { x: 0.4786, y: 0.2713 }, connector: { type: 'quadratic', start: { x: 0.3135, y: 0.2279 }, control: { x: 0.3112, y: 0.2453 }, end: { x: 0.3135, y: 0.2627 } } }" :connect="false"/>
 
 ```kotlin
 val valueOrNull: String? = null
@@ -1034,8 +1030,8 @@ To allow nulls, we can declare a variable as nullable string, written String?
 
 # Safe calls short-circuit on `null`
 
-<DrawnAnnotation text="?." />
-<DrawnAnnotation text="?." :occurrence="2" label="A safe call yields `null` instead of throwing" placement="down" />
+<DrawnAnnotation text="?." :connect="false"/>
+<DrawnAnnotation text="?." :occurrence="2" label="A safe call yields `null` instead of throwing" :geometry="{ label: { x: 0.4178, y: 0.5862 }, connector: { type: 'quadratic', start: { x: 0.2407, y: 0.4646 }, control: { x: 0.2325, y: 0.5255 }, end: { x: 0.2407, y: 0.5863 } } }" :connect="false"/>
 
 ```kotlin
 var nullable: String? = "Hello World!"
@@ -1051,7 +1047,7 @@ println(nullable?.length)
 
 # `!!` trades safety for an exception
 
-<DrawnAnnotation text="!!." label="Forcefully unwrap the nullable type" placement="down" />
+<DrawnAnnotation text="!!." label="Forcefully unwrap the nullable type" :geometry="{ label: { x: 0.3509, y: 0.3931 } }" :connect="false"/>
 
 ```kotlin
 val nullable: String? = null
@@ -1074,7 +1070,7 @@ class: smart-cast-slide
 
 # A null check smart-casts the type
 
-<DrawnAnnotation text="nullable.length" label="Non-null access after the check" />
+<DrawnAnnotation text="nullable.length" label="Non-null access after the check" :geometry="{ label: { x: 0.5238, y: 0.3650 } }" :connect="false"/>
 
 ```kotlin
 val nullable: String? = null
@@ -1091,7 +1087,7 @@ magic-move
 
 # A null check smart-casts the type
 
-<DrawnAnnotation text="?:" label="Elvis: when the left side is `null`, fall back to the right side" />
+<DrawnAnnotation text="?:" label="Elvis: when the left side is `null`, fall back to the right side" :geometry="{ label: { x: 0.6562, y: 0.3086 } }" :connect="false"/>
 
 ```kotlin
 val nullable: String? = null
@@ -1119,7 +1115,7 @@ kodee: heart
 
 # Strings interpolate with `$`
 
-<DrawnAnnotation text="$name" label="`$` substitutes a variable" />
+<DrawnAnnotation text="$name" label="`$` substitutes a variable" :geometry="{ label: { x: 0.3382, y: 0.3699 }, connector: { type: 'quadratic', start: { x: 0.2464, y: 0.3226 }, control: { x: 0.2441, y: 0.3400 }, end: { x: 0.2464, y: 0.3574 } } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1133,7 +1129,7 @@ magic-move
 
 # Strings interpolate with `$`
 
-<DrawnAnnotation text="${name.length}" label="`${...}` substitutes any expression" />
+<DrawnAnnotation text="${name.length}" label="`${...}` substitutes any expression" :geometry="{ label: { x: 0.5062, y: 0.3678 } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1148,7 +1144,7 @@ class: multi-dollar-template
 
 # Strings interpolate with `$`
 
-<DrawnAnnotation text="$$" label="A multi-dollar prefix changes the interpolation symbol" />
+<DrawnAnnotation text="$$" label="A multi-dollar prefix changes the interpolation symbol" :geometry="{ label: { x: 0.3142, y: 0.3718 } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1164,8 +1160,8 @@ String literals may contain pieces of code that are evaluated and whose results 
 
 # Raw strings need no escaping
 
-<DrawnAnnotation text="&quot;&quot;&quot;" />
-<DrawnAnnotation text="&quot;&quot;&quot;" :occurrence="2" label="A raw string is delimited by triple quotes" />
+<DrawnAnnotation text="&quot;&quot;&quot;" :connect="false"/>
+<DrawnAnnotation text="&quot;&quot;&quot;" :occurrence="2" label="A raw string is delimited by triple quotes" :geometry="{ label: { x: 0.2454, y: 0.5129 }, connector: { type: 'quadratic', start: { x: 0.0913, y: 0.4501 }, control: { x: 0.0925, y: 0.4720 }, end: { x: 0.0913, y: 0.4994 } } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1182,7 +1178,7 @@ magic-move
 
 # Raw strings need no escaping
 
-<DrawnAnnotation text="trimIndent()" label="Trim the common leading whitespace" placement="down" />
+<DrawnAnnotation text="trimIndent()" label="Trim the common leading whitespace" :geometry="{ label: { x: 0.2319, y: 0.5123 } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1199,7 +1195,7 @@ magic-move
 
 # Raw strings need no escaping
 
-<DrawnAnnotation text="trimMargin()" label="Trim up to the `|` margin" placement="down" />
+<DrawnAnnotation text="trimMargin()" label="Trim up to the `|` margin" :geometry="{ label: { x: 0.1974, y: 0.5137 } }" :connect="false"/>
 
 ```kotlin
 val name = "John"
@@ -1218,7 +1214,7 @@ magic-move
 
 > `const val` is a compile-time constant, inlined where it is used
 
-<DrawnAnnotation text="const" />
+<DrawnAnnotation text="const" :connect="false"/>
 
 ```kotlin
 const val name = "John"
