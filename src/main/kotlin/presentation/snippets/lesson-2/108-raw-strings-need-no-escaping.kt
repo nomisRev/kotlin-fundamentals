@@ -7,7 +7,7 @@ import presentation.support.*
 
 const val name = "John"
 
-const val text = """
+val text = """
     |for (c in "$name")
     |    print(c)
 """.trimMargin()

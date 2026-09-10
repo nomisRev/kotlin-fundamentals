@@ -3,16 +3,17 @@ import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
 
 const { $clicks } = useSlideContext()
-const stage = computed(() => Math.min($clicks.value, 4))
+const stage = computed(() => Math.min($clicks.value, 5))
 </script>
 
 <template>
   <div
     class="type-hierarchy"
     role="img"
-    aria-label="Animated Kotlin type hierarchy. Any branches to String, Boolean, Number, Unit, and Fruit; all concrete types connect to Nothing."
+    aria-label="Animated Kotlin type hierarchy. Any branches to String, Boolean, Number, Unit, and Fruit; all concrete types connect to Nothing. A pink question-mark badge appears last on Any, String, Boolean, Number, and Nothing to mark their nullable counterparts."
   >
     <!-- These markers let Slidev own navigation, presenter mode, and backwards clicks. -->
+    <span v-click class="click-marker" />
     <span v-click class="click-marker" />
     <span v-click class="click-marker" />
     <span v-click class="click-marker" />
@@ -42,6 +43,8 @@ const stage = computed(() => Math.min($clicks.value, 4))
         <path class="edge reveal" :class="{ visible: stage >= 4 }" style="--delay: 600ms" pathLength="1" d="M875.4 552.2 L655.9 982.7" />
         <path class="edge reveal" :class="{ visible: stage >= 4 }" style="--delay: 750ms" pathLength="1" d="M924.4 736.5 L662.4 973.1" />
         <path class="edge reveal" :class="{ visible: stage >= 4 }" style="--delay: 900ms" pathLength="1" d="M1173.4 732 L648.5 977.6" />
+
+        <path class="edge reveal" :class="{ visible: stage >= 5 }" style="--delay: 900ms" pathLength="1" d="M655 208 L800 145" />
       </g>
 
       <g class="nodes">
@@ -61,8 +64,20 @@ const stage = computed(() => Math.min($clicks.value, 4))
         <g class="node fade" :class="{ visible: stage >= 4 }" style="--delay: 1100ms"><rect x="461.204" y="948.142" width="225.841" height="83.528" rx="999" /><text x="574.12" y="989.91">Nothing</text></g>
       </g>
 
+      <!-- A pink "?" badge marks each type's nullable counterpart, e.g. String?, without
+           drawing five more branches: the badge sits on the pill it belongs to. -->
+      <g class="nullable-badges">
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 0ms"><circle cx="630.39" cy="223.71" r="22" /><text x="630.39" y="224">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 150ms"><circle cx="202.79" cy="488.13" r="22" /><text x="202.79" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 300ms"><circle cx="448.47" cy="488.13" r="22" /><text x="448.47" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 450ms"><circle cx="663.81" cy="488.13" r="22" /><text x="663.81" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 600ms"><circle cx="679.05" cy="956.14" r="22" /><text x="679.05" y="957">?</text></g>
+      </g>
+
       <g class="annotation" :class="{ visible: stage === 0 }">
-        <path class="edge" d="M655.4 256.1 L833.2 187.7" /><text x="844.205" y="221">Object</text>
+        <path class="edge" d="M655.4 256.1 L833.2 187.7" />
+        <text x="844.205" y="187">Root of every non-null type</text>
+        <text x="844.205" y="242" class="annotation-detail">≈ Java's Object</text>
       </g>
       <g class="annotation" :class="{ visible: stage === 1 }" style="--delay: 2750ms">
         <path class="edge" d="M596.5 663.6 L772.6 573.9" /><text x="796.356" y="575">Includes unsigned variants</text>
@@ -77,6 +92,11 @@ const stage = computed(() => Math.min($clicks.value, 4))
         <text x="837.205" y="985">Breaks control flow</text>
         <text x="837.205" y="1044" class="annotation-detail">exception or while (true) { }</text>
       </g>
+      <g class="annotation" :class="{ visible: stage === 5 }" style="--delay: 1500ms">
+        <path class="edge" d="M800 145 L900 90" />
+        <text x="923.205" y="80">Every type has a T? sibling</text>
+        <text x="923.205" y="135" class="annotation-detail">Nothing? can only ever be null</text>
+      </g>
 
     </svg>
   </div>
@@ -85,6 +105,7 @@ const stage = computed(() => Math.min($clicks.value, 4))
 <style scoped>
 .type-hierarchy {
   --purple: #7954f6;
+  --pink: var(--fundamentals-pink, #eb55e6);
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -96,6 +117,13 @@ svg { display: block; width: 100%; height: 100%; }
 .heading { fill: #1f2023; font: 700 72px 'JetBrains Sans', Arial, sans-serif; dominant-baseline: middle; }
 .edge { fill: none; stroke: var(--purple); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
 .node rect { fill: var(--purple); }
+.nullable-badge circle { fill: var(--pink); stroke: #fff; stroke-width: 4; }
+.nullable-badge text {
+  fill: #fff;
+  font: 700 28px "JetBrains Mono", ui-monospace, monospace;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
 .node text {
   fill: #fff;
   font: 32px "JetBrains Mono", ui-monospace, monospace;

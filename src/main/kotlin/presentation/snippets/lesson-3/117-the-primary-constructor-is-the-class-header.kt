@@ -5,7 +5,7 @@ package presentation.snippets.lesson3.slide117
 
 import presentation.support.*
 
-class Person @MyAnnotation constructor(name: String, age: Int) {
+class Person constructor(name: String, age: Int) {
   val name: String = name
   var age: Int = age
 }

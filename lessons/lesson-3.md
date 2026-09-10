@@ -21,7 +21,10 @@ class: type-hierarchy-slide
 <!--
 Kotlin has a unified type hierarchy. Every non-null type has `Any` as a supertype;
 `Any?` is the nullable top type. `Unit` has exactly one value, while `Nothing` has
-no values and can stand in for any return type because it never returns.
+no values and can stand in for any return type because it never returns. The final
+build adds a pink "?" badge to `Any`, `String`, `Boolean`, `Number`, and `Nothing`:
+every type has a nullable counterpart, and `Nothing?` is the one type whose only
+possible value is `null`.
 The diagram is intentionally simplified: it shows representative branches rather
 than every standard-library type.
 -->
@@ -150,7 +153,7 @@ class MyClass(val state: String, var count: Int)
 ```
 
 ```java
-class JavaUsage {
+public class JavaUsage {
   void example(MyClass value) {
     String state = value.getState();
     value.setCount(2);
@@ -160,10 +163,58 @@ class JavaUsage {
 
 ---
 
+# Getters and setters become properties in Kotlin
+
+<DrawnAnnotation text="value.state" label="A Java getter is read as a property" :connect="false" :geometry="{ label: { x: 0.5089, y: 0.6692 } }"/>
+<DrawnAnnotation text="value.count = 2" label="A getter and setter pair becomes a mutable property" color="var(--code-window-amper-color)" :connect="false" :geometry="{ label: { x: 0.5145, y: 0.7538 } }"/>
+
+```java
+public class JavaBean {
+  private String state;
+  private int count;
+
+  public String getState() { return state; }
+  public int getCount() { return count; }
+  public void setCount(int count) { this.count = count; }
+}
+```
+
+```kotlin
+fun example(value: JavaBean) {
+  val state = value.state
+  value.count = 2
+}
+```
+
+---
+
+# A boolean getter keeps its `is` prefix
+
+<DrawnAnnotation text="val open = value.isOpen" label="The property name matches the getter, `is` included" :connect="false" :geometry="{ label: { x: 0.5928, y: 0.5729 } }"/>
+<DrawnAnnotation text="value.isOpen = true" label="The setter still works through the same property" color="var(--code-window-amper-color)" :connect="false" :geometry="{ label: { x: 0.5341, y: 0.6514 } }"/>
+
+```java
+public class Connection {
+  private boolean open;
+
+  public boolean isOpen() { return open; }
+  public void setOpen(boolean open) { this.open = open; }
+}
+```
+
+```kotlin
+fun example(value: Connection) {
+  val open = value.isOpen
+  value.isOpen = true
+}
+```
+
+---
+
 # Initializers run in declaration order
 
-<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" :connect="false"/>
-<DrawnAnnotation text="require(age >= 0)" label="Validate before the instance escapes" :connect="false"/>
+<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" :connect="false" :geometry="{ label: { x: 0.3434, y: 0.3903 } }"/>
+<DrawnAnnotation text="require(age >= 0)" label="Validate before the invalid instance 'escapes'" color="var(--code-window-amper-color)" :connect="false" :geometry="{ label: { x: 0.2972, y: 0.4976 } }"/>
 
 ```kotlin
 class Person(name: String, age: Int) {
@@ -288,7 +339,7 @@ println(buffer.isEmpty) // false
 # Expose the read, keep the write
 
 <DrawnAnnotation text="private set" :connect="false"/>
-<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :connect="false"/>
+<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :connect="false" :geometry="{ label: { x: 0.3217, y: 0.5135 } }"/>
 
 ```kotlin
 class Connection {
@@ -362,6 +413,25 @@ println(Environment.current) // production
 ```
 
 ---
+
+# An `object` is a single instance
+
+> One shared instance, not a home for mutable global state
+
+<DrawnAnnotation text="@JvmStatic" label="Without `@JvmStatic` Kotlin generates a method on a static `INSTANCE` singleton" :connect="false" :geometry="{ label: { x: 0.5496, y: 0.4675 } }"/>
+
+```kotlin
+object Environment {
+    @JvmStatic
+    var current = "production"
+}
+
+println(Environment.current) // production
+```
+---
+magic-move
+---
+
 
 # Data classes generate the boilerplate
 
@@ -462,7 +532,7 @@ magic-move
 
 > Preview in Kotlin 2.4
 
-<DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" :connect="false"/>
+<DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" :connect="false" :geometry="{ label: { x: 0.5032, y: 0.6776 } }"/>
 
 ```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
@@ -482,7 +552,7 @@ magic-move
 
 > Preview in Kotlin 2.4
 
-<DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" :connect="false"/>
+<DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" :connect="false" :geometry="{ label: { x: 0.3494, y: 0.6754 } }"/>
 
 ```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
@@ -518,11 +588,34 @@ Polygon(6).draw() // Drawing a 6-sided shape
 
 # A class implements many interfaces
 
-> One superclass, any number of interfaces
+<InlineCompilerError
+    text="class Button"
+    message="Button must override click, it inherits multiple interface methods"
+    style="--inline-compiler-error-message-size: 1.42rem"
 >
-> `super<T>` picks which default implementation to call
+
+```kotlin
+interface Clickable {
+  fun click() = println("clicked")
+}
+
+interface Focusable {
+  fun click() = println("focused")
+}
+
+class Button : Clickable, Focusable
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# A class implements many interfaces
 
 <DrawnAnnotation text="super<Clickable>" :connect="false"/>
+<DrawnAnnotation text="super<Focusable>" label="`super<T>` picks which default implementation to call" :connect="false" :geometry="{ label: { x: 0.4040, y: 0.8003 } }"/>
 
 ```kotlin
 interface Clickable {
@@ -545,10 +638,23 @@ class Button : Clickable, Focusable {
 
 # Sealed classes close a hierarchy
 
-> Subclasses live in the same module and package
+<DrawnAnnotation text="sealed class" label="Sealed hierarchy, all subclasses are known and live in the same module & package" :connect="false" :geometry="{ label: { x: 0.6829, y: 0.2198, width: 0.4449 } }"/>
 
-<DrawnAnnotation text="sealed class" :connect="false"/>
-<DrawnAnnotation text="when (state)" label="Exhaustive without `else`" :connect="false"/>
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val message: String) : UiState()
+}
+```
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<DrawnAnnotation text="when (state)" label="Exhaustive without `else` since all subtypes are known" :connect="false"/>
 
 ```kotlin
 sealed class UiState {
@@ -565,35 +671,73 @@ fun message(state: UiState) = when (state) {
 ```
 
 ---
+magic-move
+---
 
-# Sealed interfaces close a set of alternatives
+# Sealed classes close a hierarchy
 
-> No shared superclass or state, alternatives can have unrelated hierarchies
-
-<DrawnAnnotation text="sealed interface" :connect="false"/>
-<DrawnAnnotation text="when (result)" label="Exhaustive without `else`" :connect="false"/>
+<InlineCompilerError text="when (state) {" message="'when' expression must be exhaustive.\nAdd the 'is Error' branch or an 'else' branch">
 
 ```kotlin
-sealed interface Result<out T>
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val message: String) : UiState()
+}
 
-data class Success<T>(val value: T) : Result<T>
-data class Failure(val cause: String) : Result<Nothing>
-
-fun describe(result: Result<String>) = when (result) {
-  is Success -> "Success: ${result.value}"
-  is Failure -> "Failure: ${result.cause}"
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content -> state.text
 }
 ```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<SmartCast text="state" occurrence="4">
+<DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression" :connect="false" />
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val message: String) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content if state.text.contains("error") -> "Unknown error"
+  is UiState.Content -> state.text
+  is UiState.Error -> "Error: ${state.message}"
+}
+```
+
+</SmartCast>
+</SmartCast>
 
 ---
 
 # Enums are a fixed set of values
 
-> Each entry is a singleton object
+```kotlin
+enum class Direction { NORTH, SOUTH, EAST, WEST }
+```
 
-<DrawnAnnotation text="enum class" :connect="false"/>
+---
+magic-move
+---
+
+# Enums are a fixed set of values
+
+<DrawnAnnotation text="enum" :connect="false"/>
 <DrawnAnnotation text="when (direction)" :connect="false"/>
-<DrawnAnnotation text="Direction.WEST -> &quot;←&quot;" label="Exhaustive, every entry is known" :connect="false"/>
+<DrawnAnnotation text="Direction.WEST -> &quot;←&quot;" label="Exhaustive, every entry is known" :connect="false" :geometry="{ label: { x: 0.4462, y: 0.6996 } }"/>
 
 ```kotlin
 enum class Direction { NORTH, SOUTH, EAST, WEST }
@@ -605,6 +749,28 @@ fun arrow(direction: Direction) = when (direction) {
   Direction.SOUTH -> "↓"
   Direction.EAST -> "→"
   Direction.WEST -> "←"
+}
+```
+
+---
+
+# Enums are a fixed set of values
+
+<DrawnAnnotation text="direction == NORTH || direction == SOUTH" />
+<DrawnAnnotation text="when (direction)" label="Still exhaustive, compiler accumulates conditions"  :connect="false" :geometry="{ label: { x: 0.6065, y: 0.5611 } }"/>
+
+```kotlin
+enum class Direction { NORTH, SOUTH, EAST, WEST }
+
+val direction = Direction.NORTH
+
+fun arrow(direction: Direction) {
+  if (direction == NORTH || direction == SOUTH) return
+  
+  when (direction) {
+    Direction.EAST -> "→"
+    Direction.WEST -> "←"
+  }
 }
 ```
 
@@ -624,6 +790,7 @@ enum class HttpStatus(val code: Int) {
 
 for (status in HttpStatus.entries) {
   println("${status.name}: ${status.code}")
+  check(HttpStatus.valueOf(status.name) == status)
 }
 ```
 
@@ -631,9 +798,9 @@ for (status in HttpStatus.entries) {
 
 # Context-sensitive resolution drops the qualifier
 
-> Experimental since Kotlin 2.2.0 behind `-Xcontext-sensitive-resolution`
+> Experimental Kotlin 2.2.0 `-Xcontext-sensitive-resolution`
 
-<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject" :connect="false"/>
+<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject" :connect="false" :geometry="{ label: { x: 0.2598, y: 0.6856 } }"/>
 
 ```kotlin
 enum class Problem { CONNECTION, AUTHENTICATION, DATABASE }
@@ -649,6 +816,10 @@ fun message(problem: Problem): String = when (problem) {
 
 # Choose the closed type deliberately
 
+> Model types as precisely as you can
+> 
+> Choose the closed type deliberately
+
 | Type | Best for |
 | --- | --- |
 | `enum class` | A fixed set of named, usually stateless values |
@@ -656,6 +827,8 @@ fun message(problem: Problem): String = when (problem) {
 | `sealed interface` | A fixed family of alternatives that can have unrelated class hierarchies |
 | `interface` | An open capability that new implementations may add later |
 
-> **Model the valid alternatives in the type system.**
->
-> Exhaustive `when` checks protect them.
+<style>
+.slidev-layout table {
+    font-size: 1.9rem;
+}
+</style>
