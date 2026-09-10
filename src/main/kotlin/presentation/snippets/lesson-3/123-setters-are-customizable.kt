@@ -7,7 +7,4 @@ import presentation.support.*
 
 class TextBuffer {
   var text = ""
-    set(value) {
-      field += value
-    }
 }

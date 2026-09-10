@@ -10,4 +10,4 @@ val name = "John"
 val text = """
     for (c in "$name")
         print(c)
-""".trimIndent()
+"""

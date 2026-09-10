@@ -7,8 +7,10 @@ import presentation.support.*
 
 val nullable: String? = null
 
-val length = nullable?.length ?: -1
+val length =
+  if (nullable != null) nullable.length
+  else -1
 
 suspend fun main() {
-    println(length) // -1
+  println(length) // -1
 }

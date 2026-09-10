@@ -333,11 +333,6 @@ html.dark .stacktrace-link {
   color: #b9bbc2;
 }
 
-/* Lesson 2: smart cast. IntelliJ paints a smart-cast receiver green; the
-   selector reproduces that on the third line's last token. */
-.smart-cast-slide .slidev-code code.language-kotlin > .line:nth-of-type(3) > span:last-child {
-  background: linear-gradient(#dcf8df, #dcf8df) 2ch center / 8ch 100% no-repeat;
-}
 
 /* Lesson 2: multi-dollar string templates. Shiki splits the opening quote and
    first `$` of `$$name` into one token. Paint that two-character token per

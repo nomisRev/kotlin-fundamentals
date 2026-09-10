@@ -1102,12 +1102,12 @@ println(nullable!!.length)
 </v-clicks>
 
 ---
-class: smart-cast-slide
----
 
 # A null check smart-casts the type
 
 <DrawnAnnotation text="nullable.length" label="Non-null access after the check" :geometry="{ label: { x: 0.5238, y: 0.3650 } }" :connect="false"/>
+
+<SmartCast text="nullable.length">
 
 ```kotlin
 val nullable: String? = null
@@ -1117,6 +1117,8 @@ val length =
 
 println(length) // -1
 ```
+
+</SmartCast>
 
 ---
 magic-move
@@ -1263,6 +1265,24 @@ magic-move
 const val name = "John"
 
 val text = """
+    |for (c in "$name")
+    |    print(c)
+""".trimMargin()
+```
+
+---
+
+# Raw strings need no escaping
+
+> `const val` is a compile-time constant, inlined where it is used
+
+<DrawnAnnotation text="const" occurrence="2" :connect="false"/>
+<DrawnAnnotation text="trimMargin" label="-Xintrinsic-const-evaluation since 2.4.0" :connect="false" :geometry="{ label: { x: 0.2516, y: 0.6857 } }"/>
+
+```kotlin
+const val name = "John"
+
+const val text = """
     |for (c in "$name")
     |    print(c)
 """.trimMargin()

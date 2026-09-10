@@ -5,13 +5,8 @@ package presentation.snippets.lesson2.slide85
 
 import presentation.support.*
 
-sealed interface Animal {
-  data class Cat(val mouseHunter: Boolean) : Animal
-  data class Dog(val breed: String) : Animal
-}
-
-fun feed(animal: Animal) = when (animal) {
-  is Animal.Dog -> "Feed the ${animal.breed}"
-  is Animal.Cat if !animal.mouseHunter -> "Feed the cat"
-  is Animal.Cat -> "Leave the cat alone"
+fun describe(x: Int) = when (x) {
+    in 1..10 if x % 2 == 0 -> "even, in 1..10"
+    in 1..10 -> "odd, in 1..10"
+    else -> "outside 1..10"
 }

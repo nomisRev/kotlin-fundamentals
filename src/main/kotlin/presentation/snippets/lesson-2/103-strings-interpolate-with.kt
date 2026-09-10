@@ -8,5 +8,5 @@ import presentation.support.*
 val name = "John"
 
 suspend fun main() {
-    println($$"$$name owes you 100$") // John owes you 100$
+    println("$name.length is ${name.length}") // John.length is 4
 }

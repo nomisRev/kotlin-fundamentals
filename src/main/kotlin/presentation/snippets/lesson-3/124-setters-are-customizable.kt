@@ -11,13 +11,3 @@ class TextBuffer {
       field += value
     }
 }
-
-val buffer = TextBuffer()
-
-suspend fun main() {
-  buffer.text = "Hello"
-
-  buffer.text = ", world!"
-
-  println(buffer.text) // Hello, world!
-}

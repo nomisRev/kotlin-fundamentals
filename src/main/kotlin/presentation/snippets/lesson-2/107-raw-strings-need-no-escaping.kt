@@ -5,7 +5,7 @@ package presentation.snippets.lesson2.slide107
 
 import presentation.support.*
 
-const val name = "John"
+val name = "John"
 
 val text = """
     |for (c in "$name")

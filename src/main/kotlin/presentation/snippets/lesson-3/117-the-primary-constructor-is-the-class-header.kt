@@ -5,6 +5,9 @@ package presentation.snippets.lesson3.slide117
 
 import presentation.support.*
 
-class Person(val name: String, var age: Int)
+class Person @MyAnnotation constructor(name: String, age: Int) {
+  val name: String = name
+  var age: Int = age
+}
 
 val person = Person("Olivia", 42)
