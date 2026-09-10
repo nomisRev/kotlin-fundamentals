@@ -5,10 +5,9 @@ package appendix.snippets.appendixcompilerflags.slide14
 
 data class Point(val x: Int, val y: Int)
 
-val point = Point(x = 1, y = 2)
+fun demo() {
+  val point = Point(x = 1, y = 2)
+  val [a, b] = point
 
-val [a, b] = point
-
-suspend fun main() {
-    println("a=$a b=$b") // a=1 b=2
+  println("a=$a b=$b") // a=1 b=2
 }

@@ -19,6 +19,7 @@ themeConfig:
   kodee: greeting
   snippets:
     dir: src/main/kotlin/appendix/snippets
+    javaDir: src/main/java/appendix-snippets
     package: appendix.snippets
 kodee: welcome
 ---

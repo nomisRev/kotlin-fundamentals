@@ -8,5 +8,5 @@ import java.time.LocalDate
 companion fun LocalDate.epoch(): LocalDate = LocalDate.ofEpochDay(0)
 
 suspend fun main() {
-    LocalDate.epoch()
+    println(LocalDate.epoch())
 }

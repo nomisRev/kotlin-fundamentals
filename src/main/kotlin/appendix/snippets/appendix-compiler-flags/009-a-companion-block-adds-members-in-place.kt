@@ -10,5 +10,5 @@ class Money(val cents: Int) {
 }
 
 suspend fun main() {
-  Money.zero()
+  println(Money.zero().cents)
 }

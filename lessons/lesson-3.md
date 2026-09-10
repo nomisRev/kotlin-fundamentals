@@ -428,10 +428,112 @@ object Environment {
 
 println(Environment.current) // production
 ```
----
-magic-move
+
 ---
 
+# Avoid primitive obsession
+
+> A primitive is not always enough
+
+<DrawnAnnotation text="Long" color="red"/>
+<DrawnAnnotation text="Long" occurrence="2" label="Both IDs are `Long`, so they are easy to mix up" color="red" :connect="false" :geometry="{ label: { x: 0.4928, y: 0.6317 } }"/>
+<DrawnAnnotation text="String" color="red" :connect="false" />
+<DrawnAnnotation text="String" occurrence="2" label=" name and email are both `String` also easy to mix up" color="red" :connect="false"  :geometry="{ label: { x: 0.5320, y: 0.6767 } }"/>
+
+```kotlin
+data class Employee(
+  val id: Long,
+  val departmentId: Long,
+  val name: String,
+  val email: String,
+)
+```
+
+<!--
+Primitive obsession means using generic primitives such as String, Int, or Long
+for domain concepts. The compiler cannot distinguish the two IDs because they
+have the same underlying primitive.
+-->
+
+---
+
+# Give a value a domain type
+
+<DrawnAnnotation text="value class" label="A distinct Kotlin type around one value" :connect="false" :geometry="{ label: { x: 0.6780, y: 0.2487 } }"/>
+
+```kotlin
+@JvmInline
+value class EmployeeId(val value: Long)
+
+@JvmInline
+value class DepartmentId(val value: Long)
+
+@JvmInline
+value class Email(val value: String)
+
+@JvmInline
+value class Name(val value: String)
+```
+
+---
+
+# Give a value a domain type
+
+```kotlin
+data class Employee(
+  val id: EmployeeId,
+  val departmentId: DepartmentId,
+  val name: Name,
+  val email: Email
+)
+```
+
+---
+
+# Give a value a domain type
+
+<InlineCompilerError text="id =" message="Expected EmployeeId found DepartmentId">
+<InlineCompilerError text="departmentId =" message="Expected DepartmentId found EmployeeId">
+
+```kotlin
+Employee(
+    id = DepartmentId(7),
+    departmentId = EmployeeId(1),
+    name = Name("Simon"),
+    email = Email("simon.vergauwen@jetbrains.com")
+)
+```
+
+</InlineCompilerError>
+</InlineCompilerError>
+
+---
+
+# Give a value a domain type
+
+```kotlin
+Employee(
+    id = EmployeeId(1),
+    departmentId =  DepartmentId(7),
+    name = Name("Simon"),
+    email = Email("simon.vergauwen@jetbrains.com")
+)
+```
+
+---
+
+# Give a value a domain type
+
+```kotlin
+@JvmInline
+value class Email(val value: String) {
+    init {
+        require(value.contains("@")) { "Not a valid email" }
+    }
+}
+```
+
+---
 
 # Data classes generate the boilerplate
 

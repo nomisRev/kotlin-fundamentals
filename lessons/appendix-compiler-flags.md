@@ -78,8 +78,8 @@ magic-move
 
 > `-Xallow-returns-result-of` sharpens `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="returnsResultOf(block)" label="Declares that `myLet`'s must-use-ness is whatever `block` returns" :connect="false"/>
-<DrawnAnnotation text="Scoreboard().myLet" label="Now the warning names `computeScore`, the real source" color="red" :connect="false"/>
+<DrawnAnnotation text="returnsResultOf(block)" :connect="false"/>
+<DrawnAnnotation text="Scoreboard().myLet" label="The warning now names `computeScore`" color="red" :connect="false"/>
 
 ```kotlin
 import kotlin.contracts.ExperimentalContracts
@@ -147,7 +147,7 @@ const val upper = "kotlin".uppercase()
 
 > `-Xcompanion-blocks-and-extensions`
 
-<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :connect="false"/>
+<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :connect="false" :geometry="{ label: { x: 0.55, y: 0.62 } }"/>
 
 ```kotlin
 class Money(val cents: Int) {
@@ -156,7 +156,7 @@ class Money(val cents: Int) {
   }
 }
 
-Money.zero()
+println(Money.zero().cents)
 ```
 
 ---
@@ -172,7 +172,7 @@ import java.time.LocalDate
 
 companion fun LocalDate.epoch(): LocalDate = LocalDate.ofEpochDay(0)
 
-LocalDate.epoch()
+println(LocalDate.epoch())
 ```
 
 ---
@@ -223,10 +223,12 @@ fun demo() {
 ```kotlin
 data class Point(val x: Int, val y: Int)
 
-val point = Point(x = 1, y = 2)
-val (y, x) = point
+fun demo() {
+  val point = Point(x = 1, y = 2)
+  val (y, x) = point
 
-println("y=$y x=$x") // y=2 x=1
+  println("y=$y x=$x") // y=2 x=1
+}
 ```
 
 ---
@@ -242,10 +244,12 @@ magic-move
 ```kotlin
 data class Point(val x: Int, val y: Int)
 
-val point = Point(x = 1, y = 2)
-val [a, b] = point
+fun demo() {
+  val point = Point(x = 1, y = 2)
+  val [a, b] = point
 
-println("a=$a b=$b") // a=1 b=2
+  println("a=$a b=$b") // a=1 b=2
+}
 ```
 
 ---
@@ -254,7 +258,7 @@ println("a=$a b=$b") // a=1 b=2
 
 > `-Xdirect-java-actualization` · multiplatform only, not compiled in this JVM-only deck
 
-<DrawnAnnotation text="expect class Logger()" label="No `actual typealias` wrapper needed, the Java class matches directly" :connect="false"/>
+<DrawnAnnotation text="expect class Logger()" :connect="false"/>
 
 ```kotlin no-compile
 // commonMain
@@ -285,6 +289,8 @@ every actualizing member marked `@kotlin.jvm.KotlinActual`; once it is, no
 target, so this slide documents the mechanism rather than compiling it.
 -->
 
+---
+zoom: 0.8
 ---
 
 # Every flag this build turns on
