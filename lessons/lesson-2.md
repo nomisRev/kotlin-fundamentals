@@ -16,7 +16,7 @@ kodee: wave
 
 # Variables hold mutable state
 
-<DrawnAnnotation text="var" label="Mutable variables are declared using `var`" :connect="false"/>
+<DrawnAnnotation text="var" label="Mutable variables are declared using `var`" :connect="false" :geometry="{ label: { x: 0.2560, y: 0.3299 } }"/>
 
 ```kotlin
 var number: Int = 42
@@ -30,7 +30,7 @@ magic-move
 # Variables hold mutable state
 
 <DrawnAnnotation text=" =" :connect="false"/>
-<DrawnAnnotation text=" =" :occurrence="2" label="The type can be inferred by the compiler" :geometry="{ label: { x: 0.2117, y: 0.3517 }, connector: { type: 'quadratic', start: { x: 0.1934, y: 0.2791 }, control: { x: 0.1914, y: 0.3083 }, end: { x: 0.1934, y: 0.3300 } } }" :connect="false"/>
+<DrawnAnnotation text=" =" :occurrence="2" label="The type can be inferred by the compiler" :geometry="{ label: { x: 0.2865, y: 0.3295 }, connector: { type: 'quadratic', start: { x: 0.1934, y: 0.2791 }, control: { x: 0.1914, y: 0.3083 }, end: { x: 0.1934, y: 0.3300 } } }" :connect="false"/>
 
 ```kotlin
 var number = 42
@@ -43,7 +43,7 @@ magic-move
 
 # Variables hold mutable state
 
-<DrawnAnnotation text="number += 1" label="Reassign as often as you like" :geometry="{ label: { x: 0.1499, y: 0.5280 }, connector: { type: 'quadratic', start: { x: 0.1354, y: 0.4274 }, control: { x: 0.1228, y: 0.4661 }, end: { x: 0.1355, y: 0.4993 } } }" :connect="false"/>
+<DrawnAnnotation text="number += 1" label="Reassign as often as you like" :geometry="{ label: { x: 0.2332, y: 0.4704 }, connector: { type: 'quadratic', start: { x: 0.1354, y: 0.4274 }, control: { x: 0.1228, y: 0.4661 }, end: { x: 0.1355, y: 0.4993 } } }" :connect="false"/>
 <DrawnAnnotation text="message = &quot;Hello from Kotlin!&quot;" :connect="false"/>
 
 ```kotlin
@@ -58,7 +58,7 @@ message = "Hello from Kotlin!"
 
 # A value is assigned once
 
-<DrawnAnnotation text="val" label="Read-only values are declared using `val`" :connect="false"/>
+<DrawnAnnotation text="val" label="Read-only values are declared using `val`" :connect="false" :geometry="{ label: { x: 0.2525, y: 0.3347 } }"/>
 
 ```kotlin
 val number = 42

@@ -24,7 +24,7 @@ kodee: wave
 
 # The compiler is all you need
 
-<DrawnAnnotation text="fun main()" label="Entrypoint into your Kotlin program" :connect="false"/>
+<DrawnAnnotation text="fun main()" label="Entrypoint into your Kotlin program" :connect="false" :geometry="{ label: { x: 0.2911, y: 0.3722 } }"/>
 
 ```kotlin
 fun main() {
@@ -40,7 +40,7 @@ magic-move
 
 > Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation text="-include-runtime" label="Make the jar self-contained by including the Kotlin stdlib" :connect="false"/>
+<DrawnAnnotation text="-include-runtime" label="Make the jar self-contained by including the Kotlin stdlib" :connect="false" :geometry="{ label: { x: 0.4837, y: 0.5696 } }"/>
 
 ```kotlin
 fun main() {
@@ -60,7 +60,7 @@ magic-move
 
 > Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" :connect="false"/>
+<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" :connect="false" :geometry="{ label: { x: 0.2555, y: 0.6518 } }"/>
 
 ```kotlin
 fun main() {
@@ -124,7 +124,7 @@ Select a project template:
 
 # A module is one YAML file
 
-<DrawnAnnotation text="jvm/app" label="The product type says what the module builds" :connect="false"/>
+<DrawnAnnotation text="jvm/app" label="The product type says what the module builds" :connect="false" :geometry="{ label: { x: 0.3484, y: 0.2844 } }"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -136,7 +136,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="- ./shared" label="Depend on another module of this project" :connect="false"/>
+<DrawnAnnotation text="- ./shared" label="Depend on another module of this project" :connect="false" :geometry="{ label: { x: 0.3061, y: 0.4681 } }"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -152,7 +152,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="test-dependencies" label="Only on the test classpath" :connect="false"/>
+<DrawnAnnotation text="test-dependencies" label="Only on the test classpath" :connect="false" :geometry="{ label: { x: 0.2601, y: 0.6110 } }"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -171,7 +171,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" :geometry="{ label: { x: 0.4153, y: 0.6084 }, connector: { type: 'quadratic', start: { x: 0.1597, y: 0.6595 }, control: { x: 0.1992, y: 0.6599 }, end: { x: 0.2285, y: 0.6207 } } }" :connect="false"/>
+<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" :geometry="{ label: { x: 0.3079, y: 0.7912 }, connector: { type: 'quadratic', start: { x: 0.1597, y: 0.6595 }, control: { x: 0.1992, y: 0.6599 }, end: { x: 0.2285, y: 0.6207 } } }" :connect="false"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -274,7 +274,7 @@ move out of module.yaml into shared.module-template.yaml, and every module appli
 
 # Build system: Gradle
 
-<DrawnAnnotation text="kotlin(&quot;jvm&quot;) version &quot;2.4.10&quot;" label="The Kotlin Gradle plugin is the only requirement" :connect="false"/>
+<DrawnAnnotation text="kotlin(&quot;jvm&quot;) version &quot;2.4.10&quot;" label="The Kotlin Gradle plugin is the only requirement" :connect="false" :geometry="{ label: { x: 0.3258, y: 0.3778 } }"/>
 
 ```kotlin gradle
 plugins {
@@ -431,7 +431,7 @@ class: maven-slide
 
 > Add a Kotlin file in the `src` directory of any **Kotlin Toolchain** module
 
-<DrawnAnnotation text="package org.jetbrains.example" label="Packages organize Kotlin files logically" :geometry="{ label: { x: 0.4735, y: 0.4589 } }" :connect="false"/>
+<DrawnAnnotation text="package org.jetbrains.example" label="Packages organize Kotlin files logically" :geometry="{ label: { x: 0.4814, y: 0.4314 } }" :connect="false"/>
 
 ```kotlin
 package org.jetbrains.example
@@ -471,6 +471,8 @@ mvn exec:java -Dexec.mainClass="org.jetbrains.example.MainKt"
 <DrawnAnnotation source-type="circle" selector="[data-gutter-run]" target="[data-screenshot]" target-type="circle" :target-x="4.3" :target-y="43.94" :target-radius="2.15" :connect="false">
 
 > Click the gutter run icon <span class="run-icon" data-gutter-run role="img" aria-label="Run"></span> next to the `main` function
+> 
+> ⌘ + ⇧ + R / Ctrl + ⇧ + R
 
 <img src="/intellij-hello-kotlin-run.png" data-screenshot class="course-image" alt="Kotlin main function in IntelliJ IDEA with the gutter Run icon and toolbar run configuration visible" />
 
@@ -479,6 +481,8 @@ mvn exec:java -Dexec.mainClass="org.jetbrains.example.MainKt"
 <v-click at="1">
 
 > Afterwards the run configuration <span class="run-icon" data-run-configuration role="img" aria-label="Run"></span> icon does the same
+>
+> ⌘ + R / Ctrl + R 
 
 </v-click>
 
