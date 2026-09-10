@@ -494,12 +494,59 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 5</div>
 
-# Create a Kotlin project
+# Create a project
 
-- Create a Kotlin Toolchain Kotlin/JVM project
-    - Use the CLI, the IntelliJ wizard or the KMP web wizard
-- Add a package and a `main` function (if missing)
-    - Make it `println("My first Kotlin Program!")`
-- Run it from the CLI and/or IntelliJ
+- Use the CLI (`kotlin init`), the IntelliJ wizard, or the KMP web wizard
+- Pick the **JVM console application** template
+
+---
+layout: intro
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 5</div>
+
+# Add an entry point
+
+- Create a package
+- Add a `main` function (if missing)
+
+---
+layout: intro
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 5</div>
+
+# Say hello
+
+- Make `main` print `"My first Kotlin Program!"`
+
+---
+layout: intro
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 5</div>
+
+# Run it from the CLI
+
+- `kotlin run`, `./gradlew run`, or `mvn exec:java -Dexec.mainClass=...`
+
+---
+layout: intro
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 5 / 5</div>
+
+# Run it from IntelliJ
+
+- Click the gutter run icon next to `main`
+- Or ⌘ + ⇧ + R / Ctrl + ⇧ + R

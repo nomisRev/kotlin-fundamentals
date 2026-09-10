@@ -407,7 +407,7 @@ println(user == newValue)        // false
 
 <DrawnAnnotation text="(username, email)" label="Components are matched by position" :connect="false" :geometry="{ label: { x: 0.4291, y: 0.5808 } }"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val username: String, val email: String)
 val user = User("alice", "alice@example.com")
 
@@ -425,7 +425,7 @@ magic-move
 
 <DrawnAnnotation text="(username, email)" label="A new property in the middle silently changes `email`" color="red" :connect="false" :geometry="{ label: { x: 0.4132, y: 0.5789 } }"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
 val user = User("alice", "kotliner", "alice@example.com")
 
@@ -444,7 +444,7 @@ println(email)    // kotliner
 <DrawnAnnotation text="email" :occurrence="2" :connect="false"/>
 <DrawnAnnotation text="email" :occurrence="3" label="Destructured by name, not by position" :connect="false" :geometry="{ label: { x: 0.4035, y: 0.6797 } }"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
 val user = User("alice", "kotliner", "alice@example.com")
 
@@ -464,7 +464,7 @@ magic-move
 
 <DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" :connect="false"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
 val user = User("alice", "kotliner", "alice@example.com")
 
@@ -484,7 +484,7 @@ magic-move
 
 <DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" :connect="false"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val username: String, val displayName: String, val email: String)
 val user = User("alice", "kotliner", "alice@example.com")
 

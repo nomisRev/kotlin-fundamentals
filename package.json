@@ -7,7 +7,9 @@
     "present": "slidev --remote",
     "build": "slidev build",
     "export": "slidev export",
-    "screenshot": "slidev export --format png"
+    "screenshot": "slidev export --format png",
+    "snippets": "slidev-kotlin-snippets",
+    "snippets:check": "slidev-kotlin-snippets --check"
   },
   "dependencies": {
     "@slidev/cli": "52.19.1",

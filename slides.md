@@ -17,6 +17,11 @@ fonts:
 highlighter: shiki
 themeConfig:
   kodee: greeting
+  snippets:
+    dir: src/main/kotlin/presentation/snippets
+    package: presentation.snippets
+    imports:
+      - presentation.support.*
 kodee: welcome
 ---
 

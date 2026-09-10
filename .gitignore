@@ -7,3 +7,6 @@ dist
 components.d.ts
 slides-export/
 *.pdf
+.gradle/
+build/
+.kotlin/

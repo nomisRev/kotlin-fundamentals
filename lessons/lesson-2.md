@@ -531,7 +531,7 @@ magic-move
 
 # Varargs take any number of arguments
 
-<DrawnAnnotation text="*array" label="The spread operator copies the elements into a new array" :geometry="{ label: { x: 0.5147, y: 0.5676 } }" :connect="false"/>
+<DrawnAnnotation text="*array" label="The spread operator copies the elements into a new array (expensive)" :geometry="{ label: { x: 0.5147, y: 0.5676 } }" :connect="false"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
@@ -591,7 +591,6 @@ Must be last parameter. Compiler can't disambiguate when the varargs end, and th
 -->
 
 ---
-layout: intro
 class: exercise-slide
 kodee: heart
 ---
@@ -600,10 +599,21 @@ kodee: heart
 
 # Functions
 
-- Write functions using
-    - expression bodies
-    - default parameters
-    - named arguments
+> Build the result with a local `var` inside a loop, no `String.repeat`
+
+```kotlin
+fun repeatWord(
+  word: String,
+  times: Int = 3,
+  separator: String = ", ",
+): String = TODO()
+
+fun main() {
+  check(repeatWord("Hi") == "Hi, Hi, Hi")
+  check(repeatWord("Hi", separator = " - ") == "Hi - Hi - Hi")
+  check(repeatWord(times = 2, separator = "", word = "Go") == "GoGo")
+}
+```
 
 ---
 
@@ -710,7 +720,11 @@ magic-move
 
 # `when` matches on a subject
 
-<InlineCompilerError text="when (x)" message="'when' expression must be exhaustive. Add an 'else' branch.">
+<InlineCompilerError
+    text="when (x)"
+    message="'when' expression must be exhaustive. Add an 'else' branch"
+    style="--inline-compiler-error-message-size: 1.57rem"
+>
 
 ```kotlin
 fun describe(x: Int) = when (x) {
@@ -727,7 +741,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="else ->" label="`else` covers every other value" :connect="false"/>
+<DrawnAnnotation text="else ->" label="`else` covers every other value" :connect="false" :geometry="{ label: { x: 0.2288, y: 0.4725 } }"/>
 
 ```kotlin
 fun describe(x: Int) = when (x) {
@@ -760,7 +774,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="3, 4" label="Branches can be combined" :connect="false"/>
+<DrawnAnnotation text="3, 4" label="Branches can be combined" :connect="false" :geometry="{ label: { x: 0.2317, y: 0.5563 } }"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -778,7 +792,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="-> {" label="A branch can be a block" :connect="false"/>
+<DrawnAnnotation text="-> {" label="A branch can be a block" :connect="false" :geometry="{ label: { x: 0.3320, y: 0.5713 } }"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -799,7 +813,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="in 3..10" label="Ranges match with `in`" :connect="false"/>
+<DrawnAnnotation text="in 3..10" label="Ranges match with `in`" :connect="false" :geometry="{ label: { x: 0.2224, y: 0.4690 } }"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -817,7 +831,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="specialValue()" label="Arbitrary expressions can be matched" :connect="false"/>
+<DrawnAnnotation text="specialValue()" label="Arbitrary expressions can be matched" :connect="false" :geometry="{ label: { x: 0.2914, y: 0.4804 } }"/>
 
 ```kotlin
 fun describe(x: Int) {
@@ -835,7 +849,7 @@ magic-move
 
 # `when` matches on a subject
 
-<DrawnAnnotation text="val x = calculate()" label="Bind the subject to a value while matching" :connect="false"/>
+<DrawnAnnotation text="val x = calculate()" label="Bind the subject to a value while matching" :connect="false" :geometry="{ label: { x: 0.2786, y: 0.4657 } }"/>
 
 ```kotlin
 when (val x = calculate()) {
@@ -851,19 +865,28 @@ when (val x = calculate()) {
 
 > Stable since Kotlin 2.2.0
 
-<DrawnAnnotation text="if !animal.mouseHunter" label="The guard runs only when the type match succeeds" :geometry="{ label: { x: 0.7071, y: 0.6928, width: 0.3308 }, connector: { type: 'quadratic', start: { x: 0.4826, y: 0.6602 }, control: { x: 0.5354, y: 0.6690 }, end: { x: 0.5780, y: 0.6907 } } }" :connect="false"/>
-<DrawnAnnotation text="is Animal.Cat ->" label="Still needed, the guard alone is not exhaustive" :geometry="{ label: { x: 0.2722, y: 0.8044 } }" :connect="false"/>
+<DrawnAnnotation text="if x % 2 == 0" on="0" label="The guard runs only when the condition match succeeds" :geometry="{ label: { x: 0.4884, y: 0.6008, width: 0.3308 }, connector: { type: 'quadratic', start: { x: 0.4826, y: 0.6602 }, control: { x: 0.5354, y: 0.6690 }, end: { x: 0.5780, y: 0.6907 } } }" :connect="false"/>
+<DrawnAnnotation text="in 1..10" occurrence="3" label="We _should_ to specify counter condition" on="1" :connect="false" :geometry="{ label: { x: 0.2490, y: 0.5914 } }"/>
 
 ```kotlin
-sealed interface Animal {
-  data class Cat(val mouseHunter: Boolean) : Animal
-  data class Dog(val breed: String) : Animal
+fun describe(x: Int) = when (x) {
+    in 1..10 if x % 2 == 0 -> "even, in 1..10"
+    in 1..10 -> "odd, in 1..10"
+    else -> "outside 1..10"
 }
+```
 
-fun feed(animal: Animal) = when (animal) {
-  is Animal.Dog -> "Feed the ${animal.breed}"
-  is Animal.Cat if !animal.mouseHunter -> "Feed the cat"
-  is Animal.Cat -> "Leave the cat alone"
+---
+
+# Guards add a condition to a match
+
+> Stable since Kotlin 2.2.0
+
+```kotlin
+fun describe(x: Int) = when (x) {
+    in 0..10 step 2 -> "even 0..10 step 2"
+    in 1..9 step 2 -> "odd, 1..9 step 2"
+    else -> "outside 1..10"
 }
 ```
 
@@ -919,15 +942,15 @@ while (x < 10) {
 
 # `do` runs the body once before checking
 
-<DrawnAnnotation text="while (y != null)" label="The condition is checked after the first run" :connect="false"/>
+<DrawnAnnotation text="while (y != null)" label="The condition is checked after the first run" :connect="false" :geometry="{ label: { x: 0.3193, y: 0.5059 } }"/>
 
-```kotlin
+```kotlin no-compile
 fun retrieveData(): Int? = null
 
 do {
   println("Runs!")
   val y = retrieveData()
-} while (y != null)
+} while (y != null) // Runs!
 ```
 
 ---
@@ -940,7 +963,7 @@ do {
 fun printOdd() {
   for (d in 1..10) {
     if (d % 2 == 0) continue
-    print("$d, ")
+    else print("$d, ")
   }
   println("done")
 } // 1, 3, 5, 7, 9, done
@@ -958,7 +981,7 @@ magic-move
 fun printOdd() {
   for (d in 1..10) {
     if (d % 2 == 0) break
-    print("$d, ")
+    else print("$d, ")
   }
   println("done")
 } // 1, done
@@ -976,14 +999,13 @@ magic-move
 fun printOdd() {
   for (d in 1..10) {
     if (d % 2 == 0) return
-    print("$d, ")
+    else print("$d, ")
   }
   println("done")
 } // 1,
 ```
 
 ---
-layout: intro
 class: exercise-slide
 kodee: heart
 ---
@@ -992,8 +1014,23 @@ kodee: heart
 
 # Control flow
 
-- Rewrite an `if` chain as a `when` expression
-- Iterate over a range and experiment with `continue` and `break`
+> `grade`: 90+ "A", 80..89 "B", else "F" — with `when`
+>
+> `sumUntil`: sum up to (not including) `stopAt` — loop + `break`
+
+```kotlin
+fun grade(score: Int): String = TODO()
+
+fun sumUntil(numbers: List<Int>, stopAt: Int): Int = TODO()
+
+fun main() {
+  check(grade(95) == "A")
+  check(grade(40) == "F")
+
+  check(sumUntil(listOf(1, 2, 3, 4, 5), stopAt = 4) == 6)
+  check(sumUntil(listOf(4, 6, 8), stopAt = 4) == 0)
+}
+```
 
 ---
 
@@ -1047,7 +1084,7 @@ println(nullable?.length)
 
 # `!!` trades safety for an exception
 
-<DrawnAnnotation text="!!." label="Forcefully unwrap the nullable type" :geometry="{ label: { x: 0.3509, y: 0.3931 } }" :connect="false"/>
+<DrawnAnnotation text="!!." label="Forcefully unwrap the nullable type" :geometry="{ label: { x: 0.5238, y: 0.2954 } }" :connect="false"/>
 
 ```kotlin
 val nullable: String? = null
@@ -1097,7 +1134,6 @@ println(length) // -1
 ```
 
 ---
-layout: intro
 class: exercise-slide
 kodee: heart
 ---
@@ -1106,10 +1142,17 @@ kodee: heart
 
 # Null safety
 
-- Be explicit about nullability and enforce null safety
-- Provide a default with `?:`
-- Rely on `!= null` and smart-casting
-- Avoid `!!` at all costs, it is a code smell for unhandled cases
+> `null` or empty → `'?'`, otherwise the uppercase first letter — no `!!`
+
+```kotlin
+fun firstInitial(name: String?): Char = TODO()
+
+fun main() {
+  check(firstInitial("simon") == 'S')
+  check(firstInitial(null) == '?')
+  check(firstInitial("") == '?')
+}
+```
 
 ---
 
@@ -1226,7 +1269,6 @@ val text = """
 ```
 
 ---
-layout: intro
 class: exercise-slide
 kodee: heart
 ---
@@ -1235,5 +1277,12 @@ kodee: heart
 
 # Strings
 
-- Build a string with template expressions
-- Format a multiline string using `trimIndent()` or `trimMargin()`
+> `$item` interpolation for the header, `trimIndent()` for the frame
+
+```kotlin
+fun receipt(item: String, price: Double): String = TODO()
+
+fun main() {
+  check(receipt("Coffee", 3.5) == "Coffee costs 3.5\n----------\nThank you!")
+}
+```
