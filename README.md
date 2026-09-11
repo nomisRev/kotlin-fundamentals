@@ -47,3 +47,38 @@ session, start Slidev with `--remote=your-password` instead.
 npm run build
 npm run export
 ```
+
+## Lesson 5: DSLs and builders
+
+The lesson takes approximately 75 minutes: 55 minutes of examples and discussion,
+then a 20-minute exercise. It assumes extensions from lesson 2 and receiver lambdas
+and collections from lesson 4. Lesson 4 is maintained separately; lesson 5 is
+included after the currently available lesson 3 in the main deck.
+
+Students edit `src/main/kotlin/exercises/lesson5/AgendaExercise.kt`. Models,
+`@AgendaDsl`, scheduling, and display configuration are supplied. Complete the TODOs
+and run:
+
+```bash
+./gradlew lesson5ExerciseCheck
+```
+
+This command intentionally fails until the starter is completed. The acceptance
+checks cover defaults, declaration order, positive durations (including inserted
+sessions), independent snapshots, and scheduling/rendering the same agenda with
+different runtime parameters. As an IDE check, try nesting `session` inside a
+session block: the shared DSL marker should reject implicit outer access.
+
+The complete reference is `src/main/kotlin/presentation/support/Agenda.kt`:
+
+```bash
+./gradlew lesson5ReferenceCheck
+npm run snippets:check
+./gradlew compileLesson5Kotlin
+```
+
+The lesson-specific tasks compile independently of other lesson snippets.
+The slide snippets compile against Ktor's actual server-core API; the context
+parameter examples do not require starting a server. Kotlin 2.4 supports context
+parameters without the old experimental context-parameter flag. Explicit named
+context arguments are not needed for this lesson.

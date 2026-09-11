@@ -42,10 +42,11 @@ kodee: wave
 # Course topics
 
 1. Intro to the Kotlin language
-2. Kotlin’s type system
-3. Extension functions, lambdas and collection API
-4. Domain Specific Languages
-5. Coroutines
+2. Kotlin syntax and extension functions
+3. Classes and types
+4. Lambdas and collections
+5. DSLs and builders
+6. Coroutines
 
 ---
 class: kotlin-history-slide
@@ -61,4 +62,10 @@ src: ./lessons/lesson-2.md
 ---
 ---
 src: ./lessons/lesson-3.md
+---
+---
+src: ./lessons/lesson-4.md
+---
+---
+src: ./lessons/lesson-5.md
 ---

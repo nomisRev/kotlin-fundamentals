@@ -344,6 +344,57 @@ Function expression body contains a single expression.
 
 ---
 
+# Extension functions add a receiver
+
+<DrawnAnnotation text="Int." label="The receiver type" :connect="false"/>
+<DrawnAnnotation text="this" label="The receiver value" :connect="false"/>
+<DrawnAnnotation text="4.twice()" label="Call with dot syntax" :connect="false"/>
+
+```kotlin
+fun twice(number: Int): Int = number * 2
+val six = twice(3)
+```
+
+```kotlin
+fun Int.twice(): Int = this * 2
+val eight = 4.twice()
+```
+
+<!--
+The function is declared outside Int. Extending a type requires no changes to its source.
+These are separate examples: on the JVM, both declarations would otherwise have the same signature.
+-->
+
+---
+
+# The receiver is available as `this`
+
+<DrawnAnnotation text="get" label="Receiver members are available without repeating `this`" :at="1" passive :connect="false"/>
+<DrawnAnnotation text="length" :at="1" passive :connect="false"/>
+
+````md magic-move
+```kotlin
+fun String.lastCharacter(): Char =
+  this.get(this.length - 1)
+
+val letter = "Kotlin".lastCharacter() // 'n'
+```
+```kotlin
+fun String.lastCharacter(): Char =
+  get(length - 1)
+
+val letter = "Kotlin".lastCharacter() // 'n'
+```
+````
+
+<!--
+Extensions do not add actual class members or grant access to private members.
+[click] The receiver's get function and length property are available without an explicit this.
+This example assumes a non-empty string.
+-->
+
+---
+
 # Default arguments replace overloads
 
 <DrawnAnnotation text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for an optional `c`" :connect="false"/>

@@ -10,9 +10,3 @@ fun print(
   offset: Int = 0,
   length: Int = message.length,
 ) { /*...*/ }
-
-suspend fun main() {
-  print("Hello World!", offset = 6, length = 6) // World!
-
-  print("Hello World!", length = 5)             // Hello
-}

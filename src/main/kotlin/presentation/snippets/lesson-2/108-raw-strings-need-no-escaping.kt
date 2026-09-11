@@ -5,9 +5,9 @@ package presentation.snippets.lesson2.slide108
 
 import presentation.support.*
 
-const val name = "John"
+val name = "John"
 
 val text = """
-    |for (c in "$name")
-    |    print(c)
-""".trimMargin()
+    for (c in "$name")
+        print(c)
+""".trimIndent()

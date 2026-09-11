@@ -7,6 +7,7 @@ repositories {
 }
 
 dependencies {
+  implementation("io.ktor:ktor-server-core-jvm:3.4.0")
 }
 
 kotlin {
@@ -47,3 +48,24 @@ val appendixSnippetsCheck by tasks.registering(Exec::class) {
 }
 
 tasks.check { dependsOn(snippetsCheck, appendixSnippetsCheck) }
+
+// Keep this lesson runnable while other lessons are being edited.
+val lesson5 = sourceSets.create("lesson5")
+kotlin.sourceSets.named("lesson5") {
+  kotlin.srcDir("src/main/kotlin")
+  kotlin.include("presentation/support/Agenda*.kt")
+  kotlin.include("presentation/snippets/lesson-5/**")
+  kotlin.include("exercises/lesson5/**")
+}
+configurations[lesson5.implementationConfigurationName].extendsFrom(configurations.implementation.get())
+
+// The incomplete student starter is checked only when explicitly requested.
+val lesson5ReferenceCheck = tasks.register<JavaExec>("lesson5ReferenceCheck") {
+  classpath = lesson5.runtimeClasspath
+  mainClass.set("presentation.support.AgendaChecksKt")
+}
+tasks.register<JavaExec>("lesson5ExerciseCheck") {
+  classpath = lesson5.runtimeClasspath
+  mainClass.set("exercises.lesson5.AgendaChecksKt")
+}
+tasks.check { dependsOn(lesson5ReferenceCheck) }

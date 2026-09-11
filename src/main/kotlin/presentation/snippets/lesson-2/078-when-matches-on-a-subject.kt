@@ -5,8 +5,7 @@ package presentation.snippets.lesson2.slide78
 
 import presentation.support.*
 
-fun describe(x: Int) = when (x) {
-  1 -> "x == 1"
-  2 -> "x == 2"
-  else -> "x is neither 1 nor 2"
+fun print(condition: Boolean) = when (condition) {
+  true -> println("Encountered $condition")
+  false -> println("Encountered $condition")
 }

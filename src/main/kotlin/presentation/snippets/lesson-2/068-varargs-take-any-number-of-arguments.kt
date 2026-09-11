@@ -5,12 +5,12 @@ package presentation.snippets.lesson2.slide68
 
 import presentation.support.*
 
-fun sum(numbers: Iterable<Int>): Int = numbers.sum()
+fun sum(vararg numbers: Int): Int = numbers.sum()
 
-val six = sum([1, 2, 3])
+val six = sum(1, 2, 3)
 
-val twentyOne = sum([1, 2, 3, 4, 5, 6])
+val twentyOne = sum(1, 2, 3, 4, 5, 6)
 
-val list = listOf(1, 2, 3, 4, 5, 6)
+val array = intArrayOf(1, 2, 3, 4, 5, 6)
 
-val spread = sum(list)
+val spread = sum(*array)

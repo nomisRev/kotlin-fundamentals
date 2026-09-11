@@ -10,7 +10,7 @@ const stage = computed(() => Math.min($clicks.value, 5))
   <div
     class="type-hierarchy"
     role="img"
-    aria-label="Animated Kotlin type hierarchy. Any branches to String, Boolean, Number, Unit, and Fruit; all concrete types connect to Nothing. A pink question-mark badge appears last on Any, String, Boolean, Number, and Nothing to mark their nullable counterparts."
+    aria-label="Animated Kotlin type hierarchy. Any branches to String, Boolean, Number, Unit, and Fruit; all concrete types connect to Nothing. A pink question-mark badge appears last on every type to mark its nullable counterpart."
   >
     <!-- These markers let Slidev own navigation, presenter mode, and backwards clicks. -->
     <span v-click class="click-marker" />
@@ -44,7 +44,6 @@ const stage = computed(() => Math.min($clicks.value, 5))
         <path class="edge reveal" :class="{ visible: stage >= 4 }" style="--delay: 750ms" pathLength="1" d="M924.4 736.5 L662.4 973.1" />
         <path class="edge reveal" :class="{ visible: stage >= 4 }" style="--delay: 900ms" pathLength="1" d="M1173.4 732 L648.5 977.6" />
 
-        <path class="edge reveal" :class="{ visible: stage >= 5 }" style="--delay: 900ms" pathLength="1" d="M655 208 L800 145" />
       </g>
 
       <g class="nodes">
@@ -65,13 +64,19 @@ const stage = computed(() => Math.min($clicks.value, 5))
       </g>
 
       <!-- A pink "?" badge marks each type's nullable counterpart, e.g. String?, without
-           drawing five more branches: the badge sits on the pill it belongs to. -->
+           drawing eleven more branches: the badge sits on the pill it belongs to. -->
       <g class="nullable-badges">
         <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 0ms"><circle cx="630.39" cy="223.71" r="22" /><text x="630.39" y="224">?</text></g>
-        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 150ms"><circle cx="202.79" cy="488.13" r="22" /><text x="202.79" y="489">?</text></g>
-        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 300ms"><circle cx="448.47" cy="488.13" r="22" /><text x="448.47" y="489">?</text></g>
-        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 450ms"><circle cx="663.81" cy="488.13" r="22" /><text x="663.81" y="489">?</text></g>
-        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 600ms"><circle cx="679.05" cy="956.14" r="22" /><text x="679.05" y="957">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 130ms"><circle cx="202.79" cy="488.13" r="22" /><text x="202.79" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 260ms"><circle cx="448.47" cy="488.13" r="22" /><text x="448.47" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 390ms"><circle cx="663.81" cy="488.13" r="22" /><text x="663.81" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 520ms"><circle cx="901.94" cy="488.13" r="22" /><text x="901.94" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 650ms"><circle cx="1124.83" cy="488.13" r="22" /><text x="1124.83" y="489">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 780ms"><circle cx="545.11" cy="674.61" r="22" /><text x="545.11" y="675">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 910ms"><circle cx="765.72" cy="674.61" r="22" /><text x="765.72" y="675">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 1040ms"><circle cx="1025.69" cy="673.49" r="22" /><text x="1025.69" y="674">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 1170ms"><circle cx="1262.26" cy="674.61" r="22" /><text x="1262.26" y="675">?</text></g>
+        <g class="nullable-badge fade" :class="{ visible: stage >= 5 }" style="--delay: 1300ms"><circle cx="679.05" cy="956.14" r="22" /><text x="679.05" y="957">?</text></g>
       </g>
 
       <g class="annotation" :class="{ visible: stage === 0 }">
@@ -93,9 +98,13 @@ const stage = computed(() => Math.min($clicks.value, 5))
         <text x="837.205" y="1044" class="annotation-detail">exception or while (true) { }</text>
       </g>
       <g class="annotation" :class="{ visible: stage === 5 }" style="--delay: 1500ms">
-        <path class="edge" d="M800 145 L900 90" />
-        <text x="923.205" y="80">Every type has a T? sibling</text>
-        <text x="923.205" y="135" class="annotation-detail">Nothing? can only ever be null</text>
+        <path class="edge" d="M655.4 256.1 L833.2 187.7" />
+        <text x="844.205" y="187">Every type has a T? sibling</text>
+      </g>
+      <g class="annotation" :class="{ visible: stage === 5 }" style="--delay: 1800ms">
+        <path class="edge" d="M703 956 L810 956" />
+        <text x="833.205" y="951">Nothing? = Nothing | null,</text>
+        <text x="833.205" y="1010" class="annotation-detail">never returns, or null</text>
       </g>
 
     </svg>

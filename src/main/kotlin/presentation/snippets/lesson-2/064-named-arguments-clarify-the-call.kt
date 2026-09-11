@@ -13,8 +13,4 @@ fun print(
 
 suspend fun main() {
   print("Hello World!", offset = 6, length = 6) // World!
-
-  print("Hello World!", length = 5)             // Hello
-
-  print(length = 6, message = "Hello World!", offset = 6)
 }

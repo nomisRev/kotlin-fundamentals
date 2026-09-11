@@ -7,12 +7,6 @@ import presentation.support.*
 
 fun sum(vararg numbers: Int): Int = numbers.sum()
 
-fun sum(numbers: Iterable<Int>): Int = numbers.sum()
-
 val six = sum(1, 2, 3)
 
 val twentyOne = sum(1, 2, 3, 4, 5, 6)
-
-val list = listOf(1, 2, 3, 4, 5, 6)
-
-val spread = sum(list)

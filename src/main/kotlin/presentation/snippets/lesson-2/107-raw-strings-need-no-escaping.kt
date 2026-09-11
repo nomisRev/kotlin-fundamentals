@@ -8,6 +8,6 @@ import presentation.support.*
 val name = "John"
 
 val text = """
-    |for (c in "$name")
-    |    print(c)
-""".trimMargin()
+    for (c in "$name")
+        print(c)
+"""

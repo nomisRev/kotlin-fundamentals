@@ -33,6 +33,18 @@ than every standard-library type.
 
 # A class needs no body
 
+```kotlin
+class Person constructor() {
+    /** **/
+}
+```
+
+---
+magic-move
+---
+
+# A class needs no body
+
 <DrawnAnnotation text="class Person" label="No body and no explicit constructor" :geometry="{ label: { x: 0.2409, y: 0.2793 } }" :connect="false"/>
 
 ```kotlin
@@ -85,7 +97,21 @@ class MySubClass : MyClass()
 
 # The primary constructor is the class header
 
-<DrawnAnnotation text="constructor" label="The keyword is optional when there are no modifiers" :geometry="{ label: { x: 0.3894, y: 0.4756 } }" :connect="false"/>
+```kotlin
+class Person(name: String, age: Int) {
+  val name: String = name
+  var age: Int = age
+}
+val person = Person("Olivia", 42)
+```
+
+---
+magic-move
+---
+
+# The primary constructor is the class header
+
+<DrawnAnnotation text="constructor" label="The `constructor` keyword is optional when there are no modifiers or annotations" :geometry="{ label: { x: 0.3894, y: 0.4756 } }" :connect="false"/>
 
 ```kotlin
 class Person constructor(name: String, age: Int) {
@@ -102,11 +128,10 @@ magic-move
 # The primary constructor is the class header
 
 ```kotlin
-class Person @MyAnnotation constructor(name: String, age: Int) {
+class Person @MyAnnotation private constructor(name: String, age: Int) {
   val name: String = name
   var age: Int = age
 }
-val person = Person("Olivia", 42)
 ```
 
 ---
@@ -123,6 +148,8 @@ class Person(val name: String, var age: Int)
 val person = Person("Olivia", 42)
 ```
 
+---
+magic-move
 ---
 
 # Properties follow their keyword
@@ -358,7 +385,7 @@ magic-move
 
 # Expose the read, keep the write
 
-<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4461, y: 0.7157 } }"/>
+<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.5556, y: 0.6651 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }" :connect="false"/>
 <InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
 
 ```kotlin
@@ -427,6 +454,46 @@ object Environment {
 }
 
 println(Environment.current) // production
+```
+
+---
+
+# Data classes generate the boilerplate
+
+<DrawnAnnotation text="data class" :connect="false"/>
+<DrawnAnnotation text="user == User(&quot;Ada&quot;, 36)" label="`equals`, `hashCode` and `toString` for free" :connect="false"/>
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+val user = User("Ada", 36)
+
+println(user)                    // User(name=Ada, age=36)
+println(user.hashCode())         // 2035558
+println(user == User("Ada", 36)) // true
+```
+
+---
+magic-move
+---
+
+# Data classes generate the boilerplate
+
+<DrawnAnnotation text="copy" label="A new instance with some properties replaced" :connect="false"/>
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+val user = User("Ada", 36)
+
+println(user)                    // User(name=Ada, age=36)
+println(user.hashCode())         // 2035558
+println(user == User("Ada", 36)) // true
+
+val newValue = user.copy(age = 37)
+println(newValue)                // User(name=Ada, age=37)
+println(newValue.hashCode())     // 2035559
+println(user == newValue)        // false
 ```
 
 ---
@@ -531,46 +598,6 @@ value class Email(val value: String) {
         require(value.contains("@")) { "Not a valid email" }
     }
 }
-```
-
----
-
-# Data classes generate the boilerplate
-
-<DrawnAnnotation text="data class" :connect="false"/>
-<DrawnAnnotation text="user == User(&quot;Ada&quot;, 36)" label="`equals`, `hashCode` and `toString` for free" :connect="false"/>
-
-```kotlin
-data class User(val name: String, val age: Int)
-
-val user = User("Ada", 36)
-
-println(user)                    // User(name=Ada, age=36)
-println(user.hashCode())         // 2035558
-println(user == User("Ada", 36)) // true
-```
-
----
-magic-move
----
-
-# Data classes generate the boilerplate
-
-<DrawnAnnotation text="copy" label="A new instance with some properties replaced" :connect="false"/>
-
-```kotlin
-data class User(val name: String, val age: Int)
-
-val user = User("Ada", 36)
-
-println(user)                    // User(name=Ada, age=36)
-println(user.hashCode())         // 2035558
-println(user == User("Ada", 36)) // true
-
-val newValue = user.copy(age = 37)
-println(newValue)                // User(name=Ada, age=37)
-println(newValue.hashCode())     // 2035559
-println(user == newValue)        // false
 ```
 
 ---

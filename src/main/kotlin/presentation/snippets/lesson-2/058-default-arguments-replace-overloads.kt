@@ -6,7 +6,3 @@ package presentation.snippets.lesson2.slide58
 import presentation.support.*
 
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
-
-val two = sum(1, 1)
-
-val three = sum(1, 1, 1)
