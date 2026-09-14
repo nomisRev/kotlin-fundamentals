@@ -578,12 +578,12 @@ magic-move
 # `+` is a function call
 
 <DrawnAnnotation text="operator" />
-<DrawnAnnotation text="1.plus(2)" label="`1 + 2` is what the compiler writes as `1.plus(2)`" :geometry="{ label: { x: 0.45, y: 0.48 } }" />
+<DrawnAnnotation text="1 + 2" label="Plus operator allows for `+` syntax" :geometry="{ label: { x: 0.45, y: 0.48 } }" />
 
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
 
-operator infix fun Int.plus(b: Int): Int = this + b
+operator fun Int.plus(b: Int): Int = this + b
 
 sum(1, 2)
 1 plus 2
@@ -758,40 +758,13 @@ String value = predicate() ? "truthy" : "falsey";
 
 # `when` statements
 
-```kotlin
-fun max(a: Int, b: Int): Int =
-  if (a > b) a else b
-```
-
----
-magic-move
----
-
-# `when` statements
-
-<DrawnAnnotation text="when" label="A more powerful switch-case" :geometry="{ label: { x: 0.5378, y: 0.2719 } }"/>
+<InlineCompilerError text="when" message="when expression must be exhaustive. Add an else branch">
 
 ```kotlin
-fun max(a: Int, b: Int): Int = when {
-  a > b -> a
-  else -> b
-}
-```
-
----
-
-# `when` statements
-
-<InlineCompilerError
-text="when"
-message="when expression must be exhaustive. Add an else branch"
-style="--inline-compiler-error-message-size: 1.45rem"
->
- 
-```kotlin
-fun max(a: Int, b: Int): Int = when {
-  a > b -> a
-}
+fun max(a: Int, b: Int): Int = 
+  when {
+    a > b -> a
+  }
 ```
 
 </InlineCompilerError>
@@ -805,10 +778,11 @@ magic-move
 <DrawnAnnotation text="else ->" label="`else` covers  all other cases"  :geometry="{ label: { x: 0.2275, y: 0.4331 } }"/>
 
 ```kotlin
-fun max(a: Int, b: Int): Int = when {
-  a > b -> a
-  else -> b
-}
+fun max(a: Int, b: Int): Int = 
+  when {
+    a > b -> a
+    else -> b
+  }
 ```
 
 ---
