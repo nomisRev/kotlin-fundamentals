@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useSlideContext } from '@slidev/client'
 
 const { $clicks } = useSlideContext()
-const stage = computed(() => Math.min($clicks.value, 4))
+const stage = computed(() => Math.min($clicks.value, 5))
 
 type Kind = 'readonly' | 'mutable'
 
@@ -20,22 +20,25 @@ interface Node {
 
 const H = 84
 
-// Pills sit on a 1920x1080 canvas. Rows: 255 interfaces, 475 collections,
-// 695 lists and sets, 915 their mutable counterparts. The mutable side is
-// pink so the read-only/mutable split reads at a glance.
+// Pills sit on a 1920x1080 canvas. Rows: 255 iterables, 475 collections and
+// iterators, 695 lists and sets, 915 their mutable counterparts. The mutable
+// side is pink so the read-only/mutable split reads at a glance.
 const nodes: Node[] = [
   { id: 'iterable', label: 'Iterable', x: 430, y: 255, w: 220, kind: 'readonly', stage: 0, delay: 0 },
-  { id: 'collection', label: 'Collection', x: 430, y: 475, w: 260, kind: 'readonly', stage: 1, delay: 500 },
-  { id: 'list', label: 'List', x: 270, y: 695, w: 150, kind: 'readonly', stage: 1, delay: 1000 },
-  { id: 'set', label: 'Set', x: 590, y: 695, w: 150, kind: 'readonly', stage: 1, delay: 1250 },
+  { id: 'iterator', label: 'Iterator', x: 150, y: 475, w: 210, kind: 'readonly', stage: 1, delay: 400 },
 
-  { id: 'mutableIterable', label: 'MutableIterable', x: 1010, y: 255, w: 360, kind: 'mutable', stage: 2, delay: 500 },
-  { id: 'mutableCollection', label: 'MutableCollection', x: 1010, y: 475, w: 400, kind: 'mutable', stage: 2, delay: 1000 },
-  { id: 'mutableList', label: 'MutableList', x: 860, y: 915, w: 280, kind: 'mutable', stage: 2, delay: 1700 },
-  { id: 'mutableSet', label: 'MutableSet', x: 1180, y: 915, w: 260, kind: 'mutable', stage: 2, delay: 1950 },
+  { id: 'collection', label: 'Collection', x: 430, y: 475, w: 260, kind: 'readonly', stage: 2, delay: 500 },
+  { id: 'list', label: 'List', x: 270, y: 695, w: 150, kind: 'readonly', stage: 2, delay: 1000 },
+  { id: 'set', label: 'Set', x: 590, y: 695, w: 150, kind: 'readonly', stage: 2, delay: 1250 },
 
-  { id: 'map', label: 'Map', x: 1480, y: 475, w: 150, kind: 'readonly', stage: 3, delay: 0 },
-  { id: 'mutableMap', label: 'MutableMap', x: 1480, y: 695, w: 260, kind: 'mutable', stage: 3, delay: 700 },
+  { id: 'mutableIterable', label: 'MutableIterable', x: 1010, y: 255, w: 360, kind: 'mutable', stage: 3, delay: 500 },
+  { id: 'mutableIterator', label: 'MutableIterator', x: 1560, y: 475, w: 360, kind: 'mutable', stage: 3, delay: 1000 },
+  { id: 'mutableCollection', label: 'MutableCollection', x: 1010, y: 475, w: 400, kind: 'mutable', stage: 3, delay: 1300 },
+  { id: 'mutableList', label: 'MutableList', x: 860, y: 915, w: 280, kind: 'mutable', stage: 3, delay: 2000 },
+  { id: 'mutableSet', label: 'MutableSet', x: 1180, y: 915, w: 260, kind: 'mutable', stage: 3, delay: 2250 },
+
+  { id: 'map', label: 'Map', x: 1480, y: 695, w: 150, kind: 'readonly', stage: 4, delay: 0 },
+  { id: 'mutableMap', label: 'MutableMap', x: 1480, y: 915, w: 260, kind: 'mutable', stage: 4, delay: 700 },
 ]
 
 const byId = Object.fromEntries(nodes.map((n) => [n.id, n])) as Record<string, Node>
@@ -45,24 +48,29 @@ interface Edge {
   to: string
   stage: number
   delay: number
+  /** `extends` is a solid subtype edge; `returns` is dashed: `iterator()` hands out the target. */
+  relation: 'extends' | 'returns'
 }
 
 // Connectors run centre to centre and are drawn before the pills, so their
 // endpoints disappear underneath. Order within a stage is the reveal order.
 const edges: Edge[] = [
-  { from: 'iterable', to: 'collection', stage: 1, delay: 0 },
-  { from: 'collection', to: 'list', stage: 1, delay: 500 },
-  { from: 'collection', to: 'set', stage: 1, delay: 750 },
+  { from: 'iterable', to: 'iterator', stage: 1, delay: 0, relation: 'returns' },
 
-  { from: 'iterable', to: 'mutableIterable', stage: 2, delay: 0 },
-  { from: 'mutableIterable', to: 'mutableCollection', stage: 2, delay: 500 },
-  { from: 'collection', to: 'mutableCollection', stage: 2, delay: 700 },
-  { from: 'mutableCollection', to: 'mutableList', stage: 2, delay: 1200 },
-  { from: 'list', to: 'mutableList', stage: 2, delay: 1400 },
-  { from: 'mutableCollection', to: 'mutableSet', stage: 2, delay: 1450 },
-  { from: 'set', to: 'mutableSet', stage: 2, delay: 1650 },
+  { from: 'iterable', to: 'collection', stage: 2, delay: 0, relation: 'extends' },
+  { from: 'collection', to: 'list', stage: 2, delay: 500, relation: 'extends' },
+  { from: 'collection', to: 'set', stage: 2, delay: 750, relation: 'extends' },
 
-  { from: 'map', to: 'mutableMap', stage: 3, delay: 300 },
+  { from: 'iterable', to: 'mutableIterable', stage: 3, delay: 0, relation: 'extends' },
+  { from: 'mutableIterable', to: 'mutableIterator', stage: 3, delay: 700, relation: 'returns' },
+  { from: 'mutableIterable', to: 'mutableCollection', stage: 3, delay: 800, relation: 'extends' },
+  { from: 'collection', to: 'mutableCollection', stage: 3, delay: 1000, relation: 'extends' },
+  { from: 'mutableCollection', to: 'mutableList', stage: 3, delay: 1500, relation: 'extends' },
+  { from: 'list', to: 'mutableList', stage: 3, delay: 1700, relation: 'extends' },
+  { from: 'mutableCollection', to: 'mutableSet', stage: 3, delay: 1750, relation: 'extends' },
+  { from: 'set', to: 'mutableSet', stage: 3, delay: 1950, relation: 'extends' },
+
+  { from: 'map', to: 'mutableMap', stage: 4, delay: 300, relation: 'extends' },
 ]
 
 const edgePath = (e: Edge) => {
@@ -75,7 +83,7 @@ interface Factory {
   label: string
   x: number
   y: number
-  anchor: 'start' | 'end'
+  anchor: 'start' | 'middle' | 'end'
   kind: Kind
   delay: number
 }
@@ -86,9 +94,9 @@ const factories: Factory[] = [
   { label: 'listOf()', x: 175, y: 695, anchor: 'end', kind: 'readonly', delay: 0 },
   { label: 'setOf()', x: 495, y: 695, anchor: 'end', kind: 'readonly', delay: 150 },
   { label: 'mutableListOf()', x: 700, y: 915, anchor: 'end', kind: 'mutable', delay: 300 },
-  { label: 'mutableSetOf()', x: 1330, y: 915, anchor: 'start', kind: 'mutable', delay: 450 },
-  { label: 'mapOf()', x: 1575, y: 475, anchor: 'start', kind: 'readonly', delay: 600 },
-  { label: 'mutableMapOf()', x: 1630, y: 695, anchor: 'start', kind: 'mutable', delay: 750 },
+  { label: 'mutableSetOf()', x: 1180, y: 1005, anchor: 'middle', kind: 'mutable', delay: 450 },
+  { label: 'mapOf()', x: 1575, y: 695, anchor: 'start', kind: 'readonly', delay: 600 },
+  { label: 'mutableMapOf()', x: 1630, y: 915, anchor: 'start', kind: 'mutable', delay: 750 },
 ]
 </script>
 
@@ -96,9 +104,10 @@ const factories: Factory[] = [
   <div
     class="collection-hierarchy"
     role="img"
-    aria-label="Animated Kotlin collection hierarchy. Iterable branches to Collection, which branches to List and Set. Each read-only interface has a pink mutable counterpart: MutableIterable, MutableCollection, MutableList, and MutableSet, each extending both its read-only type and the mutable type above it. Map and MutableMap stand apart because Map is not an Iterable. The final build names the factory function next to every type: listOf, setOf, mutableListOf, mutableSetOf, mapOf, and mutableMapOf."
+    aria-label="Animated Kotlin collection hierarchy. Iterable hands out an Iterator through iterator(). Iterable branches to Collection, which branches to List and Set. Each read-only interface has a pink mutable counterpart: MutableIterable hands out a MutableIterator, and MutableCollection, MutableList, and MutableSet each extend both their read-only type and the mutable type above them. Map and MutableMap stand apart because Map is not an Iterable. The final build names the factory function next to every type: listOf, setOf, mutableListOf, mutableSetOf, mapOf, and mutableMapOf."
   >
     <!-- These markers let Slidev own navigation, presenter mode, and backwards clicks. -->
+    <span v-click class="click-marker" />
     <span v-click class="click-marker" />
     <span v-click class="click-marker" />
     <span v-click class="click-marker" />
@@ -112,10 +121,10 @@ const factories: Factory[] = [
         <path
           v-for="e in edges"
           :key="`${e.from}-${e.to}`"
-          class="edge reveal"
-          :class="[byId[e.to].kind, { visible: stage >= e.stage }]"
+          class="edge"
+          :class="[byId[e.to].kind, e.relation === 'returns' ? 'returns fade' : 'reveal', { visible: stage >= e.stage }]"
           :style="{ '--delay': `${e.delay}ms` }"
-          pathLength="1"
+          :pathLength="e.relation === 'extends' ? 1 : undefined"
           :d="edgePath(e)"
         />
       </g>
@@ -138,7 +147,7 @@ const factories: Factory[] = [
           v-for="f in factories"
           :key="f.label"
           class="factory fade"
-          :class="[f.kind, { visible: stage >= 4 }]"
+          :class="[f.kind, { visible: stage >= 5 }]"
           :style="{ '--delay': `${f.delay}ms`, textAnchor: f.anchor }"
           :x="f.x"
           :y="f.y"
@@ -147,27 +156,31 @@ const factories: Factory[] = [
 
       <g class="annotation" :class="{ visible: stage === 0 }">
         <path class="edge" d="M545 265 L625 320" />
-        <text x="640" y="340">Anything a for loop can walk</text>
+        <text x="640" y="340">Anything you can loop over</text>
         <text x="640" y="395" class="annotation-detail">map, filter and fold are defined here</text>
       </g>
-      <g class="annotation" :class="{ visible: stage === 1 }" style="--delay: 1700ms">
+      <g class="annotation" :class="{ visible: stage === 1 }" style="--delay: 900ms">
+        <path class="edge" d="M150 520 L150 565" />
+        <text x="60" y="610">A for loop calls iterator()</text>
+        <text x="60" y="665" class="annotation-detail">then hasNext() and next() until done</text>
+      </g>
+      <g class="annotation" :class="{ visible: stage === 2 }" style="--delay: 1700ms">
         <path class="edge" d="M565 475 L700 475" />
         <text x="720" y="470">Read-only: size, contains, iterator</text>
         <text x="720" y="525" class="annotation-detail">List keeps order, Set forbids duplicates</text>
       </g>
-      <g class="annotation mutable" :class="{ visible: stage === 2 }" style="--delay: 2400ms">
-        <path class="edge" d="M1215 475 L1265 475" />
-        <text x="1285" y="470">Adds add and remove</text>
-        <text x="1285" y="525" class="annotation-detail">MutableList is also a List</text>
+      <g class="annotation mutable" :class="{ visible: stage === 3 }" style="--delay: 2700ms">
+        <path class="edge" d="M1160 510 L1265 580" />
+        <text x="1285" y="610">Adds add and remove</text>
+        <text x="1285" y="665" class="annotation-detail">MutableList is also a List</text>
       </g>
-      <g class="annotation" :class="{ visible: stage === 3 }" style="--delay: 1200ms">
-        <path class="edge" d="M1480 428 L1480 380" />
-        <text x="1210" y="300">Map is not an Iterable</text>
-        <text x="1210" y="352" class="annotation-detail">use entries, keys or values</text>
+      <g class="annotation" :class="{ visible: stage === 4 }" style="--delay: 1200ms">
+        <text x="1210" y="580">Map is not an Iterable</text>
+        <text x="1210" y="630" class="annotation-detail">use entries, keys or values</text>
       </g>
-      <g class="annotation" :class="{ visible: stage === 4 }" style="--delay: 1000ms">
-        <path class="edge" d="M1640 360 L1640 445" />
-        <text x="1210" y="330">Factories name the type</text>
+      <g class="annotation" :class="{ visible: stage === 5 }" style="--delay: 1000ms">
+        <path class="edge" d="M1640 605 L1640 660" />
+        <text x="1210" y="580">Factories name the type</text>
       </g>
     </svg>
   </div>
@@ -188,6 +201,7 @@ svg { display: block; width: 100%; height: 100%; }
 .heading { fill: #1f2023; font: 700 72px 'JetBrains Sans', Arial, sans-serif; dominant-baseline: middle; }
 .edge { fill: none; stroke: var(--purple); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
 .edge.mutable { stroke: var(--pink); }
+.edge.returns { stroke-dasharray: 14 18; }
 .node rect { fill: var(--purple); }
 .node.mutable rect { fill: var(--pink); }
 .node text {
