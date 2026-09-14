@@ -303,6 +303,42 @@ val result: List<Int> = [1, 2, 3].mapNotNull { if (it % 2 == 0) it else null }
 
 ---
 
+# filterIsInstance()
+
+<DrawnAnnotation text="filterIsInstance" label="Filter by type" occurrence="2" />
+
+```kotlin
+fun <reified R> Iterable<*>.filterIsInstance(): List<R>
+
+val numbers: List<Number> = [1, 2, 3.0, 4.0f, 0x10]
+println(numbers)
+
+val ints: List<Int> = numbers.filterIsInstance<Int>()
+println(ints)
+```
+```console
+[1, 2, 3.0, 4.0, 16]
+[1, 2, 16]
+```
+
+---
+
+# inline reified
+
+<DrawnAnnotation text="inline" />
+<DrawnAnnotation text="reified" label="Inlines a _reified_ function call with `KClass<R>` as parameter" />
+
+```kotlin
+inline fun <reified R> Iterable<*>.filterIsInstance(): List<R>
+```
+<div style="height: 4rem"></div>
+
+```java
+public <R> List<R> filterIsInstance(Iterable<R> values, Class<R> clazz)
+```
+
+---
+
 # Grouping
 
 ```kotlin

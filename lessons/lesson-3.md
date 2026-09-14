@@ -154,7 +154,7 @@ magic-move
 
 # Properties follow their keyword
 
-<DrawnAnnotation text="person.age = 43" label="A `var` property can be read and reassigned" :geometry="{ label: { x: 0.2737, y: 0.5267 } }"/>
+<DrawnAnnotation text="person.age = 43" label="A `var` property can be read and reassigned" :geometry="{ label: { x: 0.4496, y: 0.3464 } }"/>
 <InlineCompilerError :line="6" message="'val' cannot be reassigned.">
 
 ```kotlin
@@ -256,11 +256,7 @@ class Person(name: String, age: Int) {
 
 ---
 
-# Member functions see the instance
-
-<DrawnAnnotation text="fun introduce"/>
-<DrawnAnnotation text="$name"/>
-<DrawnAnnotation text="person.introduce" label="Member functions are called on an instance and see its properties"/>
+# Member functions
 
 ```kotlin
 class Person(val name: String, var age: Int) {
@@ -271,7 +267,9 @@ class Person(val name: String, var age: Int) {
 
 val person = Person("Olivia", 42)
 person.introduce(to = "Kotlin")
-// Hello Kotlin, my name is Olivia.
+```
+```console
+Hello Kotlin, my name is Olivia.
 ```
 
 ---

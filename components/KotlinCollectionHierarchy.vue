@@ -161,18 +161,20 @@ const factories: Factory[] = [
       </g>
       <g class="annotation" :class="{ visible: stage === 1 }" style="--delay: 900ms">
         <path class="edge" d="M150 520 L150 565" />
-        <text x="60" y="610">A for loop calls iterator()</text>
-        <text x="60" y="665" class="annotation-detail">then hasNext() and next() until done</text>
+        <text x="60" y="610" class="annotation-code">fun next(): T</text>
+        <text x="60" y="665" class="annotation-code">fun hasNext(): Boolean</text>
       </g>
       <g class="annotation" :class="{ visible: stage === 2 }" style="--delay: 1700ms">
         <path class="edge" d="M565 475 L700 475" />
-        <text x="720" y="470">Read-only: size, contains, iterator</text>
-        <text x="720" y="525" class="annotation-detail">List keeps order, Set forbids duplicates</text>
+        <text x="720" y="425" class="annotation-code">val size: Int</text>
+        <text x="720" y="480" class="annotation-code">fun contains(element: T): Boolean</text>
+        <text x="720" y="535" class="annotation-code">fun iterator(): Iterator&lt;T&gt;</text>
+        <text x="270" y="775" class="annotation-caption">keeps order</text>
+        <text x="590" y="775" class="annotation-caption">forbids duplicates</text>
       </g>
       <g class="annotation mutable" :class="{ visible: stage === 3 }" style="--delay: 2700ms">
         <path class="edge" d="M1160 510 L1265 580" />
         <text x="1285" y="610">Adds add and remove</text>
-        <text x="1285" y="665" class="annotation-detail">MutableList is also a List</text>
       </g>
       <g class="annotation" :class="{ visible: stage === 4 }" style="--delay: 1200ms">
         <text x="1210" y="580">Map is not an Iterable</text>
@@ -228,6 +230,8 @@ svg { display: block; width: 100%; height: 100%; }
 .annotation.mutable text { fill: var(--pink); }
 .annotation.mutable .edge { stroke: var(--pink); }
 .annotation .annotation-detail { font-size: 39px; }
+.annotation .annotation-code { font-size: 42px; }
+.annotation .annotation-caption { font-size: 32px; text-anchor: middle; }
 .fade {
   opacity: 0;
   transition: opacity 640ms cubic-bezier(.22, .61, .36, 1);
