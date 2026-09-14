@@ -803,8 +803,8 @@ functions too. Do not add them to the required exercise.
 
 > Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="@MustUseReturnValues" :connect="false"/>
-<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" :connect="false"/>
+<DrawnAnnotation text="@MustUseReturnValues"/>
+<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -826,8 +826,8 @@ magic-move
 
 > Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="@IgnorableReturnValue" :connect="false"/>
-<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional" :connect="false"/>
+<DrawnAnnotation text="@IgnorableReturnValue"/>
+<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -851,7 +851,7 @@ fun example(calculator: Calculator) {
 
 <DrawnAnnotation text="transform: (A) -> B)" />
 <DrawnAnnotation text=" { " />
-<DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_" :connect="false"/>
+<DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_"/>
 
 ```kotlin
 fun <A> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B>

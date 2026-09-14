@@ -18,7 +18,7 @@ kodee: wave
 
 > `-Xcollection-literals`
 
-<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="A collection literal, no `listOf` call needed" :connect="false"/>
+<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" label="A collection literal, no `listOf` call needed"/>
 
 ```kotlin
 fun sum(numbers: Iterable<Int>): Int = numbers.sum()
@@ -33,8 +33,8 @@ val twentyOne = sum([1, 2, 3, 4, 5, 6])
 
 > `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="@MustUseReturnValues" :connect="false"/>
-<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" :connect="false"/>
+<DrawnAnnotation text="@MustUseReturnValues"/>
+<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -54,7 +54,7 @@ fun example(calculator: Calculator) {
 
 > `-Xallow-returns-result-of` sharpens `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="Scoreboard().myLet" label="`myLet` is generic, `full` mode still infers it forwards a must-use result — but the warning names `myLet`, not `computeScore`" color="red" :connect="false"/>
+<DrawnAnnotation text="Scoreboard().myLet" label="`myLet` is generic, `full` mode still infers it forwards a must-use result — but the warning names `myLet`, not `computeScore`" color="red"/>
 
 ```kotlin
 @MustUseReturnValues
@@ -78,8 +78,8 @@ magic-move
 
 > `-Xallow-returns-result-of` sharpens `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="returnsResultOf(block)" :connect="false"/>
-<DrawnAnnotation text="Scoreboard().myLet" label="The warning now names `computeScore`" color="red" :connect="false"/>
+<DrawnAnnotation text="returnsResultOf(block)"/>
+<DrawnAnnotation text="Scoreboard().myLet" label="The warning now names `computeScore`" color="red"/>
 
 ```kotlin
 import kotlin.contracts.ExperimentalContracts
@@ -115,7 +115,7 @@ way back to `computeScore`, the function that actually made the value must-use.
 
 > `-Xcontext-sensitive-resolution` · see Lesson 3, "Context-sensitive resolution drops the qualifier"
 
-<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject" :connect="false"/>
+<DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject"/>
 
 ```kotlin
 enum class Problem { CONNECTION, AUTHENTICATION, DATABASE }
@@ -133,7 +133,7 @@ fun message(problem: Problem): String = when (problem) {
 
 > `-Xintrinsic-const-evaluation`
 
-<DrawnAnnotation text=".uppercase()" label="A stdlib call marked intrinsic, not just arithmetic" :connect="false"/>
+<DrawnAnnotation text=".uppercase()" label="A stdlib call marked intrinsic, not just arithmetic"/>
 
 ```kotlin
 const val greeting = "Hello, Kotlin!"
@@ -147,7 +147,7 @@ const val upper = "kotlin".uppercase()
 
 > `-Xcompanion-blocks-and-extensions`
 
-<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :connect="false" :geometry="{ label: { x: 0.55, y: 0.62 } }"/>
+<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :geometry="{ label: { x: 0.55, y: 0.62 } }"/>
 
 ```kotlin
 class Money(val cents: Int) {
@@ -165,7 +165,7 @@ println(Money.zero().cents)
 
 > `-Xcompanion-blocks-and-extensions`
 
-<DrawnAnnotation text="companion fun LocalDate.epoch()" label="`LocalDate` is a Java class, it has no Kotlin companion to extend" :connect="false"/>
+<DrawnAnnotation text="companion fun LocalDate.epoch()" label="`LocalDate` is a Java class, it has no Kotlin companion to extend"/>
 
 ```kotlin
 import java.time.LocalDate
@@ -181,7 +181,7 @@ println(LocalDate.epoch())
 
 > `-Xexplicit-context-arguments` (context parameters are stable in 2.4)
 
-<DrawnAnnotation text="logger = Logger(&quot;APP&quot;)" label="Named like any other argument, no `with` block needed" :connect="false"/>
+<DrawnAnnotation text="logger = Logger(&quot;APP&quot;)" label="Named like any other argument, no `with` block needed"/>
 
 ```kotlin
 class Logger(val tag: String) {
@@ -202,7 +202,7 @@ greet(logger = Logger("APP"), name = "Grace")
 
 > `-Xlocal-type-aliases`
 
-<DrawnAnnotation text="typealias Score = Int" label="Scoped to the function, invisible outside it" :connect="false"/>
+<DrawnAnnotation text="typealias Score = Int" label="Scoped to the function, invisible outside it"/>
 
 ```kotlin
 fun demo() {
@@ -218,7 +218,7 @@ fun demo() {
 
 > `-Xname-based-destructuring=complete` · see Lesson 3, "Name-based destructuring is safe"
 
-<DrawnAnnotation text="(y, x)" label="Declared out of order, still binds by property name" :connect="false"/>
+<DrawnAnnotation text="(y, x)" label="Declared out of order, still binds by property name"/>
 
 ```kotlin
 data class Point(val x: Int, val y: Int)
@@ -239,7 +239,7 @@ magic-move
 
 > `-Xname-based-destructuring=complete` · see Lesson 3, "Name-based destructuring is safe"
 
-<DrawnAnnotation text="[a, b]" label="Square brackets stay positional, via `componentN()`" :connect="false"/>
+<DrawnAnnotation text="[a, b]" label="Square brackets stay positional, via `componentN()`"/>
 
 ```kotlin
 data class Point(val x: Int, val y: Int)
@@ -258,7 +258,7 @@ fun demo() {
 
 > `-Xdirect-java-actualization` · multiplatform only, not compiled in this JVM-only deck
 
-<DrawnAnnotation text="expect class Logger()" :connect="false"/>
+<DrawnAnnotation text="expect class Logger()"/>
 
 ```kotlin no-compile
 // commonMain

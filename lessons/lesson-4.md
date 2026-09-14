@@ -16,7 +16,7 @@ kodee: wave
 
 # A simple lambda
 
-<DrawnAnnotation text="(Int) -> Int" label="Kotlin has function types" :connect="false" />
+<DrawnAnnotation text="(Int) -> Int" label="Kotlin has function types" />
 
 ```kotlin
 val increment: (Int) -> Int = { input -> input + 1 } 
@@ -28,7 +28,7 @@ magic-move
 
 # Single parameter `it`
 
-<DrawnAnnotation text="it" label="Single parameter lambdas can reference to their parameter using `it`" :connect="false" />
+<DrawnAnnotation text="it" label="Single parameter lambdas can reference to their parameter using `it`" />
 
 ```kotlin
 val increment: (Int) -> Int = { it + 1 } 
@@ -40,7 +40,7 @@ magic-move
 
 # Single parameter `it`
 
-<DrawnAnnotation text="it + 1" label="Last statement is always returned without `return`" :connect="false"  :geometry="{ label: { x: 0.3159, y: 0.3764 } }"/>
+<DrawnAnnotation text="it + 1" label="Last statement is always returned without `return`"  :geometry="{ label: { x: 0.3159, y: 0.3764 } }"/>
 
 ```kotlin
 val increment: (Int) -> Int = { 
@@ -52,7 +52,7 @@ val increment: (Int) -> Int = {
 
 # Parameterless lambdas
 
-<DrawnAnnotation text="()" label="The parameter types list may be empty" :connect="false" />
+<DrawnAnnotation text="()" label="The parameter types list may be empty" />
 
 ```kotlin
 val lazyOne: () -> Int = { 1 }
@@ -62,7 +62,7 @@ val lazyOne: () -> Int = { 1 }
 
 # Lambda parameter names
 
-<DrawnAnnotation text="message: String" label="Lambda parameters may _suggest_ names\nThese can be used by LSP or IDE" :connect="false"/>
+<DrawnAnnotation text="message: String" label="Lambda parameters may _suggest_ names\nThese can be used by LSP or IDE"/>
 
 ```kotlin
 val print: (message: String) -> Unit = { 
@@ -74,8 +74,8 @@ val print: (message: String) -> Unit = {
 
 # Null result vs nullable lambda
 
-<DrawnAnnotation text="Unit?" label="Nullable return type" :connect="false" :geometry="{ label: { x: 0.3866, y: 0.2625 } }"/>
-<DrawnAnnotation text="(() -> Unit)?" color="var(--code-window-amper-color)" label="Nullable lambda" :connect="false" />
+<DrawnAnnotation text="Unit?" label="Nullable return type" :geometry="{ label: { x: 0.3866, y: 0.2625 } }"/>
+<DrawnAnnotation text="(() -> Unit)?" color="var(--code-window-amper-color)" label="Nullable lambda" />
 
 ```kotlin
 val nullable: () -> Unit? = { if (Random.nextBoolean()) Unit else null }
@@ -88,8 +88,8 @@ val nullLambda: (() -> Unit)? = null
 
 # Lambda with receiver
 
-<DrawnAnnotation text="String.()" label="`lambda with receiver`" :connect="false"/>
-<DrawnAnnotation text="this." label="`this` `String` receiver value inside lambda" on="1" color="var(--fundamentals-blue)" :connect="false"/>
+<DrawnAnnotation text="String.()" label="`lambda with receiver`"/>
+<DrawnAnnotation text="this." label="`this` `String` receiver value inside lambda" on="1" color="var(--fundamentals-blue)"/>
 
 ```kotlin
 val extension: String.() -> Int = { this.length }
@@ -101,7 +101,7 @@ magic-move
 
 # Lambda with receiver
 
-<DrawnAnnotation text="{ l"  label="`this.` can be omitted" :connect="false"/>
+<DrawnAnnotation text="{ l"  label="`this.` can be omitted"/>
 
 ```kotlin
 val extension: String.() -> Int = { length }
@@ -113,7 +113,7 @@ magic-move
 
 # Method references
 
-<DrawnAnnotation text="String::length"  label="`::` references a method on a type" :connect="false"/>
+<DrawnAnnotation text="String::length"  label="`::` references a method on a type"/>
 
 ```kotlin
 val len: String.() -> Int = String::length
@@ -125,7 +125,7 @@ magic-move
 
 # Method references
 
-<DrawnAnnotation text="(String) -> Int"  label="Most common lambda shape (i.e. Collections API)\nThese lambda shapes are interchangeable" :connect="false"/>
+<DrawnAnnotation text="(String) -> Int"  label="Most common lambda shape (i.e. Collections API)\nThese lambda shapes are interchangeable"/>
 
 ```kotlin
 val len: String.() -> Int = String::length
@@ -149,7 +149,7 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 # Functions that take lambdas
 
 <DrawnAnnotation text="({" />
-<DrawnAnnotation text="})" label="`map` has single parameter with function type" :connect="false"/>
+<DrawnAnnotation text="})" label="`map` has single parameter with function type"/>
 
 
 ```kotlin
@@ -163,7 +163,7 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 # Functions that take lambdas
 
 <DrawnAnnotation text=" { " />
-<DrawnAnnotation text=" }" label="Parentheses can be omitted" :connect="false"/>
+<DrawnAnnotation text=" }" label="Parentheses can be omitted"/>
 
 ```kotlin
 fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
@@ -189,8 +189,8 @@ class: collection-hierarchy-slide
 
 # FlatMap vs Map
 
-<DrawnAnnotation text="-> B" label="`map` A to _single_ B" :connect="false"  :geometry="{ label: { x: 0.5363, y: 0.2719 } }"/>
-<DrawnAnnotation text="-> Iterable<B>" label="`map` A to _many_ B's and _flatten_ nested lists" color="var(--code-window-amper-color)" :connect="false"/>
+<DrawnAnnotation text="-> B" label="`map` A to _single_ B"  :geometry="{ label: { x: 0.5363, y: 0.2719 } }"/>
+<DrawnAnnotation text="-> Iterable<B>" label="`map` A to _many_ B's and _flatten_ nested lists" color="var(--code-window-amper-color)"/>
 
 ```kotlin
 fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
@@ -223,7 +223,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 
 # Filter
 
-<DrawnAnnotation text="-> Boolean" label="If `true` it's allowed to _pass through_ the filter" :connect="false"  :geometry="{ label: { x: 0.6872, y: 0.2790 } }"/>
+<DrawnAnnotation text="-> Boolean" label="If `true` it's allowed to _pass through_ the filter"  :geometry="{ label: { x: 0.6872, y: 0.2790 } }"/>
 
 ```kotlin
  fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
@@ -238,7 +238,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 
 # Filter
 
-<DrawnAnnotation text="filterNot" label="filterNot flips the predicate" :connect="false"  :geometry="{ label: { x: 0.5932, y: 0.3410 } }"/>
+<DrawnAnnotation text="filterNot" label="filterNot flips the predicate"  :geometry="{ label: { x: 0.5932, y: 0.3410 } }"/>
 
 ```kotlin
  fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
@@ -255,7 +255,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 
 # Map & Filter
 
-<DrawnAnnotation text="else null" label="Our transformations may return nullable values" :connect="false" />
+<DrawnAnnotation text="else null" label="Our transformations may return nullable values" />
 
 ```kotlin
  fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
@@ -272,7 +272,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 # Map & Filter
 
 <DrawnAnnotation text="Int?"  />
-<DrawnAnnotation text="it != null" label="We can filter out values, but lose the smart casting in the result" :connect="false" />
+<DrawnAnnotation text="it != null" label="We can filter out values, but lose the smart casting in the result" />
 
 ```kotlin
  fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
@@ -290,7 +290,7 @@ val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
 # mapNotNull
 
 <DrawnAnnotation text="Int" />
-<DrawnAnnotation text="mapNotNull" label="Preserve the non-null type" occurrence="2" :connect="false" />
+<DrawnAnnotation text="mapNotNull" label="Preserve the non-null type" occurrence="2" />
 
 ```kotlin
 fun <A> Iterable<A>.mapNotNull(tranform: (A) -> B?): List<B>
@@ -463,7 +463,7 @@ val names = members
 
 # A function can return a predicate
 
-<DrawnAnnotation text="(Member) -&gt; Boolean" :connect="false"/>
+<DrawnAnnotation text="(Member) -&gt; Boolean"/>
 
 ```kotlin
 fun olderThan(age: Int): (Member) -> Boolean =
@@ -606,18 +606,15 @@ Linus
 
 # `Iterable` unlocks the collections API
 
-<InlineCompilerError
-:line="5"
-text="filter" message="Unresolved reference 'filter' on receiver of type 'Team'"
-style="--inline-compiler-error-message-size: 1.35rem"
->
+<InlineCompilerError :line="5" text="filter" message="Unresolved reference 'filter' on receiver of type 'Team'">
 
 ```kotlin
 class Team(private val members: List<Member>) {
   operator fun iterator(): Iterator<Member> = members.iterator()
 }
 
-team.filter { it.age >= 18 }.map { it.name }
+team.filter { it.age >= 18 }
+    .map { it.name }
 ```
 
 </InlineCompilerError>
@@ -629,14 +626,15 @@ magic-move
 # `Iterable` unlocks the collections API
 
 <DrawnAnnotation text=": Iterable<Member>" label="Every `Iterable<T>` extension now applies to `Team`" :geometry="{ label: { x: 0.70, y: 0.30 } }" />
-<DrawnAnnotation text="override fun iterator()" label="`Iterable.iterator()` is already an operator" :geometry="{ label: { x: 0.40, y: 0.60 } }" />
+<DrawnAnnotation text="override" />
 
 ```kotlin
 class Team(private val members: List<Member>) : Iterable<Member> {
-  override fun iterator(): Iterator<Member> = members.iterator()
+  override operator fun iterator(): Iterator<Member> = members.iterator()
 }
 
-team.filter { it.age >= 18 }.map { it.name }
+team.filter { it.age >= 18 }
+    .map { it.name }
 ```
 ```console
 [Ada]

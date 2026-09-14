@@ -17,6 +17,8 @@ fonts:
 highlighter: shiki
 themeConfig:
   kodee: greeting
+  drawnAnnotation:
+    connect: false
   snippets:
     dir: src/main/kotlin/presentation/snippets
     package: presentation.snippets
