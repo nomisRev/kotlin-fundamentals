@@ -6,5 +6,12 @@ package presentation.snippets.lesson1.slide6
 import presentation.support.*
 
 fun main() {
+  val f: (String) -> Int = String::length
+  val g: String.() -> Int = String::length
+
+  val h: String.(String) -> String = String::plus
+  val v: (String, String) -> String = String::plus
+  val w: String.(String) -> String = v
+
   println("Hello, World!")
 }

@@ -12,40 +12,47 @@ kodee: wave
 
 ## Pass behavior as a value
 
-<!--
-Allow 70 minutes including prediction questions and 12 minutes of practice.
-Prerequisites: lesson 2 functions, extensions, loops, and nullability; lesson 3 data classes.
-Use Member(name, age) throughout. No inline mechanics, sequences, or receiver lambdas here.
-Each code state changes one idea. Solutions follow the exercise slides.
--->
-
 ---
 
 # A simple lambda
 
-<DrawnAnnotation text="(Int) -> Int" label="Kotlin has function types" />
+<DrawnAnnotation text="(Int) -> Int" label="Kotlin has function types" :connect="false" />
 
 ```kotlin
 val increment: (Int) -> Int = { input -> input + 1 } 
 ```
 
 ---
+magic-move
+---
 
-# A simple lambda
+# Single parameter `it`
 
-<DrawnAnnotation text="input + 1" label="Last statement is always returned without `return`" />
+<DrawnAnnotation text="it" label="Single parameter lambdas can reference to their parameter using `it`" :connect="false" />
 
 ```kotlin
-val increment: (Int) -> Int = { input ->
-    input + 1
+val increment: (Int) -> Int = { it + 1 } 
+```
+
+---
+magic-move
+---
+
+# Single parameter `it`
+
+<DrawnAnnotation text="it + 1" label="Last statement is always returned without `return`" :connect="false"  :geometry="{ label: { x: 0.3159, y: 0.3764 } }"/>
+
+```kotlin
+val increment: (Int) -> Int = { 
+    it + 1
 }
 ```
 
 ---
 
-# A simple lambda
+# Parameterless lambdas
 
-<DrawnAnnotation text="()" label="The parameter types list may be empty" />
+<DrawnAnnotation text="()" label="The parameter types list may be empty" :connect="false" />
 
 ```kotlin
 val lazyOne: () -> Int = { 1 }
@@ -53,21 +60,9 @@ val lazyOne: () -> Int = { 1 }
 
 ---
 
-# A simple lambda
+# Lambda parameter names
 
-<DrawnAnnotation text="message: String" label="Lambda parameters can _suggest_ names" />
-
-```kotlin
-val print: (message: String) -> Unit = { 
-    println(message)
-}
-```
-
----
-
-# A simple lambda
-
-<DrawnAnnotation text="println(message)" label="Unit can be omitted?" />
+<DrawnAnnotation text="message: String" label="Lambda parameters may _suggest_ names\nThese can be used by LSP or IDE" :connect="false"/>
 
 ```kotlin
 val print: (message: String) -> Unit = { 
@@ -77,43 +72,65 @@ val print: (message: String) -> Unit = {
 
 ---
 
-# A simple lambda
+# Null result vs nullable lambda
 
-<DrawnAnnotation text="{ }" label="Unit can be omitted?" />
+<DrawnAnnotation text="Unit?" label="Nullable return type" :connect="false" :geometry="{ label: { x: 0.3866, y: 0.2625 } }"/>
+<DrawnAnnotation text="(() -> Unit)?" color="var(--code-window-amper-color)" label="Nullable lambda" :connect="false" />
 
 ```kotlin
-val unit: () -> Unit = { }
+val nullable: () -> Unit? = { if (Random.nextBoolean()) Unit else null }
+
+
+val nullLambda: (() -> Unit)? = null
 ```
 
 ---
 
-# A simple lambda
+# Lambda with receiver
 
-<DrawnAnnotation text="Unit?" label="Nullable return type" />
-<DrawnAnnotation text="(() -> Unit)?" color="var(--code-window-amper-color)" label="Nullable lambda" />
-
-```kotlin
-val nullable: () -> Unit? = { null }
-val none: (() -> Unit)? = null
-```
-
----
-
-# A simple lambda
-
-<DrawnAnnotation text="String.()" label="Extension lambda or `lambda with receiver`" />
-<DrawnAnnotation text="this." label="String `this` receiver inside the lambda" />
+<DrawnAnnotation text="String.()" label="`lambda with receiver`" :connect="false"/>
+<DrawnAnnotation text="this." label="`this` `String` receiver value inside lambda" on="1" color="var(--fundamentals-blue)" :connect="false"/>
 
 ```kotlin
 val extension: String.() -> Int = { this.length }
 ```
 
 ---
+magic-move
+---
 
-# A simple lambda
+# Lambda with receiver
+
+<DrawnAnnotation text="{ l"  label="`this.` can be omitted" :connect="false"/>
 
 ```kotlin
 val extension: String.() -> Int = { length }
+```
+
+---
+magic-move
+---
+
+# Method references
+
+<DrawnAnnotation text="String::length"  label="`::` references a method on a type" :connect="false"/>
+
+```kotlin
+val length: String.() -> Int = String::length
+```
+
+---
+magic-move
+---
+
+# Method references
+
+<DrawnAnnotation text="(String) -> Int"  label="Most common lambda shape (i.e. Collections API)\nThese lambda shapes are interchangeable" :connect="false"/>
+
+```kotlin
+val length: String.() -> Int = String::length
+
+val length2: (String) -> Int = String::length 
 ```
 
 ---
@@ -129,7 +146,7 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 # Functions that take lambdas
 
 <DrawnAnnotation text="({" />
-<DrawnAnnotation text="})" label="`map` has single parameter with function type" />
+<DrawnAnnotation text="})" label="`map` has single parameter with function type" :connect="false"/>
 
 
 ```kotlin
@@ -143,36 +160,10 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 # Functions that take lambdas
 
 <DrawnAnnotation text=" { " />
-<DrawnAnnotation text=" }" label="Parentheses can be omitted" />
+<DrawnAnnotation text=" }" label="Parentheses can be omitted" :connect="false"/>
 
 ```kotlin
 fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
-
-[1, 2, 3].map { input -> input * 2 }
-```
-
----
-
-# Functions that take lambdas
-
-<DrawnAnnotation text="transform: (A) -> B)" />
-<DrawnAnnotation text=" { " />
-<DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_" />
-
-```kotlin
-fun <A> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B>
-
-[1, 2, 3].map(Unit) { input -> input * 2 }
-```
-
----
-
-# Functions that take lambdas
-
-<DrawnAnnotation text="it" label="Single parameter lambdas can refer to the single parameter as `it`" />
-
-```kotlin
-fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
 
 [1, 2, 3].map { it * 2 }
 ```
@@ -189,30 +180,38 @@ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
 - `fold` & `reduce`
 
 ---
+class: collection-hierarchy-slide
+---
 
-# FlatMap vs Map
-
-<DrawnAnnotation text="-> B" label="Map A to _single_ B" :connect="false" />
-<DrawnAnnotation text="-> Iterable<B>" label="Map A to _many_ B's" color="var(--code-window-amper-color)" :connect="false"/>
-
-```kotlin
- fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
- fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
-```
+<KotlinCollectionHierarchy />
 
 ---
 
 # FlatMap vs Map
 
-<DrawnAnnotation text="-> B" label="Map A to _single_ B" :connect="false" />
-<DrawnAnnotation text="-> Iterable<B>" label="Map A to _many_ B's" color="var(--code-window-amper-color)" :connect="false"/>
+<DrawnAnnotation text="-> B" label="`map` A to _single_ B" :connect="false"  :geometry="{ label: { x: 0.5363, y: 0.2719 } }"/>
+<DrawnAnnotation text="-> Iterable<B>" label="`map` A to _many_ B's and _flatten_ nested lists" color="var(--code-window-amper-color)" :connect="false"/>
+
+```kotlin
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ 
+ 
+ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
+```
+
+---
+magic-move
+---
+
+# FlatMap vs Map
 
 ```kotlin
  fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
  fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
- 
- [1, 2, 3].map { it + 1 }    // [2, 3, 4]
-[1, 2, 3].map { [it, it+1] } // [1, 2, 2, 3, 3, 4]
+
+[1, 2, 3].map { it + 1 }    // [2, 3, 4]
+[1, 2, 3].map { [it, it+1] } // [[1, 2], [2, 3], [3, 4]]
+[1, 2, 3].flatMap { [it, it+1] } // [1, 2, 2, 3, 3, 4]
 ```
 
 ---

@@ -844,3 +844,17 @@ fun example(calculator: Calculator) {
   val result = calculator.calculate()
 }
 ```
+
+---
+
+# Functions that take lambdas
+
+<DrawnAnnotation text="transform: (A) -> B)" />
+<DrawnAnnotation text=" { " />
+<DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_" :connect="false"/>
+
+```kotlin
+fun <A> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B>
+
+[1, 2, 3].map(Unit) { input -> input * 2 }
+```
