@@ -510,9 +510,134 @@ false
 
 ---
 
-# Iterator operator
+# `for` needs an `iterator()`
+
+<InlineCompilerError :line="5" text="team" message="For-loop range must have an 'iterator()' method">
 
 ```kotlin
+class Team(private val members: List<Member>)
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
+
+for (member in team) {
+  println(member.name)
+}
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# `for` needs an `iterator()`
+
+<DrawnAnnotation text="operator fun iterator()" label="Any type with an `iterator()` operator is a `for` range" :geometry="{ label: { x: 0.62, y: 0.33 } }" />
+
+```kotlin
+class Team(private val members: List<Member>) {
+  operator fun iterator(): Iterator<Member> = members.iterator()
+}
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
+
+for (member in team) {
+    println(member.name)
+}
+```
+```console
+Ada
+Linus
 ```
 
 ---
+magic-move
+---
+
+# `for` needs an `iterator()`
+
+<DrawnAnnotation text="operator fun iterator()" label="Any type with an `iterator()` operator is a `for` range" :geometry="{ label: { x: 0.62, y: 0.33 } }" />
+
+```kotlin
+class Team(private val members: List<Member>) 
+
+operator fun Team.iterator(): Iterator<Member> = members.iterator()
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
+
+for (member in team) {
+    println(member.name)
+}
+```
+```console
+Ada
+Linus
+```
+
+---
+magic-move
+---
+
+# `for` desugars to `iterator()`
+
+<DrawnAnnotation text="team.iterator()" label="The `for` loop is sugar for this `while`" :geometry="{ label: { x: 0.62, y: 0.47 } }" />
+<DrawnAnnotation text="hasNext()" />
+<DrawnAnnotation text="next()" />
+
+```kotlin
+class Team(private val members: List<Member>) {
+  operator fun iterator(): Iterator<Member> = members.iterator()
+}
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
+
+val iterator = team.iterator()
+while (iterator.hasNext()) {
+  val member = iterator.next()
+  println(member.name)
+}
+```
+```console
+Ada
+Linus
+```
+
+---
+
+# `Iterable` unlocks the collections API
+
+<InlineCompilerError
+:line="5"
+text="filter" message="Unresolved reference 'filter' on receiver of type 'Team'"
+style="--inline-compiler-error-message-size: 1.35rem"
+>
+
+```kotlin
+class Team(private val members: List<Member>) {
+  operator fun iterator(): Iterator<Member> = members.iterator()
+}
+
+team.filter { it.age >= 18 }.map { it.name }
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# `Iterable` unlocks the collections API
+
+<DrawnAnnotation text=": Iterable<Member>" label="Every `Iterable<T>` extension now applies to `Team`" :geometry="{ label: { x: 0.70, y: 0.30 } }" />
+<DrawnAnnotation text="override fun iterator()" label="`Iterable.iterator()` is already an operator" :geometry="{ label: { x: 0.40, y: 0.60 } }" />
+
+```kotlin
+class Team(private val members: List<Member>) : Iterable<Member> {
+  override fun iterator(): Iterator<Member> = members.iterator()
+}
+
+team.filter { it.age >= 18 }.map { it.name }
+```
+```console
+[Ada]
+```
