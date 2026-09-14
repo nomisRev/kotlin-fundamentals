@@ -17,6 +17,10 @@ class SessionBuilder(private val title: String) {
   var minutes: Int = 30
 
   fun build(): Session {
+
+    val x = ["a","bb", "ccc"].groupingBy { it.length }
+    ["a","bb", "ccc"].groupBy({ it.length }) { it.encodeToByteArray()  }
+
     require(minutes > 0) { "Session duration must be positive" }
     return Session(title, speaker, minutes)
   }

@@ -179,30 +179,144 @@ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
 
 ---
 
-# Functions that take lambdas
+# Collections API
 
-<DrawnAnnotation text="filter" label="Filter elements out of the `Iterable`" />
+- `map` & `flatMap`
+- `filter` & `mapNotNull`
+- `groupBy`, `associate`
+- `partition`
+- `sumOf`, `maxOf`, `minOf`
+- `fold` & `reduce`
+
+---
+
+# FlatMap vs Map
+
+<DrawnAnnotation text="-> B" label="Map A to _single_ B" :connect="false" />
+<DrawnAnnotation text="-> Iterable<B>" label="Map A to _many_ B's" color="var(--code-window-amper-color)" :connect="false"/>
 
 ```kotlin
-fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
-
-[1, 2, 3]
-    .filter { it % 2 == 0  }
-    .map { it * 2 }
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 ```
 
 ---
 
-# Functions that take lambdas
+# FlatMap vs Map
 
-<DrawnAnnotation text="filter" label="Filter elements out of the `Iterable`" />
+<DrawnAnnotation text="-> B" label="Map A to _single_ B" :connect="false" />
+<DrawnAnnotation text="-> Iterable<B>" label="Map A to _many_ B's" color="var(--code-window-amper-color)" :connect="false"/>
 
 ```kotlin
-fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
+ 
+ [1, 2, 3].map { it + 1 }    // [2, 3, 4]
+[1, 2, 3].map { [it, it+1] } // [1, 2, 2, 3, 3, 4]
+```
 
-[1, 2, 3]
-    .filter { it % 2 == 0  }
-    .map { it * 2 }
+---
+
+# Filter
+
+<DrawnAnnotation text="-> Boolean" label="If `true` it's allowed to _passthrough_ the filter" />
+
+```kotlin
+ fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ 
+[1, 2, 3].filter { it % 2 == 0 } // [2]
+```
+
+---
+
+# Filter
+
+<DrawnAnnotation text="filterNot" label="filterNot flips the predicate" />
+
+```kotlin
+ fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ 
+[1, 2, 3].filter { it % 2 == 0 } // [2]
+[1, 2, 3].filterNot { it % 2 == 0 } // [1, 3]
+```
+
+---
+
+# Map & Filter
+
+<DrawnAnnotation text="filterNot" label="filterNot flips the predicate" />
+
+```kotlin
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ 
+[1, 2, 3].map { if (it % 2 == 0) it else null } // [null, 2, null]
+```
+
+---
+
+# Map & Filter
+
+```kotlin
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ 
+[1, 2, 3].map { if (it % 2 == 0) it else null }
+    .filter { it != null } // [2]
+```
+
+---
+
+# Map & Filter
+
+```kotlin
+ fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+ fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ 
+val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
+    .filter { it != null } // [2]
+```
+
+---
+
+# Grouping
+
+```kotlin
+fun <A, B> Iterable<A>.groupBy(keySelector: (A) -> B): Map<B, List<A>>
+```
+
+---
+
+# Grouping
+
+```kotlin
+fun <A, B> Iterable<A>.groupBy(keySelector: (A) -> B): Map<B, List<A>>
+
+["a", "aaa", "bb", "ab", "ccc"].groupBy { it.length }
+```
+
+---
+
+# Grouping
+
+```kotlin
+fun <A, B> Iterable<A>.groupBy(keySelector: (A) -> B): Map<B, List<A>>
+
+val result: Map<Int, String> =
+    ["a", "aaa", "bb", "ab", "ccc"]
+        .groupBy { it.length }
+```
+
+---
+
+# Grouping
+
+```kotlin
+fun <A, B> Iterable<A>.groupBy(keySelector: (A) -> B): Map<B, List<A>>
+
+val result: Map<Int, ByteArray> =
+    ["a", "aaa", "bb", "ab", "ccc"]
+        .groupBy({ it.length }) { it.encodeToByteArray() }
 ```
 
 ---

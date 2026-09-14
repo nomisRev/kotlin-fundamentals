@@ -215,7 +215,7 @@ fun changeGreeting(list: List<String>) {
 
 # Every function returns a value
 
-<DrawnAnnotation text="Unit" :occurrence="2" label="Return `Unit` when there is no output" :geometry="{ label: { x: 0.2702, y: 0.5817 }, connector: { type: 'quadratic', start: { x: 0.1861, y: 0.3296 }, control: { x: 0.2134, y: 0.4381 }, end: { x: 0.1993, y: 0.5481 } } }" :connect="false"/>
+<DrawnAnnotation text="Unit" :occurrence="2" label="Return `Unit` when there is no output" :geometry="{ label: { x: 0.3841, y: 0.3322 }, connector: { type: 'quadratic', start: { x: 0.1861, y: 0.3296 }, control: { x: 0.2134, y: 0.4381 }, end: { x: 0.1993, y: 0.5481 } } }" :connect="false"/>
 
 ```kotlin
 fun helloWorld(): Unit {
@@ -248,7 +248,7 @@ magic-move
 
 # Every function returns a value
 
-<DrawnAnnotation text="val unit: Unit = " label="There are no procedures, only functions" :connect="false"/>
+<DrawnAnnotation text="val unit: Unit = " label="Unlike Java’s void, Unit has a single value" :connect="false" :geometry="{ label: { x: 0.3061, y: 0.4654 } }"/>
 
 ```kotlin
 fun helloWorld() {
@@ -267,22 +267,13 @@ There are no procedures in Kotlin. Every function returns a value.
 
 ---
 
-# Return values are meant to be used
+# Expression bodies drop the block
 
-> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
-
-<DrawnAnnotation text="@MustUseReturnValues" :connect="false"/>
-<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red" :connect="false"/>
+<DrawnAnnotation text=" {" :connect="false" />
+<DrawnAnnotation text="}" label="Function with _block body_" :connect="false"  :geometry="{ label: { x: 0.2760, y: 0.3319 } }"/>
 
 ```kotlin
-@MustUseReturnValues
-class Calculator {
-  fun calculate(): Int = 42
-}
-
-fun example(calculator: Calculator) {
-  calculator.calculate()
-  val result = calculator.calculate()
+fun sum(a: Int, b: Int): Int {
 }
 ```
 
@@ -290,34 +281,9 @@ fun example(calculator: Calculator) {
 magic-move
 ---
 
-# Return values are meant to be used
-
-> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
-
-<DrawnAnnotation text="@IgnorableReturnValue" :connect="false"/>
-<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional" :connect="false"/>
-
-```kotlin
-@MustUseReturnValues
-class Calculator {
-  private var total = 0
-  fun calculate(): Int = total
-
-  @IgnorableReturnValue
-  fun add(value: Int): Calculator = apply { total += value }
-}
-
-fun example(calculator: Calculator) {
-  calculator.add(1)
-  val result = calculator.calculate()
-}
-```
-
----
-
 # Expression bodies drop the block
 
-<DrawnAnnotation text="return a + b" label="A block body needs an explicit `return`" :connect="false"/>
+<DrawnAnnotation text="return a + b" label="A block body needs an explicit `return`" :connect="false" :geometry="{ label: { x: 0.3677, y: 0.3769 } }"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int {
@@ -331,78 +297,36 @@ magic-move
 
 # Expression bodies drop the block
 
-<DrawnAnnotation text="= a + b" label="A single expression, no braces and no `return`" :connect="false"/>
+<DrawnAnnotation text=" = ..." label="Function with an _expression body_" :connect="false"/>
+
+```kotlin no-compile
+fun sum(a: Int, b: Int): Int = ...
+```
+
+---
+magic-move
+---
+
+# Expression bodies drop the block
+
+<DrawnAnnotation text="= a + b" label="_assign_ a single expression to the function\nno braces and no `return`" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
 ```
 
-<!--
-Function block body contains multiple statements.
-Function expression body contains a single expression.
--->
-
 ---
-
-# Extension functions add a receiver
-
-<DrawnAnnotation text="Int." label="The receiver type" :connect="false"/>
-<DrawnAnnotation text="this" label="The receiver value" :connect="false"/>
-<DrawnAnnotation text="4.twice()" label="Call with dot syntax" :connect="false"/>
-
-```kotlin
-fun twice(number: Int): Int = number * 2
-val six = twice(3)
-```
-
-```kotlin
-fun Int.twice(): Int = this * 2
-val eight = 4.twice()
-```
-
-<!--
-The function is declared outside Int. Extending a type requires no changes to its source.
-These are separate examples: on the JVM, both declarations would otherwise have the same signature.
--->
-
----
-
-# The receiver is available as `this`
-
-<DrawnAnnotation text="get" label="Receiver members are available without repeating `this`" :at="1" passive :connect="false"/>
-<DrawnAnnotation text="length" :at="1" passive :connect="false"/>
-
-````md magic-move
-```kotlin
-fun String.lastCharacter(): Char =
-  this.get(this.length - 1)
-
-val letter = "Kotlin".lastCharacter() // 'n'
-```
-```kotlin
-fun String.lastCharacter(): Char =
-  get(length - 1)
-
-val letter = "Kotlin".lastCharacter() // 'n'
-```
-````
-
-<!--
-Extensions do not add actual class members or grant access to private members.
-[click] The receiver's get function and length property are available without an explicit this.
-This example assumes a non-empty string.
--->
-
+magic-move
 ---
 
 # Default arguments replace overloads
 
-<DrawnAnnotation text="fun sum(a: Int, b: Int): Int = sum(a, b, 0)" label="Explicit overload for an optional `c`" :connect="false"/>
+<DrawnAnnotation text="= sum(a, b, 0)" label="Explicit overload for an optional `c`" :connect="false" :geometry="{ label: { x: 0.4690, y: 0.3677 } }"/>
 
 ```kotlin
-fun sum(a: Int, b: Int, c: Int): Int = a + b + c
-
 fun sum(a: Int, b: Int): Int = sum(a, b, 0)
+
+fun sum(a: Int, b: Int, c: Int): Int = a + b + c
 ```
 
 ---
@@ -436,22 +360,12 @@ magic-move
 # Default arguments replace overloads
 
 <DrawnAnnotation text="sum(1, 1)" label="`c` falls back to its default" :connect="false"/>
-<DrawnAnnotation text="sum(1, 1, 1)" :connect="false"/>
 
 ```kotlin
 fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
 
 val two = sum(1, 1)
-val three = sum(1, 1, 1)
 ```
-
-<!--
-In Kotlin you can avoid overloads assigning default arguments to any number of parameters.
-A default argument is defined assigning an expression after the parameter type.
-The function will use the default argument when the caller does not provide the parameter with one.
-
-Default arguments can be used to add functionality to APIs keeping retro-compatibility as it does not break client code.
--->
 
 ---
 
@@ -484,87 +398,6 @@ val two = sum(1, c = 1)
 
 ---
 
-# Named arguments clarify the call
-
-<DrawnAnnotation text="length: Int = message.length" label="Defaults can depend on earlier parameters" :connect="false"/>
-
-```kotlin
-fun print(
-  message: String,
-  offset: Int = 0,
-  length: Int = message.length,
-) { /*...*/ }
-```
-
----
-magic-move
----
-
-# Named arguments clarify the call
-
-<DrawnAnnotation text="offset = 6, length = 6" label="Name the arguments to say what each value means" :connect="false"/>
-
-```kotlin
-fun print(
-  message: String,
-  offset: Int = 0,
-  length: Int = message.length,
-) { /*...*/ }
-
-print("Hello World!", offset = 6, length = 6) // World!
-```
-
----
-magic-move
----
-
-# Named arguments clarify the call
-
-<DrawnAnnotation text="length = 5" label="Skip a defaulted parameter entirely" :connect="false"/>
-
-```kotlin
-fun print(
-  message: String,
-  offset: Int = 0,
-  length: Int = message.length,
-) { /*...*/ }
-
-print("Hello World!", offset = 6, length = 6) // World!
-print("Hello World!", length = 5)             // Hello
-```
-
----
-magic-move
----
-
-# Named arguments clarify the call
-
-<DrawnAnnotation text="length = 6, message" label="Named arguments can come in any order" :connect="false"/>
-
-```kotlin
-fun print(
-  message: String,
-  offset: Int = 0,
-  length: Int = message.length,
-) { /*...*/ }
-
-print("Hello World!", offset = 6, length = 6) // World!
-print("Hello World!", length = 5)             // Hello
-print(length = 6, message = "Hello World!", offset = 6)
-```
-
-<!--
-When calling a function, you can name one or more of its arguments.
-This may be helpful when a function has many arguments, and it's difficult to associate a value with an argument,
-especially if it's a boolean or null value.
-
-When you use named arguments in a function call, you can freely change the order they are listed in, and if you want
-to use their default values you can just leave them out altogether.
-i.e: read("Hello World!", offset = 6, 6) - Mixing named and positioned arguments is not allowed
--->
-
----
-
 # Varargs take any number of arguments
 
 <DrawnAnnotation text="vararg" label="Any number of arguments of the same type" :geometry="{ label: { x: 0.2891, y: 0.4462 } }" :connect="false"/>
@@ -592,6 +425,27 @@ val twentyOne = sum(1, 2, 3, 4, 5, 6)
 
 val array = intArrayOf(1, 2, 3, 4, 5, 6)
 val spread = sum(*array)
+```
+
+---
+magic-move
+---
+
+# Varargs take any number of arguments
+
+<DrawnAnnotation text="*" occurrence="2" :connect="false"/>
+<DrawnAnnotation text="toIntArray()" label="Double copy" :connect="false" :geometry="{ label: { x: 0.2824, y: 0.6525 } }"/>
+
+```kotlin
+fun sum(vararg numbers: Int): Int = numbers.sum()
+
+val six = sum(1, 2, 3)
+val twentyOne = sum(1, 2, 3, 4, 5, 6)
+
+val array = intArrayOf(1, 2, 3, 4, 5, 6)
+val spread = sum(*array)
+
+sum(*listOf(1, 2, 3, 4, 5, 6).toIntArray())
 ```
 
 ---
@@ -633,13 +487,75 @@ val list = listOf(1, 2, 3, 4, 5, 6)
 val spread = sum(list)
 ```
 
-<!--
-Simplifies the caller side by avoiding collections at all
+---
 
-Visible type for caller is Int. Inside the function body it is Array<Int>
-Only one varargs is allowed.
-Must be last parameter. Compiler can't disambiguate when the varargs end, and the other parameters start.
--->
+# Extension functions add a receiver
+
+<DrawnAnnotation text="Int." label="The receiver type" :connect="false" />
+<DrawnAnnotation text="this" label="The receiver value" at="1" color="var(--fundamentals-blue)" :connect="false" :geometry="{ label: { x: 0.4527, y: 0.3820 } }"/>
+
+```kotlin
+fun sum(a: Int, b: Int): Int = a + b
+
+fun Int.add(b: Int): Int = this + b
+```
+
+---
+magic-move
+---
+
+# Extension functions add a receiver
+
+```kotlin
+fun sum(a: Int, b: Int): Int = a + b
+
+fun Int.add(b: Int): Int = this + b
+
+sum(1, 2) // 3
+1.add(2) // 3
+```
+
+---
+magic-move
+---
+
+# Extension functions add a receiver
+
+<DrawnAnnotation text="Int." label="The receiver type" at="0" :connect="false" :geometry="{ label: { x: 0.1611, y: 0.4491 } }"/>
+<DrawnAnnotation text="this" label="The receiver value" at="1" color="var(--fundamentals-blue)" :connect="false" :geometry="{ label: { x: 0.4527, y: 0.3820 } }"/>
+<DrawnAnnotation text="4.twice()" label="Call with dot syntax" at="2" color="var(--fundamentals-pink)" :connect="false"/>
+
+```kotlin
+fun twice(number: Int): Int = number * 2
+val six = twice(3)
+```
+
+```kotlin
+fun Int.twice(): Int = this * 2
+val eight = 4.twice()
+```
+
+---
+
+# The receiver is available as `this`
+
+<DrawnAnnotation text="get" label="Receiver members are available without repeating `this`" :at="1" passive :connect="false"/>
+<DrawnAnnotation text="length" :at="1" passive :connect="false"/>
+
+````md magic-move
+```kotlin
+fun String.lastCharacter(): Char =
+  this.get(this.length - 1)
+
+val letter = "Kotlin".lastCharacter() // 'n'
+```
+```kotlin
+fun String.lastCharacter(): Char =
+  get(length - 1)
+
+val letter = "Kotlin".lastCharacter() // 'n'
+```
+````
 
 ---
 class: exercise-slide
@@ -968,7 +884,7 @@ fun permission(role: UserRole): Int {
 # `for` walks collections and ranges
 
 <DrawnAnnotation text="1..<10" label="Open-ended range" :geometry="{ label: { x: 0.2289, y: 0.4305 } }" :connect="false"/>
-<DrawnAnnotation text="6 downTo 0 step 2" label="Ranges step in either direction with steps" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.4706, y: 0.4985 } }" :connect="false"/>
+<DrawnAnnotation text="6 downTo 0 step 2" label="Ranges step in either direction with steps" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4706, y: 0.4985 } }" :connect="false"/>
 
 ```kotlin
 for (item in ["One", "Two", "Three"]) print("$item, ") // One, Two, Three,

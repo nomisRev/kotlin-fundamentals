@@ -80,6 +80,7 @@
   --slidev-font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --fundamentals-purple: #7954f6;
   --fundamentals-pink: #eb55e6;
+  --fundamentals-blue: var(--code-window-amper-color);
   --fundamentals-ink: #1f2023;
 
   /* Default colour for DrawnAnnotation strokes and labels. Keep the hard

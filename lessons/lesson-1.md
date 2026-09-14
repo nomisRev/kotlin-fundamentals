@@ -60,7 +60,7 @@ magic-move
 
 > Kotlin compiles to Java compatible bytecode
 
-<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" :connect="false" :geometry="{ label: { x: 0.2555, y: 0.6518 } }"/>
+<DrawnAnnotation text="java -jar hello.jar" label="Runs on any JVM" :connect="false" :geometry="{ label: { x: 0.3051, y: 0.6520 } }"/>
 
 ```kotlin
 fun main() {
@@ -373,6 +373,38 @@ kotlin {
 ```
 
 ---
+magic-move
+---
+
+# Build system: Gradle
+
+<DrawnAnnotation text="mavenCentral" label="Need to explicitly referenve mavenCentral" :connect="false"/>
+
+```kotlin gradle
+plugins {
+  kotlin("jvm") version "2.4.10"
+  application
+}
+
+application {
+  mainClass = "org.jetbrains.example.MainKt"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation(project(":shared"))
+}
+
+kotlin {
+  jvmToolchain(21)
+}
+```
+
+---
 class: maven-slide
 ---
 
@@ -536,7 +568,9 @@ kodee: heart
 
 # Run it from the CLI
 
-- `kotlin run`, `./gradlew run`, or `mvn exec:java -Dexec.mainClass=...`
+<DrawnAnnotation text="./kotlin" label="Will boostrap Toolchain on first run" />
+
+- `./kotlin run` or `kotlin run` if Kotlin Toolchain is installed
 
 ---
 layout: intro
