@@ -1,6 +1,6 @@
 ---
 theme: kotlin
-transition: view-transition
+transition: fade
 layout: cover
 class: fundamentals-cover
 canvasWidth: 1440
