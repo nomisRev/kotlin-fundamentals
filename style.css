@@ -373,3 +373,18 @@ html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6
 .wide-code-slide { --code-window-columns: 112; }
 .maven-slide { --code-window-columns: 96; }
 
+
+/* Lesson 3: a big red verdict stamped across the bottom of a slide. */
+.slidev-layout .dont-do-this {
+  position: absolute;
+  inset: 50% 0 0 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #e4463b;
+}

@@ -147,7 +147,7 @@ const val upper = "kotlin".uppercase()
 
 > `-Xcompanion-blocks-and-extensions`
 
-<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :geometry="{ label: { x: 0.55, y: 0.62 } }"/>
+<DrawnAnnotation text="companion {" label="Shorthand for `companion object { }`" :geometry="{ label: { x: 0.5575, y: 0.4891 } }"/>
 
 ```kotlin
 class Money(val cents: Int) {

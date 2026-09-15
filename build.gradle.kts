@@ -8,6 +8,7 @@ repositories {
 
 dependencies {
   implementation("io.ktor:ktor-server-core-jvm:3.4.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
 }
 
 kotlin {

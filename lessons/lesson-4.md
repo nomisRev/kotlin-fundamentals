@@ -199,12 +199,6 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 class: collection-hierarchy-slide
 ---
 
-<KotlinCollectionHierarchy />
-
----
-class: collection-hierarchy-slide
----
-
 <KotlinCollectionContracts />
 
 ---

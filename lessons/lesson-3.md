@@ -873,6 +873,25 @@ companion val Vector.UnitX
 
 ---
 
+# Representing states by Booleans
+
+<DrawnAnnotation text="String?" label="non-null if `hasError && isLoading == false`" on="0"  :geometry="{ label: { x: 0.5834, y: 0.2611 } }"/>
+<DrawnAnnotation text="Throwable?" label="non-null if `hasError == true`" on="1"  :geometry="{ label: { x: 0.5075, y: 0.3184 } }"/>
+<DrawnAnnotation text="isLoading" label="When `true` `text` and `error` are `null`" on="2"  :geometry="{ label: { x: 0.5504, y: 0.4320 } }"/>
+
+```kotlin
+data class UiState(
+    val text: String?,
+    val error: Throwable?,
+    val hasError: Boolean,
+    val isLoading: Boolean
+)
+```
+
+<div v-click="3" class="dont-do-this">DON'T DO THIS!</div>
+
+---
+
 # Sealed classes close a hierarchy
 
 <DrawnAnnotation text="sealed class" label="Sealed hierarchy, all subclasses are known and live in the same module & package" :geometry="{ label: { x: 0.6829, y: 0.2198, width: 0.4449 } }"/>
@@ -881,7 +900,7 @@ companion val Vector.UnitX
 sealed class UiState {
   data object Loading : UiState()
   data class Content(val text: String) : UiState()
-  data class Error(val message: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
 }
 ```
 
@@ -897,54 +916,9 @@ magic-move
 sealed class UiState {
   data object Loading : UiState()
   data class Content(val text: String) : UiState()
-  data class Error(val message: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
 }
 ```
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<DrawnAnnotation text="when (state)" label="Exhaustive without `else` since all subtypes are known"/>
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val message: String) : UiState()
-}
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content -> state.text
-  is UiState.Error -> "Error: ${state.message}"
-}
-```
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<InlineCompilerError text="when (state) {" message="'when' expression must be exhaustive.\nAdd the 'is Error' branch or an 'else' branch">
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val message: String) : UiState()
-}
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content -> state.text
-}
-```
-
-</InlineCompilerError>
 
 ---
 magic-move
@@ -954,23 +928,77 @@ magic-move
 
 <SmartCast text="state" occurrence="3">
 <SmartCast text="state" occurrence="4">
+<DrawnAnnotation text="when (state)" label="Exhaustive without `else` since all subtypes are known"/>
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content -> state.text
+  is UiState.Error -> "Error: ${state.error.message}"
+}
+```
+
+</SmartCast>
+</SmartCast>
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<InlineCompilerError text="when (state) {" message="'when' expression must be exhaustive.\nAdd the 'is Error' branch or an 'else' branch">
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content -> state.text
+}
+```
+
+</InlineCompilerError>
+</SmartCast>
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<SmartCast text="state" occurrence="4">
+<SmartCast text="state" occurrence="5">
 <DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression" />
 
 ```kotlin
 sealed class UiState {
   data object Loading : UiState()
   data class Content(val text: String) : UiState()
-  data class Error(val message: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
 }
 
 fun message(state: UiState) = when (state) {
   UiState.Loading -> "Loading…"
   is UiState.Content if state.text.contains("error") -> "Unknown error"
   is UiState.Content -> state.text
-  is UiState.Error -> "Error: ${state.message}"
+  is UiState.Error -> "Error: ${state.error.message}"
 }
 ```
 
+</SmartCast>
 </SmartCast>
 </SmartCast>
 
@@ -1266,7 +1294,7 @@ open class Student(override val id: String, name: String, age: Int) : Person(nam
 # Classes are final by default
 
 <DrawnAnnotation text="open val" />
-<DrawnAnnotation text="override var" label="Same applies to properties, and we can change `val` to `var` but not other way around" />
+<DrawnAnnotation text="override var" label="Allowed to change `val` to `var` but not other way around" />
 
 ```kotlin
 open class Person(val name: String, val age: Int) {

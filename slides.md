@@ -71,3 +71,6 @@ src: ./lessons/lesson-3.md
 ---
 src: ./lessons/lesson-5.md
 ---
+---
+src: ./lessons/appendix-compiler-flags.md
+---
