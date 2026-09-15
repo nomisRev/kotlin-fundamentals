@@ -184,7 +184,7 @@ html.dark {
 
 .section-slide h1,
 .exercise-slide h1 {
-  max-width: 48rem;
+  max-width: 55rem;
   font-size: 4.4rem !important;
 }
 
@@ -372,3 +372,4 @@ html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6
    deck default to fit the slide. */
 .wide-code-slide { --code-window-columns: 112; }
 .maven-slide { --code-window-columns: 96; }
+

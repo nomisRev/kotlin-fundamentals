@@ -88,7 +88,7 @@ val nullLambda: (() -> Unit)? = null
 
 # Lambda with receiver
 
-<DrawnAnnotation text="String.()" label="`lambda with receiver`"/>
+<DrawnAnnotation text="String.()" label="`lambda with receiver`, extension function equivalent for lambda (DSL lesson)."/>
 <DrawnAnnotation text="this." label="`this` `String` receiver value inside lambda" on="1" color="var(--fundamentals-blue)"/>
 
 ```kotlin
@@ -101,7 +101,7 @@ magic-move
 
 # Lambda with receiver
 
-<DrawnAnnotation text="{ l"  label="`this.` can be omitted"/>
+<DrawnAnnotation text="{ l"  label="`this.` can be omitted" color="var(--fundamentals-blue)"/>
 
 ```kotlin
 val extension: String.() -> Int = { length }
@@ -113,7 +113,7 @@ magic-move
 
 # Method references
 
-<DrawnAnnotation text="String::length"  label="`::` references a method on a type"/>
+<DrawnAnnotation text="String::length" label="`::` references a member function"/>
 
 ```kotlin
 val len: String.() -> Int = String::length
@@ -130,7 +130,21 @@ magic-move
 ```kotlin
 val len: String.() -> Int = String::length
 
-val len2: (String) -> Int = String::length
+val len2: (String) -> Int = len
+```
+
+---
+magic-move
+---
+
+# Method references
+
+<DrawnAnnotation text=".len()" label="Lambda with receiver can be called using extension function syntax"/>
+
+```kotlin
+val len: String.() -> Int = String::length
+
+val len2: (String) -> Int = len
 
 "test".len()
 len2("test")
