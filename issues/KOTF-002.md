@@ -14,7 +14,7 @@ mark silently never appeared on the slide; only the export log showed
 [DrawnAnnotation] Text "text.isBlank()" was not found in the slot.
 ```
 
-`lessons/lesson-1.md`, `lesson-2.md`, and `lesson-3.md` have uncommitted edits
+`lessons/lesson-1.md`, `lesson-2.md`, and `lesson-4.md` have uncommitted edits
 and the string `isBlank` no longer occurs in any lesson, so the specific case
 may already be fixed. Nothing confirms that the other annotations still match.
 
