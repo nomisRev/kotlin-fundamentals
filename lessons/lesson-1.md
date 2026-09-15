@@ -142,7 +142,7 @@ magic-move
 product: jvm/app
 
 dependencies:
-  - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
   - ./shared
 ```
 
@@ -158,7 +158,7 @@ magic-move
 product: jvm/app
 
 dependencies:
-  - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
   - ./shared
 
 test-dependencies:
@@ -171,13 +171,13 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" :geometry="{ label: { x: 0.3079, y: 0.7912 }, connector: { type: 'quadratic', start: { x: 0.1597, y: 0.6595 }, control: { x: 0.1992, y: 0.6599 }, end: { x: 0.2285, y: 0.6207 } } }"/>
+<DrawnAnnotation text="settings:" label="Toolchain settings replace plugin blocks" :geometry="{ label: { x: 0.4986, y: 0.6926 }, connector: { type: 'quadratic', start: { x: 0.1597, y: 0.6595 }, control: { x: 0.1992, y: 0.6599 }, end: { x: 0.2285, y: 0.6207 } } }"/>
 
 ```yaml toolchain
 product: jvm/app
 
 dependencies:
-  - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
   - ./shared
 
 test-dependencies:
@@ -186,6 +186,8 @@ test-dependencies:
 settings:
   kotlin:
     version: 2.4.10
+    freeCompilerArgs:
+      - "-Xcollection-literals"
 ```
 
 ---
@@ -200,7 +202,7 @@ magic-move
 product: jvm/app
 
 dependencies:
-  - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
   - ./shared
 
 test-dependencies:
@@ -220,7 +222,7 @@ magic-move
 
 # A module is one YAML file
 
-<DrawnAnnotation text="apply:"/>
+<DrawnAnnotation text="apply:" label="Apply common configurations"  :geometry="{ label: { x: 0.6025, y: 0.3852 } }"/>
 
 ```yaml toolchain
 product: jvm/app
@@ -229,7 +231,7 @@ apply:
   - ../shared.module-template.yaml
 
 dependencies:
-  - org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
   - ./shared
 
 test-dependencies:
@@ -288,7 +290,7 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0" label="Maven coordinates, resolved from Maven Central"/>
+<DrawnAnnotation text="org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0" label="Maven coordinates, resolved from Maven Central"/>
 
 ```kotlin gradle
 plugins {
@@ -296,7 +298,7 @@ plugins {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
 }
 ```
 
@@ -314,7 +316,7 @@ plugins {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
   implementation(project(":shared"))
 }
 ```
@@ -339,7 +341,7 @@ application {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
   implementation(project(":shared"))
 }
 ```
@@ -363,7 +365,7 @@ application {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
   implementation(project(":shared"))
 }
 
@@ -395,7 +397,7 @@ repositories {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
   implementation(project(":shared"))
 }
 

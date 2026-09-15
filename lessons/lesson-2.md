@@ -85,15 +85,56 @@ message = "Hello from Kotlin!"
 </InlineCompilerError>
 </InlineCompilerError>
 
-<!--
-Variables can be defined as read-only using the val keyword instead of var.
-Apart from the keyword change, the syntax remains the same.
+---
 
-However, this simple change has a big impact. The variable cannot be reassigned after the
-initialization, and trying to do so will result in a compilation error.
+# Kotlin Property
 
-Try to use read-only variables when possible as mutability adds a layer of complexity to reason with code.
--->
+<DrawnAnnotation text="field" label="Refers to the actual backing field. Return mandatory." on="0"  :geometry="{ label: { x: 0.5062, y: 0.4676 } }"/>
+<DrawnAnnotation text="field = " label="In the setter the backing field can be assigned" on="1"  :geometry="{ label: { x: 0.3832, y: 0.6672 } }"/>
+
+> `var` property has `get` and `set` functions
+
+```kotlin
+var number: Int = 42
+  get() {
+      return field
+  }
+  set(value) {
+      field = value
+  }
+```
+
+---
+
+# Kotlin Property
+
+<DrawnAnnotation text="println" label="Allows customisation without changing API" :geometry="{ label: { x: 0.5062, y: 0.4676 } }"/>
+
+> `val` property has `get` 
+
+```kotlin
+val number: Int = 42
+  get() {
+    println("get number")
+    return field
+  }
+```
+
+---
+
+# Kotlin Property
+
+<DrawnAnnotation text="return 42" label="No backing field"  :geometry="{ label: { x: 0.3009, y: 0.4880 } }"/>
+
+> `val` property has `get`
+
+```kotlin
+val number: Int
+  get() {
+    println("get number")
+    return 42
+  }
+```
 
 ---
 
@@ -488,7 +529,7 @@ magic-move
 
 <DrawnAnnotation text="[1, 2, 3]"/>
 <DrawnAnnotation text="[1, 2, 3, 4, 5, 6]"/>
-<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" occurrence="2" label="Collection literals, experimental in Kotlin 2.4"/>
+<DrawnAnnotation text="[1, 2, 3, 4, 5, 6]" occurrence="2" label="Collection literals, experimental in Kotlin 2.4 (-Xcollection-literals)" :geometry="{ label: { x: 0.4081, y: 0.7548 } }"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()

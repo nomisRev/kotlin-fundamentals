@@ -31,7 +31,7 @@ const stage = computed(() => Math.min($clicks.value, 5))
       <g>
         <rect class="year" x="720" y="22" width="180" height="78" rx="39" />
         <text class="year-text" x="810" y="61">2010</text>
-        <text class="event" x="324" y="158">First commit at <tspan class="accent">JetBrains</tspan></text>
+        <text class="event" x="324" y="170">First commit at <tspan class="accent">JetBrains</tspan></text>
       </g>
 
       <path class="timeline build" :class="{ shown: stage >= 1 }" d="M914 24 V301" />
@@ -39,37 +39,37 @@ const stage = computed(() => Math.min($clicks.value, 5))
         <rect class="year" x="943" y="170" width="182" height="76" rx="38" />
         <text class="year-text" x="1034" y="208">2011</text>
       </g>
-      <text class="build event event-build event-1" :class="{ shown: stage >= 1 }" x="947" y="301"><tspan class="accent">Kotlin</tspan><tspan> publicly announced</tspan></text>
+      <text class="build event event-build event-1" :class="{ shown: stage >= 1 }" x="947" y="313"><tspan class="accent">Kotlin</tspan><tspan> publicly announced</tspan></text>
 
       <path class="timeline build" :class="{ shown: stage >= 2 }" d="M914 301 V526" />
       <g class="build year-build" :class="{ shown: stage >= 2 }">
         <rect class="year" x="715" y="318" width="182" height="76" rx="38" />
         <text class="year-text" x="806" y="356">2016</text>
       </g>
-      <text class="build event event-build event-1" :class="{ shown: stage >= 2 }" x="466" y="451"><tspan class="accent">Kotlin 1.0</tspan><tspan> released</tspan></text>
-      <text class="build event event-build event-2" :class="{ shown: stage >= 2 }" x="131" y="526">Kotlin added into <tspan class="accent">SpringInitializer</tspan></text>
+      <text class="build event event-build event-1" :class="{ shown: stage >= 2 }" x="466" y="463"><tspan class="accent">Kotlin 1.0</tspan><tspan> released</tspan></text>
+      <text class="build event event-build event-2" :class="{ shown: stage >= 2 }" x="131" y="538">Kotlin added into <tspan class="accent">SpringInitializer</tspan></text>
 
       <path class="timeline build" :class="{ shown: stage >= 3 }" d="M914 526 V747" />
       <g class="build year-build" :class="{ shown: stage >= 3 }">
         <rect class="year later" x="937" y="539" width="182" height="76" rx="38" />
         <text class="year-text" x="1028" y="577">2017</text>
       </g>
-      <text class="build event event-build event-1" :class="{ shown: stage >= 3 }" x="947" y="672"><tspan class="accent later">Google</tspan><tspan> announces official Kotlin support</tspan></text>
-      <text class="build event event-build event-2" :class="{ shown: stage >= 3 }" x="947" y="747"><tspan class="accent later">Spring</tspan><tspan> 5.0 includes Kotlin into core</tspan></text>
+      <text class="build event event-build event-1" :class="{ shown: stage >= 3 }" x="947" y="684"><tspan class="accent later">Google</tspan><tspan> announces official Kotlin support</tspan></text>
+      <text class="build event event-build event-2" :class="{ shown: stage >= 3 }" x="947" y="759"><tspan class="accent later">Spring</tspan><tspan> 5.0 includes Kotlin into core</tspan></text>
 
       <path class="timeline build" :class="{ shown: stage >= 4 }" d="M914 747 V903" />
       <g class="build year-build" :class="{ shown: stage >= 4 }">
         <rect class="year later" x="720" y="768" width="180" height="76" rx="38" />
         <text class="year-text" x="810" y="806">2018</text>
       </g>
-      <text class="build event event-build event-1" :class="{ shown: stage >= 4 }" x="220" y="903"><tspan class="accent later">Kotlin Foundation</tspan><tspan> announced</tspan></text>
+      <text class="build event event-build event-1" :class="{ shown: stage >= 4 }" x="220" y="915"><tspan class="accent later">Kotlin Foundation</tspan><tspan> announced</tspan></text>
 
       <path class="timeline build" :class="{ shown: stage >= 5 }" d="M914 903 V1042" />
       <g class="build year-build" :class="{ shown: stage >= 5 }">
         <rect class="year later" x="937" y="908" width="182" height="76" rx="38" />
         <text class="year-text" x="1028" y="946">2024</text>
       </g>
-      <text class="build event event-build event-1" :class="{ shown: stage >= 5 }" x="947" y="1042"><tspan class="accent later">Kotlin 2.0</tspan><tspan> released</tspan></text>
+      <text class="build event event-build event-1" :class="{ shown: stage >= 5 }" x="947" y="1054"><tspan class="accent later">Kotlin 2.0</tspan><tspan> released</tspan></text>
 
     </svg>
 
@@ -107,7 +107,10 @@ svg { display: block; width: 100%; height: 100%; }
   text-anchor: middle;
   dominant-baseline: central;
 }
-.event { fill: var(--history-event); font: 48px 'JetBrains Sans', Arial, sans-serif; dominant-baseline: middle; }
+/* Event text sits on the alphabetic baseline (y is baseline + ~12px vs. the old
+   dominant-baseline: middle). WebKit resolves dominant-baseline per tspan from
+   that tspan's own font metrics, so the bold accent spans drifted upward in Safari. */
+.event { fill: var(--history-event); font: 48px 'JetBrains Sans', Arial, sans-serif; }
 .accent { fill: var(--purple); font-weight: 700; }
 .accent.later { fill: var(--violet); }
 
