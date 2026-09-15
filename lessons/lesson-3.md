@@ -18,16 +18,32 @@ class: type-hierarchy-slide
 
 <KotlinTypeHierarchy />
 
-<!--
-Kotlin has a unified type hierarchy. Every non-null type has `Any` as a supertype;
-`Any?` is the nullable top type. `Unit` has exactly one value, while `Nothing` has
-no values and can stand in for any return type because it never returns. The final
-build adds a pink "?" badge to `Any`, `String`, `Boolean`, `Number`, and `Nothing`:
-every type has a nullable counterpart, and `Nothing?` is the one type whose only
-possible value is `null`.
-The diagram is intentionally simplified: it shows representative branches rather
-than every standard-library type.
--->
+---
+
+# `Nothing` or bottom type
+
+<DrawnAnnotation text="Nothing" label="No values, can stand in for any return type because it never returns" />
+
+```kotlin
+fun TODO(): Nothing = throw NotImplementedError()
+```
+
+---
+
+# `Nothing` or bottom type
+
+<DrawnAnnotation text="Nothing" />
+<DrawnAnnotation text="Unit = TODO()" label="Nothing infers to _any_ type because it has _no value_" />
+
+```kotlin
+fun TODO(): Nothing = throw NotImplementedError()
+
+val int: Int = TODO()
+val string: String = TODO()
+val bool: Boolean = TODO()
+
+fun program(): Unit = TODO()
+```
 
 ---
 
@@ -66,33 +82,52 @@ val person = Person()
 ```
 
 ---
+magic-move
+---
 
-# Classes are final by default
+# The primary constructor is the class header
 
-<InlineCompilerError text="MyClass" :occurrence="2" message="This type is final, so it cannot be inherited from.">
+<DrawnAnnotation text="constructor" label="The `constructor` keyword is optional when there are no modifiers or annotations" :geometry="{ label: { x: 0.3894, y: 0.4756 } }"/>
 
 ```kotlin
-class MyClass
+class Person constructor()
 
-class MySubClass : MyClass()
+val person = Person()
 ```
-
-</InlineCompilerError>
 
 ---
 magic-move
 ---
 
-# Classes are final by default
-
-<DrawnAnnotation text="open" label="Explicit opt in to inheritance, prefer composition" :geometry="{ label: { x: 0.3242, y: 0.3762 }, connector: { type: 'quadratic', start: { x: 0.1016, y: 0.2278 }, control: { x: 0.1033, y: 0.2838 }, end: { x: 0.1016, y: 0.3496 } } }"/>
+# The primary constructor is the class header
 
 ```kotlin
-open class MyClass
+class Person @MyAnnotation private constructor()
 
-class MySubClass : MyClass()
+val person = Person()
 ```
 
+---
+magic-move
+---
+
+# The primary constructor is the class header
+
+```kotlin
+class Person(name: String, age: Int) {
+  val name: String
+  var age: Int
+  
+  init {
+      this.name = name
+      this.age = age
+  }
+}
+val person = Person("Olivia", 42)
+```
+
+---
+magic-move
 ---
 
 # The primary constructor is the class header
@@ -102,36 +137,8 @@ class Person(name: String, age: Int) {
   val name: String = name
   var age: Int = age
 }
+
 val person = Person("Olivia", 42)
-```
-
----
-magic-move
----
-
-# The primary constructor is the class header
-
-<DrawnAnnotation text="constructor" label="The `constructor` keyword is optional when there are no modifiers or annotations" :geometry="{ label: { x: 0.3894, y: 0.4756 } }"/>
-
-```kotlin
-class Person constructor(name: String, age: Int) {
-  val name: String = name
-  var age: Int = age
-}
-val person = Person("Olivia", 42)
-```
-
----
-magic-move
----
-
-# The primary constructor is the class header
-
-```kotlin
-class Person @MyAnnotation private constructor(name: String, age: Int) {
-  val name: String = name
-  var age: Int = age
-}
 ```
 
 ---
@@ -149,41 +156,21 @@ val person = Person("Olivia", 42)
 ```
 
 ---
-magic-move
----
-
-# Properties follow their keyword
-
-<DrawnAnnotation text="person.age = 43" label="A `var` property can be read and reassigned" :geometry="{ label: { x: 0.4496, y: 0.3464 } }"/>
-<InlineCompilerError :line="6" message="'val' cannot be reassigned.">
-
-```kotlin
-class Person(val name: String, var age: Int)
-
-val person = Person("Olivia", 42)
-person.age = 43
-
-person.name = "Ada"
-```
-
-</InlineCompilerError>
-
----
 
 # Properties become getters and setters in Java
 
-<DrawnAnnotation text="getState();" label="A public Kotlin `val` exposes a Java getter" :geometry="{ label: { x: 0.5895, y: 0.4373 } }"/>
-<DrawnAnnotation text="setCount(2);" label="A public Kotlin `var` exposes a getter and a setter" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.3597, y: 0.5056 } }"/>
+<DrawnAnnotation text="getName();" label="A public Kotlin `val` exposes a Java getter" :geometry="{ label: { x: 0.5895, y: 0.4373 } }"/>
+<DrawnAnnotation text="setAge(34);" label="A public Kotlin `var` exposes a getter and a setter" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.3597, y: 0.5056 } }"/>
 
 ```kotlin
-class MyClass(val state: String, var count: Int)
+class Person(val name: String, var age: Int)
 ```
 
 ```java
 public class JavaUsage {
-  void example(MyClass value) {
-    String state = value.getState();
-    value.setCount(2);
+  void example(Person value) {
+    String name = value.getName();
+    value.setAge(34);
   }
 }
 ```
@@ -196,13 +183,13 @@ public class JavaUsage {
 <DrawnAnnotation text="value.count = 2" label="A getter and setter pair becomes a mutable property" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.5145, y: 0.7538 } }"/>
 
 ```java
-public class JavaBean {
-  private String state;
-  private int count;
+public class Person {
+  private String name;
+  private int age;
 
-  public String getState() { return state; }
-  public int getCount() { return count; }
-  public void setCount(int count) { this.count = count; }
+  public String getName() { return name; }
+  public int getAge() { return age; }
+  public void setAge(int age) { this.age = age; }
 }
 ```
 
@@ -217,22 +204,22 @@ fun example(value: JavaBean) {
 
 # A boolean getter keeps its `is` prefix
 
-<DrawnAnnotation text="val open = value.isOpen" label="The property name matches the getter, `is` included" :geometry="{ label: { x: 0.5928, y: 0.5729 } }"/>
-<DrawnAnnotation text="value.isOpen = true" label="The setter still works through the same property" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.5341, y: 0.6514 } }"/>
+<DrawnAnnotation text="val allowed = value.isAllowed" label="The property name matches the getter, `is` included" :geometry="{ label: { x: 0.6452, y: 0.5925 } }"/>
+<DrawnAnnotation text="value.isAllowed = true" label="The setter still works through the same property" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.5455, y: 0.6517 } }"/>
 
 ```java
-public class Connection {
-  private boolean open;
+public class Person {
+  private boolean allowed;
 
-  public boolean isOpen() { return open; }
-  public void setOpen(boolean open) { this.open = open; }
+  public boolean isAllowed() { return allowed; }
+  public void setAllowed(boolean allowed) { this.allowed = allowed; }
 }
 ```
 
 ```kotlin
-fun example(value: Connection) {
-  val open = value.isOpen
-  value.isOpen = true
+fun example(value: Person) {
+  val allowed = value.isAllowed
+  value.isAllowed = true
 }
 ```
 
@@ -240,13 +227,51 @@ fun example(value: Connection) {
 
 # Initializers run in declaration order
 
-<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" :geometry="{ label: { x: 0.3434, y: 0.3903 } }"/>
-<DrawnAnnotation text="require(age >= 0)" label="Validate before the invalid instance 'escapes'" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.2972, y: 0.4976 } }"/>
+<DrawnAnnotation text="init {" label="Runs as part of the primary constructor" :geometry="{ label: { x: 0.3356, y: 0.3366 } }"/>
+<DrawnAnnotation text="require(age >= 0)" label="Validate before the invalid instance 'escapes'" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.3299, y: 0.4504 } }"/>
 
 ```kotlin
-class Person(name: String, age: Int) {
+class Person(name: String, val age: Int) {
   val name = name.lowercase()
-  val age = age
+    
+  init {
+    require(age >= 0) { "Age cannot be negative" }
+  }
+}
+```
+
+---
+
+# Initializers run in declaration order
+
+<DrawnAnnotation text="constructor" />
+<DrawnAnnotation text=": this(" label="Define secondary constructors. Must call `this(...)`."  :geometry="{ label: { x: 0.3790, y: 0.3929 } }"/>
+
+```kotlin
+class Person(name: String, val age: Int) {
+  val name = name.lowercase()
+  
+  constructor(member: Member): this(member.name, member.age)
+
+  init {
+    require(age >= 0) { "Age cannot be negative" }
+  }
+}
+```
+
+---
+
+# Initializers run in declaration order
+
+<DrawnAnnotation text="require(member.isNotBot)" label="Can include an initializer that runs **after** all super init"  :geometry="{ label: { x: 0.4542, y: 0.4661 } }"/>
+
+```kotlin
+class Person(name: String, val age: Int) {
+  val name = name.lowercase()
+  
+  constructor(member: Member): this(member.name, member.age) {
+      require(member.isNotBot) { "A bot cannot be a person" }
+  }
 
   init {
     require(age >= 0) { "Age cannot be negative" }
@@ -257,6 +282,8 @@ class Person(name: String, age: Int) {
 ---
 
 # Member functions
+
+<DrawnAnnotation text="println(&quot;Hello $to, my name is $name.&quot;)" label="Access to class and function state"  :geometry="{ label: { x: 0.5316, y: 0.3614 } }"/>
 
 ```kotlin
 class Person(val name: String, var age: Int) {
@@ -288,12 +315,13 @@ magic-move
 
 # Setters are customizable
 
-<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3516, y: 0.4172 } }"/>
+<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3561, y: 0.4540 } }"/>
 
 ```kotlin
 class TextBuffer {
   var text = ""
     set(value) {
+      println("Appending text: $value")
       field += value
     }
 }
@@ -305,12 +333,13 @@ magic-move
 
 # Setters are customizable
 
-<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.2707, y: 0.7476 } }"/>
+<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.4627, y: 0.7252 } }"/>
 
 ```kotlin
 class TextBuffer {
   var text = ""
     set(value) {
+      println("Appending text: $value")
       field += value
     }
 }
@@ -318,7 +347,12 @@ class TextBuffer {
 val buffer = TextBuffer()
 buffer.text = "Hello"
 buffer.text = ", world!"
-println(buffer.text) // Hello, world!
+println(buffer.text)
+```
+```console
+Appending text: Hello
+Appending text: , world!
+Hello, world!
 ```
 
 ---
@@ -343,8 +377,6 @@ magic-move
 
 # A getter can compute the value
 
-<DrawnAnnotation text="println(buffer.isEmpty) // false" label="The value follows `text`"/>
-
 ```kotlin
 class TextBuffer {
   var text = ""
@@ -354,9 +386,13 @@ class TextBuffer {
 }
 
 val buffer = TextBuffer()
-println(buffer.isEmpty) // true
+println(buffer.isEmpty)
 buffer.text = "Hello"
-println(buffer.isEmpty) // false
+println(buffer.isEmpty)
+```
+```console
+true
+false
 ```
 
 ---
@@ -383,7 +419,7 @@ magic-move
 
 # Expose the read, keep the write
 
-<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.5556, y: 0.6651 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }"/>
+<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4436, y: 0.6789 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }"/>
 <InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
 
 ```kotlin
@@ -397,10 +433,14 @@ class Connection {
 }
 
 val connection = Connection()
-println(connection.isOpen) // false
+println(connection.isOpen)
 connection.open()
-println(connection.isOpen) // true
+println(connection.isOpen)
 connection.isOpen = false
+```
+```console
+false
+true
 ```
 
 </InlineCompilerError>
@@ -1068,3 +1108,32 @@ fun message(problem: Problem): String = when (problem) {
     font-size: 1.9rem;
 }
 </style>
+
+
+# Classes are final by default
+
+<InlineCompilerError text="MyClass" :occurrence="2" message="This type is final, so it cannot be inherited from.">
+
+```kotlin
+class MyClass
+
+class MySubClass : MyClass()
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="open" label="Explicit opt in to inheritance, prefer composition" :geometry="{ label: { x: 0.3242, y: 0.3762 }, connector: { type: 'quadratic', start: { x: 0.1016, y: 0.2278 }, control: { x: 0.1033, y: 0.2838 }, end: { x: 0.1016, y: 0.3496 } } }"/>
+
+```kotlin
+open class MyClass
+
+class MySubClass : MyClass()
+```
+
+---

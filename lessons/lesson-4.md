@@ -154,6 +154,8 @@ len2("test")
 
 # Functions that take lambdas
 
+> A higher-order function is a function that takes or returns other functions as arguments or values
+
 ```kotlin
 fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 ```
@@ -198,6 +200,71 @@ class: collection-hierarchy-slide
 ---
 
 <KotlinCollectionHierarchy />
+
+---
+class: collection-hierarchy-slide
+---
+
+<KotlinCollectionContracts />
+
+---
+
+# A collection literal is a `List` by default
+
+<DrawnAnnotation text="[1, 2, 3]" label="No expected type, so the literal is a `List<Int>`" />
+
+```kotlin
+val numbers = [1, 2, 3]
+
+val list: List<Int> = numbers
+```
+
+---
+magic-move
+---
+
+# The expected type picks the collection
+
+<DrawnAnnotation text="Set<Int>" label="Literal builds a `Set`, duplicates collapse" :geometry="{ label: { x: 0.72, y: 0.29 } }" />
+<DrawnAnnotation text="MutableList<Int>" label="Literal builds a `MutableList`" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.72, y: 0.34 } }" />
+
+```kotlin
+val numbers = [1, 2, 3]
+
+val set: Set<Int> = [1, 2, 3, 3]
+val mutable: MutableList<Int> = [1, 2, 3]
+mutable.add(4)
+
+println(numbers)
+println(set)
+println(mutable)
+```
+```console
+[1, 2, 3]
+[1, 2, 3]
+[1, 2, 3, 4]
+```
+
+---
+magic-move
+---
+
+# The expected type picks the collection
+
+<DrawnAnnotation text="Iterable<Int>" label="A supertype of `List` still gets a `List`" :geometry="{ label: { x: 0.70, y: 0.43 } }" />
+<DrawnAnnotation text="sum([1, 2, 3])" label="A parameter type is an expected type too" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.55, y: 0.575 } }" />
+
+```kotlin
+val numbers = [1, 2, 3]
+
+val set: Set<Int> = [1, 2, 3, 3]
+val mutable: MutableList<Int> = [1, 2, 3]
+
+val iterable: Iterable<Int> = [1, 2, 3]
+
+fun sum(numbers: Iterable<Int>): Int = numbers.sum()
+sum([1, 2, 3])
+```
 
 ---
 
@@ -355,6 +422,8 @@ public <R> List<R> filterIsInstance(Iterable<R> values, Class<R> clazz)
 
 # Grouping
 
+<DrawnAnnotation text="List<T>" label="Aggregate values for a given key" />
+
 ```kotlin
 fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
 ```
@@ -377,29 +446,13 @@ fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
 # Grouping
 
 ```kotlin
-fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
-
-val result: Map<Int, List<String>> =
-    ["a", "aaa", "bb", "ab", "ccc"]
-        .groupBy { it.length }
-```
-```console
-{1=[a], 3=[aaa, ccc], 2=[bb, ab]}
-```
-
----
-
-# Grouping
-
-```kotlin
 fun <T, K, V> Iterable<T>.groupBy(
     keySelector: (T) -> K,
     valueTransform: (T) -> V
 ): Map<K, List<V>>
 
-val result: Map<Int, List<ByteArray>> =
-    ["a", "aaa", "bb", "ab", "ccc"]
-        .groupBy({ it.length }) { it.encodeToByteArray() }
+["a", "aaa", "bb", "ab", "ccc"]
+  .groupBy({ it.length }) { it.encodeToByteArray() }
 ```
 ```console
 {1=[[B@12edcd21], 3=[[B@34c45dca, [B@52cc8049], 2=[[B@5b6f7412, [B@27973e9b]}
@@ -511,7 +564,22 @@ val names = members
 
 ---
 
-# A function can return a predicate
+# Partition
+
+<DrawnAnnotation text="partition" label="Split on predicate, first matched the predicate, second didn't" />
+
+```kotlin
+["a", "aaa", "bb", "ab", "ccc"].partition { it.length > 2 }
+```
+```console
+([aaa, ccc], [a, bb, ab])
+```
+
+---
+
+# A function can return a function
+
+> A higher-order function is a function that takes or returns other functions as arguments or values
 
 <DrawnAnnotation text="(Member) -&gt; Boolean"/>
 
@@ -606,7 +674,7 @@ magic-move
 
 # `for` needs an `iterator()`
 
-<DrawnAnnotation text="operator fun iterator()" label="Any type with an `iterator()` operator is a `for` range" :geometry="{ label: { x: 0.62, y: 0.33 } }" />
+<DrawnAnnotation text="operator fun Team.iterator()" label="Operators can always be defined as extensions"  :geometry="{ label: { x: 0.6364, y: 0.4751 } }"/>
 
 ```kotlin
 class Team(private val members: List<Member>) 
@@ -630,11 +698,11 @@ magic-move
 
 # `for` desugars to `iterator()`
 
-<DrawnAnnotation text="team.iterator()" label="The `for` loop is sugar for this `while`" :geometry="{ label: { x: 0.62, y: 0.47 } }" />
+<DrawnAnnotation text="team.iterator()" label="The `for` loop is sugar for this `while`" :geometry="{ label: { x: 0.5928, y: 0.5320 } }" />
 <DrawnAnnotation text="hasNext()" />
 <DrawnAnnotation text="next()" />
 
-```kotlin
+```kotlin{7-9}
 class Team(private val members: List<Member>) {
   operator fun iterator(): Iterator<Member> = members.iterator()
 }
@@ -682,6 +750,76 @@ magic-move
 class Team(private val members: List<Member>) : Iterable<Member> {
   override operator fun iterator(): Iterator<Member> = members.iterator()
 }
+
+team.filter { it.age >= 18 }
+    .map { it.name }
+```
+```console
+[Ada]
+```
+
+---
+
+# A literal needs an `of()`
+
+<InlineCompilerError :line="6" text="[Member(&quot;Ada&quot;, 36), Member(&quot;Linus&quot;, 17)]" message="Expected type Team for collection literal does not define operator of and is not a supertype of List">
+
+```kotlin
+class Team(private val members: List<Member>) : Iterable<Member> {
+  override operator fun iterator(): Iterator<Member> = members.iterator()
+}
+
+val team: Team =
+  [Member("Ada", 36), Member("Linus", 17)]
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# A literal needs an `of()`
+
+<DrawnAnnotation text="operator fun of" label="A companion `of` operator makes `Team` a literal target" :geometry="{ label: { x: 0.3776, y: 0.4544 } }" />
+<DrawnAnnotation text="vararg members: Member" label="The literal's elements arrive as a `vararg`" on="1" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.6129, y: 0.5143 } }" />
+
+```kotlin
+class Team(private val members: List<Member>) : Iterable<Member> {
+  override operator fun iterator(): Iterator<Member> = members.iterator()
+
+  companion object {
+    operator fun of(vararg members: Member): Team = Team(members.toList())
+  }
+}
+
+val team: Team = [Member("Ada", 36), Member("Linus", 17)]
+
+team.filter { it.age >= 18 }
+    .map { it.name }
+```
+```console
+[Ada]
+```
+
+---
+magic-move
+---
+
+# A literal desugars to `of()`
+
+<DrawnAnnotation text="Team.of(" label="The literal is sugar for this call" :geometry="{ label: { x: 0.60, y: 0.62 } }" />
+
+```kotlin{9}
+class Team(private val members: List<Member>) : Iterable<Member> {
+  override operator fun iterator(): Iterator<Member> = members.iterator()
+
+  companion object {
+    operator fun of(vararg members: Member): Team = Team(members.toList())
+  }
+}
+
+val team: Team = Team.of(Member("Ada", 36), Member("Linus", 17))
 
 team.filter { it.age >= 18 }
     .map { it.name }
