@@ -301,11 +301,14 @@ Hello Kotlin, my name is Olivia.
 
 ---
 
-# Setters are customizable
+# Nested classes
+
+<DrawnAnnotation text="class Nested" label="Has no access to the `Outer` class instance it's a `static inner`" />
 
 ```kotlin
-class TextBuffer {
-  var text = ""
+class Outer {
+
+  class Nested
 }
 ```
 
@@ -313,102 +316,33 @@ class TextBuffer {
 magic-move
 ---
 
-# Setters are customizable
+# Nested classes
 
-<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3561, y: 0.4540 } }"/>
+<DrawnAnnotation text="Outer.Nested" label="Fully qualified name is also _nested_ so prefix with outer classes" />
 
 ```kotlin
-class TextBuffer {
-  var text = ""
-    set(value) {
-      println("Appending text: $value")
-      field += value
-    }
+class Outer {
+
+  class Nested
 }
+
+val nested = Outer.Nested()
 ```
 
 ---
 magic-move
 ---
 
-# Setters are customizable
+# Nested classes
 
-<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.4627, y: 0.7252 } }"/>
-
-```kotlin
-class TextBuffer {
-  var text = ""
-    set(value) {
-      println("Appending text: $value")
-      field += value
-    }
-}
-
-val buffer = TextBuffer()
-buffer.text = "Hello"
-buffer.text = ", world!"
-println(buffer.text)
-```
-```console
-Appending text: Hello
-Appending text: , world!
-Hello, world!
-```
-
----
-
-# A getter can compute the value
-
-<DrawnAnnotation text="get()" label="A custom getter runs on every access" on="0" :geometry="{ label: { x: 0.2431, y: 0.5099 } }"/>
-<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" on="1" :geometry="{ label: { x: 0.4171, y: 0.5199 } }"/>
+<DrawnAnnotation text="inner" label="An `inner` class can access the `Outer` class instance" />
 
 ```kotlin
-class TextBuffer {
-  var text = ""
+class Outer {
+    val name = "Outer"
 
-  val isEmpty: Boolean
-    get() = text.isEmpty()
-}
-```
-
----
-magic-move
----
-
-# A getter can compute the value
-
-```kotlin
-class TextBuffer {
-  var text = ""
-
-  val isEmpty: Boolean
-    get() = text.isEmpty()
-}
-
-val buffer = TextBuffer()
-println(buffer.isEmpty)
-buffer.text = "Hello"
-println(buffer.isEmpty)
-```
-```console
-true
-false
-```
-
----
-
-# Expose the read, keep the write
-
-<DrawnAnnotation text="private set"/>
-<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :geometry="{ label: { x: 0.3217, y: 0.5135 } }"/>
-
-```kotlin
-class Connection {
-  var isOpen: Boolean = false
-    private set
-
-  fun open() {
-    isOpen = true
+  inner class Nested {
+      val fullName = "$name.Inner"
   }
 }
 ```
@@ -417,81 +351,21 @@ class Connection {
 magic-move
 ---
 
-# Expose the read, keep the write
+# Nested classes
 
-<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4436, y: 0.6789 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }"/>
-<InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
+<DrawnAnnotation text="outerClass." label="To create an inner class we need an instance of the outer class" />
 
 ```kotlin
-class Connection {
-  var isOpen: Boolean = false
-    private set
+class Outer {
+    val name = "Outer"
 
-  fun open() {
-    isOpen = true
+  inner class Nested {
+      val fullName = "$name.Inner"
   }
 }
 
-val connection = Connection()
-println(connection.isOpen)
-connection.open()
-println(connection.isOpen)
-connection.isOpen = false
-```
-```console
-false
-true
-```
-
-</InlineCompilerError>
-
----
-
-# An `object` is a single instance
-
-> One shared instance, not a home for mutable global state
-
-<DrawnAnnotation text="object" label="Define a single, named instance"/>
-
-```kotlin
-object Environment {
-  var current = "production"
-}
-```
-
----
-magic-move
----
-
-# An `object` is a single instance
-
-> One shared instance, not a home for mutable global state
-
-<DrawnAnnotation text="Environment.current" label="Access its members without constructing anything"/>
-
-```kotlin
-object Environment {
-  var current = "production"
-}
-
-println(Environment.current) // production
-```
-
----
-
-# An `object` is a single instance
-
-> One shared instance, not a home for mutable global state
-
-<DrawnAnnotation text="@JvmStatic" label="Without `@JvmStatic` Kotlin generates a method on a static `INSTANCE` singleton" :geometry="{ label: { x: 0.5496, y: 0.4675 } }"/>
-
-```kotlin
-object Environment {
-    @JvmStatic
-    var current = "production"
-}
-
-println(Environment.current) // production
+val outerClass = Outer()
+val innerClass = outerClass.Inner()
 ```
 
 ---
@@ -499,39 +373,98 @@ println(Environment.current) // production
 # Data classes generate the boilerplate
 
 <DrawnAnnotation text="data class"/>
-<DrawnAnnotation text="user == User(&quot;Ada&quot;, 36)" label="`equals`, `hashCode` and `toString` for free"/>
+
+```kotlin
+data class Person(val name: String, val age: Int)
+```
+
+---
+
+# Data classes generate the boilerplate
+
+```kotlin
+data class Person(val name: String, val age: Int)
+```
+
+A data class must:
+- have at least one primary constructor parameter
+- The primary constructor must have only property (val / var) parameters
+- vararg parameters are forbidden
+- For Array properties it's recommended to override equals() / hashCode()
+
+---
+
+# `toString()`
+
 
 ```kotlin
 data class User(val name: String, val age: Int)
 
 val user = User("Ada", 36)
-
-println(user)                    // User(name=Ada, age=36)
-println(user.hashCode())         // 2035558
-println(user == User("Ada", 36)) // true
+println(user)                   
+```
+```console
+User(name=Ada, age=36)
 ```
 
 ---
 magic-move
 ---
 
-# Data classes generate the boilerplate
+# `hashCode()`
 
-<DrawnAnnotation text="copy" label="A new instance with some properties replaced"/>
+<DrawnAnnotation text="hashCode()" label="Important for `HashMap`, `HashSet`, ..."/>
 
 ```kotlin
 data class User(val name: String, val age: Int)
 
 val user = User("Ada", 36)
+println(user.hashCode())        
+```
+```console
+2035558
+```
 
-println(user)                    // User(name=Ada, age=36)
-println(user.hashCode())         // 2035558
-println(user == User("Ada", 36)) // true
+---
+magic-move
+---
 
+# `equals(other)`
+
+<DrawnAnnotation text="==" label="Comparison of properties relies on properties to properly implement equals\nThis is why override for Array is required"  :geometry="{ label: { x: 0.4687, y: 0.5167 } }"/>
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+val user = User("Ada", 36)
+println(user == user)        
+```
+```console
+true
+```
+
+---
+magic-move
+---
+
+# `copy(...)`
+
+<DrawnAnnotation text="copy" label="Compiler generated method to `copy` an instance with new values" :geometry="{ label: { x: 0.5055, y: 0.3508 } }"/>
+<DrawnAnnotation text="age = " label="Relies on argument names, and default values"  :geometry="{ label: { x: 0.4308, y: 0.7371 } }"/>
+
+```kotlin
+data class User(val name: String, val age: Int) {
+    fun copy(name: String = this.name, age: Int = this.age): Person {
+        return Person(name, age)
+    }
+}
+
+val user = User("Ada", 36)
 val newValue = user.copy(age = 37)
-println(newValue)                // User(name=Ada, age=37)
-println(newValue.hashCode())     // 2035559
-println(user == newValue)        // false
+println(user == newValue)        
+```
+```console
+false
 ```
 
 ---
@@ -842,72 +775,100 @@ println(mail) // alice@example.com
 
 ---
 
-# Interfaces define capabilities
+# An `object` is a single instance
 
-<DrawnAnnotation text="fun draw() =" label="A default implementation" on="0" :geometry="{ label: { x: 0.3386, y: 0.3941 } }"/>
-<DrawnAnnotation text="val sides: Int" on="1" />
-<DrawnAnnotation text="override val sides" label="Implementers provide `sides`, the interface has no backing field" on="1" :geometry="{ label: { x: 0.7193, y: 0.5072, width: 0.3825 } }"/>
+> One shared instance, not a home for mutable global state
 
-```kotlin
-interface Shape {
-  val sides: Int
-
-  fun draw() = println("Drawing a $sides-sided shape")
-}
-
-class Polygon(override val sides: Int) : Shape
-
-Polygon(6).draw() // Drawing a 6-sided shape
-```
-
----
-
-# A class implements many interfaces
-
-<InlineCompilerError
-    text="class Button"
-    message="Button must override click, it inherits multiple interface methods"
-    style="--inline-compiler-error-message-size: 1.42rem"
->
+<DrawnAnnotation text="object" label="Define a single, named instance"/>
 
 ```kotlin
-interface Clickable {
-  fun click() = println("clicked")
+object Environment {
+  var current = "production"
 }
-
-interface Focusable {
-  fun click() = println("focused")
-}
-
-class Button : Clickable, Focusable
 ```
-
-</InlineCompilerError>
 
 ---
 magic-move
 ---
 
-# A class implements many interfaces
+# An `object` is a single instance
 
-<DrawnAnnotation text="super<Clickable>"/>
-<DrawnAnnotation text="super<Focusable>" label="`super<T>` picks which default implementation to call" :geometry="{ label: { x: 0.4040, y: 0.8003 } }"/>
+> One shared instance, not a home for mutable global state
+
+<DrawnAnnotation text="Environment.current" label="Access its members without constructing anything"/>
 
 ```kotlin
-interface Clickable {
-  fun click() = println("clicked")
+object Environment {
+  var current = "production"
 }
 
-interface Focusable {
-  fun click() = println("focused")
+println(Environment.current) // production
+```
+
+---
+
+# An `object` is a single instance
+
+> One shared instance, not a home for mutable global state
+
+<DrawnAnnotation text="@JvmStatic" label="Without `@JvmStatic` Kotlin generates a method on a static `INSTANCE` singleton" :geometry="{ label: { x: 0.5496, y: 0.4675 } }"/>
+
+```kotlin
+object Environment {
+    @JvmStatic
+    var current = "production"
 }
 
-class Button : Clickable, Focusable {
-  override fun click() {
-    super<Clickable>.click()
-    super<Focusable>.click()
-  }
+println(Environment.current) // production
+```
+
+---
+
+# Object expressions
+
+<DrawnAnnotation text="object : EventHandler()" label="Create an anonymous class" />
+
+```kotlin
+client.addEventHandler(object : EventHandler() {
+    override fun onEvent(event: Event): Unit {
+        println("Event received: $event")
+    }
+})
+```
+
+---
+
+# Companion object
+
+```kotlin
+data class Vector(val x: Double, val y: Double) {
+    companion object {
+        val Zero: Vector = Vector(0.0, 0.0)
+    }
 }
+
+val zero = Vector.Zero
+```
+
+---
+
+# Companion extensions and blocks (Not released)
+
+> `-Xcompanion-blocks-and-extensions`
+> 
+> This will give us better static interoperability with Java
+
+<DrawnAnnotation text="companion val" label="Create static extensions on types we do not own" />
+
+```kotlin
+data class Vector(val x: Double, val y: Double) {
+    companion {
+        val Zero: Vector = Vector(0.0, 0.0)
+    }
+}
+
+companion val Vector.UnitX
+  get() = Vector(1.0, 0.0)
 ```
 
 ---
@@ -915,6 +876,22 @@ class Button : Clickable, Focusable {
 # Sealed classes close a hierarchy
 
 <DrawnAnnotation text="sealed class" label="Sealed hierarchy, all subclasses are known and live in the same module & package" :geometry="{ label: { x: 0.6829, y: 0.2198, width: 0.4449 } }"/>
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val message: String) : UiState()
+}
+```
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<DrawnAnnotation text="data object" label="`toString()` prints `Loading` instead of `package.Loading@52cc8049`" :geometry="{ label: { x: 0.4838, y: 0.4624, width: 0.6815 } }"/>
 
 ```kotlin
 sealed class UiState {
@@ -1090,34 +1067,84 @@ fun message(problem: Problem): String = when (problem) {
 
 ---
 
-# Choose the closed type deliberately
+# Interfaces define capabilities
 
-> Model types as precisely as you can
-> 
-> Choose the closed type deliberately
+<DrawnAnnotation text="fun draw() =" label="A default implementation" on="0" :geometry="{ label: { x: 0.3386, y: 0.3941 } }"/>
+<DrawnAnnotation text="val sides: Int" on="1" />
+<DrawnAnnotation text="override val sides" label="Implementers provide `sides`, the interface has no backing field" on="1" :geometry="{ label: { x: 0.7193, y: 0.5072, width: 0.3825 } }"/>
 
-| Type | Best for |
-| --- | --- |
-| `enum class` | A fixed set of named, usually stateless values |
-| `sealed class` | A fixed family of types that may hold different data or state |
-| `sealed interface` | A fixed family of alternatives that can have unrelated class hierarchies |
-| `interface` | An open capability that new implementations may add later |
+```kotlin
+interface Shape {
+  val sides: Int
 
-<style>
-.slidev-layout table {
-    font-size: 1.9rem;
+  fun draw() = println("Drawing a $sides-sided shape")
 }
-</style>
 
+class Polygon(override val sides: Int) : Shape
+
+Polygon(6).draw() // Drawing a 6-sided shape
+```
+
+---
+
+# A class implements many interfaces
+
+<InlineCompilerError
+text="class Button"
+message="Button must override click, it inherits multiple interface methods"
+style="--inline-compiler-error-message-size: 1.42rem"
+>
+
+```kotlin
+interface Clickable {
+  fun click() = println("clicked")
+}
+
+interface Focusable {
+  fun click() = println("focused")
+}
+
+class Button : Clickable, Focusable
+```
+
+</InlineCompilerError>
+
+---
+magic-move
+---
+
+# A class implements many interfaces
+
+<DrawnAnnotation text="super<Clickable>"/>
+<DrawnAnnotation text="super<Focusable>" label="`super<T>` picks which default implementation to call" :geometry="{ label: { x: 0.4040, y: 0.8003 } }"/>
+
+```kotlin
+interface Clickable {
+  fun click() = println("clicked")
+}
+
+interface Focusable {
+  fun click() = println("focused")
+}
+
+class Button : Clickable, Focusable {
+  override fun click() {
+    super<Clickable>.click()
+    super<Focusable>.click()
+  }
+}
+```
+
+---
 
 # Classes are final by default
 
-<InlineCompilerError text="MyClass" :occurrence="2" message="This type is final, so it cannot be inherited from.">
+<InlineCompilerError text="Person" :occurrence="2" message="This type is final, so it cannot be inherited from.">
 
 ```kotlin
-class MyClass
+class Person
 
-class MySubClass : MyClass()
+class Student : Person()
 ```
 
 </InlineCompilerError>
@@ -1131,9 +1158,326 @@ magic-move
 <DrawnAnnotation text="open" label="Explicit opt in to inheritance, prefer composition" :geometry="{ label: { x: 0.3242, y: 0.3762 }, connector: { type: 'quadratic', start: { x: 0.1016, y: 0.2278 }, control: { x: 0.1033, y: 0.2838 }, end: { x: 0.1016, y: 0.3496 } } }"/>
 
 ```kotlin
-open class MyClass
+open class Person
 
-class MySubClass : MyClass()
+class Student : Person()
 ```
+
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="(name, age)" label="Primary constructor of super type **must** be called" />
+
+```kotlin
+open class Person(val name: String, val age: Int)
+
+class Student(val id: String, name: String, age: Int) : Person(name, age)
+```
+
+---
+
+# Classes are final by default
+
+<InlineCompilerError text="override" message="'hello' in 'Person' is final and cannot be overridden." >
+
+```kotlin
+open class Person(val name: String, val age: Int) {
+    fun hello() { 
+        println("Hello, I am $name.")
+    }
+}
+
+class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+```
+
+</InlineCompilerError>
+
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="open" :line="2" label="Explicitly open function for inheritance"  :geometry="{ label: { x: 0.3363, y: 0.3724 } }"/>
+
+```kotlin
+open class Person(val name: String, val age: Int) {
+    open fun hello() { 
+        println("Hello, I am $name.")
+    }
+}
+
+class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+```
+
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="open" :line="7" />
+<DrawnAnnotation text="final" :line="8" label="`final` limits function for further extension" />
+
+```kotlin
+open class Person(val name: String, val age: Int) {
+    open fun hello() { 
+        println("Hello, I am $name.")
+    }
+}
+
+open class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    final override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+```
+
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="open val" />
+<DrawnAnnotation text="override val" label="Same applies to properties" />
+
+```kotlin
+open class Person(val name: String, val age: Int) {
+    open val id = Uuid.random().toString()
+    
+    open fun hello() { 
+        println("Hello, I am $name.")
+    }
+}
+
+open class Student(override val id: String, name: String, age: Int) : Person(name, age) {
+    final override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+```
+
+---
+
+# Classes are final by default
+
+<DrawnAnnotation text="open val" />
+<DrawnAnnotation text="override var" label="Same applies to properties, and we can change `val` to `var` but not other way around" />
+
+```kotlin
+open class Person(val name: String, val age: Int) {
+    open val id = Uuid.random().toString()
+    
+    open fun hello() { 
+        println("Hello, I am $name.")
+    }
+}
+
+open class Student(override var id: String, name: String, age: Int) : Person(name, age) {
+    final override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+```
+
+---
+
+# Abstract class
+
+<DrawnAnnotation text="abstract" :line="1" />
+<DrawnAnnotation text="abstract" :line="2" />
+<DrawnAnnotation text="abstract" :line="4" label="`abstract` allows omitting the implementation but it cannot be instantiated"  :geometry="{ label: { x: 0.5204, y: 0.4093 } }"/>
+<InlineCompilerError text="Person(&quot;Ada&quot;, 35)" :line="13" message="Cannot create an instance of an abstract class">
+
+```kotlin
+abstract class Person(val name: String, val age: Int) {
+    abstract val id: String
+    
+    abstract fun hello()
+}
+
+open class Student(override var id: String, name: String, age: Int) : Person(name, age) {
+    final override fun hello() {
+        println("Hello, I am $name. I am a student.")
+    }
+}
+
+val person = Person("Ada", 35)
+```
+
+</InlineCompilerError>
+
+---
+
+# Choose the closed type deliberately
+
+> Model types as precisely as you can
+> 
+> Choose the closed type deliberately
+
+| Type | Best for |
+| --- | --- |
+| `data class` | A fixed set of named properties |
+| `enum class` | A fixed set of named, usually stateless values |
+| `sealed interface` | A fixed family of alternatives that can have unrelated class hierarchies |
+| `interface` | An open capability that new implementations may add later |
+| `abstract class` | An open family of types that may hold different data or state |
+| `(open) class` | An open family of types that may hold different data or state |
+
+<style>
+.slidev-layout table {
+    font-size: 1.9rem;
+}
+</style>
+
+---
+
+# Setters are customizable
+
+```kotlin
+class TextBuffer {
+  var text = ""
+}
+```
+
+---
+magic-move
+---
+
+# Setters are customizable
+
+<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3561, y: 0.4540 } }"/>
+
+```kotlin
+class TextBuffer {
+  var text = ""
+    set(value) {
+      println("Appending text: $value")
+      field += value
+    }
+}
+```
+
+---
+magic-move
+---
+
+# Setters are customizable
+
+<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.4627, y: 0.7252 } }"/>
+
+```kotlin
+class TextBuffer {
+  var text = ""
+    set(value) {
+      println("Appending text: $value")
+      field += value
+    }
+}
+
+val buffer = TextBuffer()
+buffer.text = "Hello"
+buffer.text = ", world!"
+println(buffer.text)
+```
+```console
+Appending text: Hello
+Appending text: , world!
+Hello, world!
+```
+
+---
+
+# A getter can compute the value
+
+<DrawnAnnotation text="get()" label="A custom getter runs on every access" on="0" :geometry="{ label: { x: 0.2431, y: 0.5099 } }"/>
+<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" on="1" :geometry="{ label: { x: 0.4171, y: 0.5199 } }"/>
+
+```kotlin
+class TextBuffer {
+  var text = ""
+
+  val isEmpty: Boolean
+    get() = text.isEmpty()
+}
+```
+
+---
+magic-move
+---
+
+# A getter can compute the value
+
+```kotlin
+class TextBuffer {
+  var text = ""
+
+  val isEmpty: Boolean
+    get() = text.isEmpty()
+}
+
+val buffer = TextBuffer()
+println(buffer.isEmpty)
+buffer.text = "Hello"
+println(buffer.isEmpty)
+```
+```console
+true
+false
+```
+
+---
+
+# Expose the read, keep the write
+
+<DrawnAnnotation text="private set"/>
+<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :geometry="{ label: { x: 0.3217, y: 0.5135 } }"/>
+
+```kotlin
+class Connection {
+  var isOpen: Boolean = false
+    private set
+
+  fun open() {
+    isOpen = true
+  }
+}
+```
+
+---
+magic-move
+---
+
+# Expose the read, keep the write
+
+<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4436, y: 0.6789 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }"/>
+<InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
+
+```kotlin
+class Connection {
+  var isOpen: Boolean = false
+    private set
+
+  fun open() {
+    isOpen = true
+  }
+}
+
+val connection = Connection()
+println(connection.isOpen)
+connection.open()
+println(connection.isOpen)
+connection.isOpen = false
+```
+```console
+false
+true
+```
+
+</InlineCompilerError>
 
 ---
