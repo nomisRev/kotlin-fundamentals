@@ -702,23 +702,143 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 7</div>
 
-# Functions
+# Drop the block
 
-> Build the result with a local `var` inside a loop, no `String.repeat`
+> Rewrite `average` with `=`, no braces and no `return`
 
 ```kotlin
-fun repeatWord(
-  word: String,
-  times: Int = 3,
-  separator: String = ", ",
-): String = TODO()
+fun average(a: Int, b: Int): Int {
+  val total = a + b
+  return total / 2
+}
 
 fun main() {
-  check(repeatWord("Hi") == "Hi, Hi, Hi")
-  check(repeatWord("Hi", separator = " - ") == "Hi - Hi - Hi")
-  check(repeatWord(times = 2, separator = "", word = "Go") == "GoGo")
+  check(average(4, 8) == 6)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 7</div>
+
+# Add a default
+
+> `by` should be optional and fall back to `1`
+
+```kotlin
+fun increment(x: Int, by: Int): Int = x + by
+
+fun main() {
+  check(increment(1) == 2)
+  check(increment(1, by = 5) == 6)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 7</div>
+
+# Name the argument
+
+> Make `main` compile without touching `sum`
+
+```kotlin
+fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
+
+fun main() {
+  check(sum(1, 1) == 2)
+  check(sum(1, 1, 1) == 3)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 7</div>
+
+# Take any number of arguments
+
+> `IntArray` already has `max()`
+
+```kotlin
+fun largest(vararg numbers: Int): Int = TODO()
+
+fun main() {
+  check(largest(3, 9, 4) == 9)
+  check(largest(7) == 7)
+
+  val scores = intArrayOf(12, 40, 8)
+  check(largest(*scores) == 40)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 5 / 7</div>
+
+# Extend `Int`
+
+> `this` is the receiver
+
+```kotlin
+fun Int.isEven(): Boolean = TODO()
+
+fun main() {
+  check(4.isEven())
+  check(!7.isEven())
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 6 / 7</div>
+
+# Make it infix
+
+> `10 percentOf 200` should read like a sentence
+
+```kotlin
+fun Int.percentOf(total: Int): Int = TODO()
+
+fun main() {
+  check(10 percentOf 200 == 20)
+  check(50 percentOf 8 == 4)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 7 / 7</div>
+
+# Implement `*`
+
+> The number is the receiver this time
+
+```kotlin
+fun Int.times(word: String): String = word.repeat(this)
+
+fun main() {
+  check(3 * "Ho" == "HoHoHo")
+  check(0 * "Hi" == "")
 }
 ```
 

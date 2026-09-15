@@ -184,7 +184,7 @@ html.dark {
 
 .section-slide h1,
 .exercise-slide h1 {
-  max-width: 55rem;
+  max-width: 100rem;
   font-size: 4.4rem !important;
 }
 
