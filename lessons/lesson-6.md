@@ -16,8 +16,8 @@ kodee: wave
 
 # `suspend` marks a function that can wait
 
-<DrawnAnnotation text="suspend" label="May call other suspending functions"/>
-<DrawnAnnotation text="delay(100.milliseconds)" label="Waits without blocking a thread"/>
+<DrawnAnnotation text="suspend" label="May call other suspending functions" on="0" :geometry="{ label: { x: 0.2604, y: 0.4023 } }"/>
+<DrawnAnnotation text="delay(100.milliseconds)" label="Waits without blocking a thread" on="1" :geometry="{ label: { x: 0.2655, y: 0.4017 } }"/>
 
 ```kotlin
 import kotlin.time.Duration.Companion.milliseconds
@@ -56,7 +56,7 @@ magic-move
 
 # A coroutine builder constructs a coroutine
 
-<DrawnAnnotation text="runBlocking" label="Blocks the thread until the coroutine completes: fine for `main`, nowhere else" color="red"/>
+<DrawnAnnotation text="runBlocking" label="Blocks the thread until the coroutine completes: fine for `main`, nowhere else" color="red" :geometry="{ label: { x: 0.5179, y: 0.5200 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.runBlocking
@@ -74,30 +74,14 @@ Ada
 magic-move
 ---
 
-# `main` can suspend itself
-
-<DrawnAnnotation text="suspend fun main" label="The runtime starts the coroutine, nothing blocks"/>
-
-```kotlin
-suspend fun main() {
-  val speaker = fetchSpeaker()
-  println(speaker.name)
-}
-```
-```console
-Ada
-```
-
----
-magic-move
----
-
 # Suspending calls run in sequence
 
-<DrawnAnnotation text="fetchTalks()" label="Only starts after `fetchSpeaker` returned: 100 ms, then 100 ms"/>
+<DrawnAnnotation text="fetchTalks()" label="Only starts after `fetchSpeaker` returned: 100 ms, then 100 ms" :geometry="{ label: { x: 0.3721, y: 0.4615 } }"/>
 
 ```kotlin
-suspend fun main() {
+import kotlinx.coroutines.runBlocking
+
+fun main() = runBlocking {
   val speaker = fetchSpeaker()
   val talks = fetchTalks()
   println(Dashboard(speaker, talks))
@@ -206,9 +190,9 @@ suspend fun dashboard(): Dashboard =
 
 # `async` needs a scope, returns a `Deferred`
 
-<DrawnAnnotation text="CoroutineScope.async" label="An extension on `CoroutineScope`: a child of that scope"/>
-<DrawnAnnotation text="suspend CoroutineScope.() -> T" label="The body can start nested coroutines and produces a `T`"/>
-<DrawnAnnotation text="Deferred<T>" label="A reference to the value, to be awaited"/>
+<DrawnAnnotation text="CoroutineScope.async" label="An extension on `CoroutineScope`: a child of that scope" on="1" :geometry="{ label: { x: 0.3435, y: 0.3745 } }"/>
+<DrawnAnnotation text="suspend CoroutineScope.() -> T" label="The body can start nested coroutines and produces a `T`" on="2" :geometry="{ label: { x: 0.3734, y: 0.3905 } }"/>
+<DrawnAnnotation text="Deferred<T>" label="A reference to the value, to be awaited or cancelled" on="3"  :geometry="{ label: { x: 0.3965, y: 0.3742 } }"/>
 
 ```kotlin no-compile
 fun <T> CoroutineScope.async(
@@ -220,8 +204,8 @@ fun <T> CoroutineScope.async(
 
 # `launch` is `async` without a value
 
-<DrawnAnnotation text="-> Unit" label="Nothing to return"/>
-<DrawnAnnotation text="Job" label="A reference to the coroutine: cancel it, or wait for it to complete"/>
+<DrawnAnnotation text="-> Unit" on="0" label="Nothing to return"/>
+<DrawnAnnotation text="Job" on="1" label="A reference to the coroutine: cancel it, or wait for it to complete" :geometry="{ label: { x: 0.3662, y: 0.3912 } }"/>
 
 ```kotlin no-compile
 fun CoroutineScope.launch(
@@ -326,7 +310,7 @@ clicks: 3
 
 <DrawnAnnotation text="speaker.await()" label="The value is there, the scope is still open" :on="1"/>
 <DrawnAnnotation text="launch" label="The notification went out" :on="2"/>
-<DrawnAnnotation text="coroutineScope" label="Only now does it complete and return the `Dashboard`" :on="3"/>
+<DrawnAnnotation text="coroutineScope" label="Only now does it complete and return the `Dashboard`" :on="3" :geometry="{ label: { x: 0.4168, y: 0.5622 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -505,8 +489,8 @@ the parent completely cancelled, which is what `cancelAndJoin()` waits for.
 
 # A service takes a scope and keeps it private
 
-<DrawnAnnotation text="private val scope: CoroutineScope" label="Inject it, never extend `CoroutineScope`"/>
-<DrawnAnnotation text="SupervisorJob()" label="One failed notification does not cancel the others" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="private val scope: CoroutineScope" label="Inject it, never extend `CoroutineScope`" :geometry="{ label: { x: 0.7196, y: 0.2643 } }"/>
+<DrawnAnnotation text="SupervisorJob()" label="One failed notification does not cancel the others" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5228, y: 0.5999 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.CoroutineScope
@@ -599,8 +583,8 @@ clicks: 4
 # `cancel()` cancels the coroutine and its children
 
 <DrawnAnnotation text="job.cancel()" label="Cancels `launch`, and `launch` cancels both `async`" color="var(--fundamentals-cancel)" :on="1"/>
-<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" color="var(--fundamentals-cancel)" :on="2"/>
-<DrawnAnnotation text="scope.launch" label="Cancelled once both children are" color="var(--fundamentals-cancel)" :on="4"/>
+<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" color="var(--fundamentals-cancel)" :on="2" :geometry="{ label: { x: 0.5992, y: 0.6162 } }"/>
+<DrawnAnnotation text="scope.launch" label="Cancelled once both children are" color="var(--fundamentals-cancel)" :on="4" :geometry="{ label: { x: 0.4019, y: 0.5055 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -635,7 +619,7 @@ whose `delay` throws. Click 3: the children have finished cancelling. Click 4: t
 
 # Cancellation is cooperative
 
-<DrawnAnnotation text="compute()" label="No suspension point: `cancel()` is never observed, the loop runs forever" color="red"/>
+<DrawnAnnotation text="compute()" label="No suspension point: `cancel()` is never observed, the loop runs forever" color="red" :geometry="{ label: { x: 0.5634, y: 0.6636 } }"/>
 
 ```kotlin
 import kotlin.random.Random
@@ -658,7 +642,7 @@ magic-move
 
 # Cancellation is cooperative
 
-<DrawnAnnotation text="isActive" label="`false` once the coroutine is cancelled"/>
+<DrawnAnnotation text="isActive" label="`false` once the coroutine is cancelled" :geometry="{ label: { x: 0.4427, y: 0.4236 } }"/>
 
 ```kotlin
 import kotlin.random.Random
@@ -682,7 +666,7 @@ magic-move
 
 # Cancellation is cooperative
 
-<DrawnAnnotation text="ensureActive()" label="Throws `CancellationException` instead, like every suspension point"/>
+<DrawnAnnotation text="ensureActive()" label="Throws `CancellationException` instead, like every suspension point" :geometry="{ label: { x: 0.5526, y: 0.4811 } }"/>
 
 ```kotlin
 import kotlin.random.Random
@@ -728,9 +712,9 @@ kodee: wave
 
 # A Java SDK has three asynchronous styles
 
-<DrawnAnnotation text="Callback<Speaker> callback" label="Callback: the answer arrives on the SDK's thread"/>
-<DrawnAnnotation text="CompletableFuture<List<Talk>>" label="Future: a value that is not there yet" color="var(--fundamentals-blue)"/>
-<DrawnAnnotation text="Publisher<Integer>" label="Reactive Streams: many values, with backpressure" color="var(--fundamentals-pink)"/>
+<DrawnAnnotation text="Callback<Speaker> callback" on="0" label="Callback: the answer arrives on the SDK's thread"/>
+<DrawnAnnotation text="CompletableFuture<List<Talk>>" on="1" label="Future: a value that is not there yet" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="Publisher<Integer>" on="2" label="Reactive Streams: many values, with backpressure" color="var(--fundamentals-pink)" :geometry="{ label: { x: 0.3343, y: 0.4742 } }"/>
 
 ```java no-compile
 public final class ConferenceSdk {
@@ -744,8 +728,8 @@ public final class ConferenceSdk {
 
 # A callback splits the result from the call
 
-<DrawnAnnotation text="onSuccess" label="Exactly one of the two is called, later, on another thread"/>
-<DrawnAnnotation text="Call" label="The only way to stop it" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="onSuccess" label="Exactly one of the two is called, later, on another thread" :geometry="{ label: { x: 0.5922, y: 0.3549 } }"/>
+<DrawnAnnotation text="Call" occurrence="2" label="The only way to stop it" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.3617, y: 0.4956 } }"/>
 
 ```java no-compile
 public interface Callback<T> {
@@ -769,9 +753,9 @@ sdk.speaker(1, object : Callback<Speaker> {
 
 # `suspendCoroutine` turns the callback into a return value
 
-<DrawnAnnotation text="suspendCoroutine" label="Suspends until `continuation` is resumed"/>
-<DrawnAnnotation text="continuation.resume(value)" label="The value becomes the return value"/>
-<DrawnAnnotation text="continuation.resumeWithException(error)" label="The error becomes a thrown exception"/>
+<DrawnAnnotation text="suspendCoroutine" label="Suspends until `continuation` is resumed" on="0" :geometry="{ label: { x: 0.3747, y: 0.7276 } }"/>
+<DrawnAnnotation text="cont.resume(value)" label="The value becomes the return value" on="1" :geometry="{ label: { x: 0.3837, y: 0.7290 } }"/>
+<DrawnAnnotation text="cont.resumeWithException(error)" label="The error becomes a thrown exception" on="2" :geometry="{ label: { x: 0.3894, y: 0.7292 } }"/>
 
 ```kotlin
 import kotlin.coroutines.resume
@@ -779,13 +763,13 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun ConferenceSdk.speaker(id: Long): Speaker =
-  suspendCoroutine { continuation ->
-    speaker(id, object : Callback<Speaker> {
-      override fun onSuccess(value: Speaker) =
-        continuation.resume(value)
-      override fun onFailure(error: Throwable) =
-        continuation.resumeWithException(error)
-    })
+  suspendCoroutine { cont ->
+      speaker(id, object : Callback<Speaker> {
+          override fun onSuccess(value: Speaker) = cont.resume(value)
+          
+          override fun onFailure(error: Throwable) =
+              cont.resumeWithException(error)
+      })
   }
 ```
 
@@ -795,7 +779,7 @@ magic-move
 
 # `suspendCoroutine` turns the callback into a return value
 
-<DrawnAnnotation text="sdk.speaker(1)" label="Looks like a plain call, waits like a coroutine"/>
+<DrawnAnnotation text="sdk.speaker(1)" label="Looks like a plain call, waits like a coroutine" :geometry="{ label: { x: 0.5541, y: 0.8704 } }"/>
 
 ```kotlin
 import kotlin.coroutines.resume
@@ -803,22 +787,19 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 suspend fun ConferenceSdk.speaker(id: Long): Speaker =
-  suspendCoroutine { continuation ->
-    speaker(id, object : Callback<Speaker> {
-      override fun onSuccess(value: Speaker) =
-        continuation.resume(value)
-      override fun onFailure(error: Throwable) =
-        continuation.resumeWithException(error)
-    })
-  }
+    suspendCoroutine { cont ->
+        speaker(id, object : Callback<Speaker> {
+            override fun onSuccess(value: Speaker) = cont.resume(value)
+
+            override fun onFailure(error: Throwable) =
+                cont.resumeWithException(error)
+        })
+    }
 
 suspend fun main() {
   val speaker = sdk.speaker(1)
   println(speaker.name)
 }
-```
-```console
-Ada
 ```
 
 ---
@@ -827,8 +808,8 @@ magic-move
 
 # Cancellation does not reach the SDK
 
-<DrawnAnnotation text="job.cancel()" label="The coroutine is cancelled, the `Call` keeps running" color="var(--fundamentals-cancel)"/>
-<DrawnAnnotation text="suspendCoroutine" label="Never learns about it: the callback resumes a dead coroutine" color="red"/>
+<DrawnAnnotation text="job.cancel()" on="0" label="The coroutine is cancelled, the `Call` keeps running" color="var(--fundamentals-cancel)"/>
+<DrawnAnnotation text="suspendCoroutine" on="1" label="Never learns about it: the callback resumes a dead coroutine" color="red" :geometry="{ label: { x: 0.5185, y: 0.5548 } }"/>
 
 ```kotlin
 import kotlin.coroutines.resume
@@ -837,14 +818,14 @@ import kotlin.coroutines.suspendCoroutine
 import kotlinx.coroutines.launch
 
 suspend fun ConferenceSdk.speaker(id: Long): Speaker =
-  suspendCoroutine { continuation ->
-    speaker(id, object : Callback<Speaker> {
-      override fun onSuccess(value: Speaker) =
-        continuation.resume(value)
-      override fun onFailure(error: Throwable) =
-        continuation.resumeWithException(error)
-    })
-  }
+    suspendCoroutine { cont ->
+        speaker(id, object : Callback<Speaker> {
+            override fun onSuccess(value: Speaker) = cont.resume(value)
+
+            override fun onFailure(error: Throwable) =
+                cont.resumeWithException(error)
+        })
+    }
 
 val job = scope.launch { println(sdk.speaker(1).name) }
 job.cancel()
@@ -854,11 +835,11 @@ job.cancel()
 magic-move
 ---
 
-# `suspendCancellableCoroutine` forwards the cancellation
+# `suspendCancellableCoroutine` forwards cancel
 
-<DrawnAnnotation text="suspendCancellableCoroutine" label="Resumes with `CancellationException` when the coroutine is cancelled"/>
-<DrawnAnnotation text="val call =" label="Keep the handle the SDK hands back"/>
-<DrawnAnnotation text="invokeOnCancellation { call.cancel() }" label="and use it to stop the SDK's work"/>
+<DrawnAnnotation text="suspendCancellableCoroutine" on="0" label="Resumes with `CancellationException` when the coroutine is cancelled" :geometry="{ label: { x: 0.4884, y: 0.8456 } }"/>
+<DrawnAnnotation text="val call =" on="1" label="Keep the handle the SDK hands back" :geometry="{ label: { x: 0.4126, y: 0.8435 } }"/>
+<DrawnAnnotation text="invokeOnCancellation { call.cancel() }" on="3" label="and use it to stop the SDK's work"/>
 
 ```kotlin
 import kotlin.coroutines.resume
@@ -867,14 +848,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 suspend fun ConferenceSdk.speaker(id: Long): Speaker =
-  suspendCancellableCoroutine { continuation ->
+  suspendCancellableCoroutine { cont ->
     val call = speaker(id, object : Callback<Speaker> {
-      override fun onSuccess(value: Speaker) =
-        continuation.resume(value)
-      override fun onFailure(error: Throwable) =
-        continuation.resumeWithException(error)
+        override fun onSuccess(value: Speaker) = cont.resume(value)
+
+        override fun onFailure(error: Throwable) =
+            cont.resumeWithException(error)
     })
-    continuation.invokeOnCancellation { call.cancel() }
+      cont.invokeOnCancellation { call.cancel() }
   }
 
 val job = scope.launch { println(sdk.speaker(1).name) }
@@ -885,7 +866,7 @@ job.cancel()
 
 # A `CompletableFuture` can be awaited
 
-<DrawnAnnotation text="await()" label="Suspends until the future completes, cancels it when the coroutine is cancelled"/>
+<DrawnAnnotation text="await()" label="Suspends until the future completes, cancels it when the coroutine is cancelled" :geometry="{ label: { x: 0.4800, y: 0.5872 } }"/>
 
 ```java no-compile
 public CompletableFuture<List<Talk>> talks(long speakerId);
@@ -907,8 +888,8 @@ suspend fun main() {
 
 # `future` goes the other way
 
-<DrawnAnnotation text="scope.future" label="Starts a coroutine, returns its result as a `CompletableFuture`"/>
-<DrawnAnnotation text="dashboardAsync()" label="Java never sees a `suspend`" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="scope.future" on="0" label="Starts a coroutine, returns its result as a `CompletableFuture`" :geometry="{ label: { x: 0.5905, y: 0.3487 } }"/>
+<DrawnAnnotation text="dashboardAsync()" on="1" label="Java never sees a `suspend`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4054, y: 0.5866 } }"/>
 
 ```kotlin
 import java.util.concurrent.CompletableFuture
@@ -935,8 +916,8 @@ class JavaCaller {
 
 > `kotlinx-coroutines-reactive`
 
-<DrawnAnnotation text="asFlow()" label="Keeps the Reactive Streams guarantees, including backpressure"/>
-<DrawnAnnotation text="take(3)" label="Cancels the subscription after the third value"/>
+<DrawnAnnotation text="asFlow()" on="0" label="Keeps the Reactive Streams guarantees, including backpressure" :geometry="{ label: { x: 0.5432, y: 0.5698 } }"/>
+<DrawnAnnotation text="take(3)" on="1" label="Cancels the subscription after the third value" :geometry="{ label: { x: 0.5293, y: 0.6262 } }"/>
 
 ```java no-compile
 public Publisher<Integer> attendance(long talkId);
@@ -960,7 +941,7 @@ sdk.attendance(10).asFlow()
 
 # A `Flow` becomes a `Publisher`
 
-<DrawnAnnotation text="asPublisher()" label="Backpressure the other way: `emit` waits for the subscriber's `request`"/>
+<DrawnAnnotation text="asPublisher()" label="Backpressure the other way: `emit` waits for the subscriber's `request`" :geometry="{ label: { x: 0.3986, y: 0.4246 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.flow
@@ -1091,7 +1072,7 @@ clicks: 4
 <DrawnAnnotation text="sdk.speaker(id)" label="→ `call.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
 <DrawnAnnotation text="sdk.talks(id).await()" label="→ `future.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
 <DrawnAnnotation text="asFlow().first()" label="→ `subscription.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
-<DrawnAnnotation text="coroutineScope" label="Cancelled once every bridge has stopped its Java side" :on="4" color="var(--fundamentals-cancel)"/>
+<DrawnAnnotation text="coroutineScope" label="Cancelled once every bridge has stopped its Java side" :on="4" color="var(--fundamentals-cancel)" :geometry="{ label: { x: 0.5165, y: 0.8467 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -1274,8 +1255,8 @@ kodee: wave
 
 # A `Flow` is a cold stream of values
 
-<DrawnAnnotation text="flow {" label="Nothing runs until someone collects"/>
-<DrawnAnnotation text="emit(count)" label="Suspends until the collector has taken the value"/>
+<DrawnAnnotation text="flow {" on="0" label="Nothing runs until someone collects" :geometry="{ label: { x: 0.5763, y: 0.2696 } }"/>
+<DrawnAnnotation text="emit(count)" on="1" label="Suspends until the collector has taken the value" :geometry="{ label: { x: 0.3779, y: 0.4956 } }"/>
 
 ```kotlin
 import kotlin.time.Duration.Companion.milliseconds
@@ -1299,7 +1280,7 @@ magic-move
 
 # `collect` runs the flow
 
-<DrawnAnnotation text="collect" label="A suspending call: returns when the flow has completed"/>
+<DrawnAnnotation text="collect" label="A suspending call: returns when the flow has completed" :geometry="{ label: { x: 0.3512, y: 0.8933 } }"/>
 
 ```kotlin
 import kotlin.time.Duration.Companion.milliseconds
@@ -1330,8 +1311,8 @@ magic-move
 
 # Operators are lazy too
 
-<DrawnAnnotation text="filter" label="Each operator returns a new cold `Flow`"/>
-<DrawnAnnotation text="collect" label="Still the only place where anything runs"/>
+<DrawnAnnotation text="filter" />
+<DrawnAnnotation text="map"  label="Each operator returns a new cold `Flow`" :geometry="{ label: { x: 0.2987, y: 0.5743 } }" />
 
 ```kotlin
 import kotlinx.coroutines.flow.filter
@@ -1351,7 +1332,7 @@ attendance()
 
 # Emitting is a `suspend` call
 
-<DrawnAnnotation text="suspend fun emit" label="Upstream waits inside `emit` until downstream is done with `value`"/>
+<DrawnAnnotation text="suspend fun emit" label="Upstream waits inside `emit` until downstream is done with `value`" :geometry="{ label: { x: 0.4430, y: 0.3773 } }"/>
 
 ```kotlin no-compile
 fun interface FlowCollector<in T> {
@@ -1365,8 +1346,8 @@ class: timeline-slide
 
 # Upstream and downstream take turns
 
-<DrawnAnnotation text="attendance()" label="Upstream: `emit` suspends until `println` returned"/>
-<DrawnAnnotation text="println(count)" label="Downstream: runs while `emit` is suspended" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="attendance()" on="0" label="Upstream: `emit` suspends until `println` returned" :geometry="{ label: { x: 0.3266, y: 0.5544 } }"/>
+<DrawnAnnotation text="println(count)" on="1" label="Downstream: runs while `emit` is suspended" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5383, y: 0.6225 } }"/>
 
 ```kotlin
 attendance().collect { count -> println(count) }
@@ -1378,8 +1359,8 @@ attendance().collect { count -> println(count) }
 
 # `callbackFlow` wraps a subscription
 
-<DrawnAnnotation text="trySend(talk)" label="Called on the SDK's thread, hands the event to the collector"/>
-<DrawnAnnotation text="awaitClose" label="Suspends until the collector stops, then unsubscribes"/>
+<DrawnAnnotation text="trySend(talk)" on="0" label="Called on the SDK's thread, hands the event to the collector" :geometry="{ label: { x: 0.3938, y: 0.5396 } }"/>
+<DrawnAnnotation text="awaitClose" on="1" label="Suspends until the collector stops, then unsubscribes" :geometry="{ label: { x: 0.4078, y: 0.5419 } }"/>
 
 ```java no-compile
 public Subscription onScheduleChange(Listener<Talk> listener);
@@ -1403,7 +1384,7 @@ magic-move
 
 # `callbackFlow` wraps a subscription
 
-<DrawnAnnotation text="take(2)" label="Stops collecting, so `awaitClose` runs and unsubscribes"/>
+<DrawnAnnotation text="take(2)" label="Stops collecting, so `awaitClose` runs and unsubscribes" :geometry="{ label: { x: 0.3384, y: 0.7903 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.channels.awaitClose
@@ -1430,8 +1411,8 @@ Room change
 
 # `catch` sees upstream failures only
 
-<DrawnAnnotation text="catch" label="Handles what `scheduleChanges` and `map` throw, not `collect`"/>
-<DrawnAnnotation text="onCompletion" label="Runs once, with `null`, the failure or the `CancellationException`" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="catch" on="0" label="Called when upstream (`scheduleChanges` or `map`) throw\nAllowed to emit new values" :geometry="{ label: { x: 0.4001, y: 0.6433 } }"/>
+<DrawnAnnotation text="onCompletion" on="1" label="Runs once, with `null`, the failure or the `CancellationException`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4205, y: 0.6398 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.catch
@@ -1541,9 +1522,9 @@ kodee: wave
 
 # A `Channel` hands values between coroutines
 
-<DrawnAnnotation text="Channel<Talk>()" label="A queue both sides suspend on"/>
-<DrawnAnnotation text="send" label="Suspends until someone receives"/>
-<DrawnAnnotation text="receive()" label="Suspends until someone sends" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="Channel<Talk>()" label="A `Channel` both sides suspend on by default (size=0)" :geometry="{ label: { x: 0.4634, y: 0.2604 } }"/>
+<DrawnAnnotation text="send" on="0" label="Suspends until someone receives" :geometry="{ label: { x: 0.4794, y: 0.5893 } }"/>
+<DrawnAnnotation text="receive()" on="1" label="Suspends until someone sends" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4880, y: 0.5904 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.channels.Channel
@@ -1567,8 +1548,8 @@ magic-move
 
 # `close` ends the channel
 
-<DrawnAnnotation text="channel.close()" label="No more values: the receiving loop ends"/>
-<DrawnAnnotation text="for (talk in channel)" label="Suspends before every element, like `receive`" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="channel.close()" label="No more values: the receiving loop ends" :geometry="{ label: { x: 0.4710, y: 0.4469 } }"/>
+<DrawnAnnotation text="for (talk in channel)" label="Suspends before every element, like `receive`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5517, y: 0.6434 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.channels.Channel
@@ -1582,7 +1563,10 @@ coroutineScope {
     for (talk in fetchTalks()) channel.send(talk)
     channel.close()
   }
-  for (talk in channel) println(talk.title)
+    
+  for (talk in channel) {
+      println(talk.title)
+  }
 }
 ```
 ```console
@@ -1594,8 +1578,8 @@ Flow
 
 # `for` over a channel suspends in `hasNext()`
 
-<DrawnAnnotation text="suspend operator fun hasNext()" label="The `iterator()` contract from lesson 4, now suspending"/>
-<DrawnAnnotation text="next()" label="Never suspends: `hasNext` already fetched the value" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="suspend operator fun hasNext()" label="The `iterator()` contract from lesson 4, now suspending" :geometry="{ label: { x: 0.3364, y: 0.4157 } }"/>
+<DrawnAnnotation text="next()" label="Never suspends: `hasNext` already fetched the value" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4506, y: 0.4854 } }"/>
 
 ```kotlin no-compile
 interface ChannelIterator<out E> {
@@ -1608,9 +1592,8 @@ interface ChannelIterator<out E> {
 
 # `produce` ties the channel to a scope
 
-<DrawnAnnotation text="produce" label="A child coroutine that owns the sending side: closes it when the block ends"/>
-<DrawnAnnotation text="CoroutineScope.talks()" label="Cancelled with the scope, like every child"/>
-<DrawnAnnotation text="ReceiveChannel<Talk>" label="The caller only sees the receiving side" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="produce" on="0" label="A child coroutine that owns the sending side: closes it when the block ends" :geometry="{ label: { x: 0.5810, y: 0.3161 } }"/>
+<DrawnAnnotation text="ReceiveChannel<Talk>" on="1" label="The caller only sees the receiving side" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5284, y: 0.3223 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.CoroutineScope
@@ -1637,7 +1620,7 @@ class: timeline-slide
 
 # `buffer` puts a channel in between
 
-<DrawnAnnotation text="buffer(capacity = 3)" label="Upstream gets its own coroutine\n`emit` only waits once all 3 slots are full"/>
+<DrawnAnnotation text="buffer(capacity = 3)" label="Upstream gets its own coroutine\n`emit` only waits once all 3 slots are full" :geometry="{ label: { x: 0.3445, y: 0.6630 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.buffer
