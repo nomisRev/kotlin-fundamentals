@@ -6,26 +6,5 @@ package presentation.snippets.lesson1.slide6
 import presentation.support.*
 
 fun main() {
-  val f: (String) -> Int = String::length
-  val g: String.() -> Int = String::length
-
-  val h: String.(String) -> String = String::plus
-  val v: (String, String) -> String = String::plus
-  val w: String.(String) -> String = v
-
-  val x = ["a", "aaa", "bb", "ab", "ccc"].groupBy { it.length }
-
-  val result: Map<Int, List<ByteArray>> =
-    ["a", "aaa", "bb", "ab", "ccc"]
-      .groupBy({ it.length }) { it.encodeToByteArray() }
-
-  println(result)
   println("Hello, World!")
-
-  println(["a", "aaa", "bb", "ab", "ccc"].sortedWith { string, string1 -> string.compareTo(string1) })
-
-
-  println(["a", "aaa", "bb", "ab", "ccc"].associateBy { it.length })
-  println(["a", "aaa", "bb", "ab", "ccc"].associate { Pair(it.length, it.encodeToByteArray()) })
-
 }

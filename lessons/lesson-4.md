@@ -22,7 +22,7 @@ class: type-hierarchy-slide
 
 # `Nothing` or bottom type
 
-<DrawnAnnotation text="Nothing" label="No values, can stand in for any return type because it never returns" />
+<DrawnAnnotation text="Nothing" label="No values, can stand in for any return type because it never returns"  :geometry="{ label: { x: 0.3768, y: 0.2768 } }"/>
 
 ```kotlin
 fun TODO(): Nothing = throw NotImplementedError()
@@ -33,7 +33,7 @@ fun TODO(): Nothing = throw NotImplementedError()
 # `Nothing` or bottom type
 
 <DrawnAnnotation text="Nothing" />
-<DrawnAnnotation text="Unit = TODO()" label="Nothing infers to _any_ type because it has _no value_" />
+<DrawnAnnotation text="Unit = TODO()" label="Nothing infers to _any_ type because it has _no value_"  :geometry="{ label: { x: 0.3118, y: 0.5616 } }"/>
 
 ```kotlin
 fun TODO(): Nothing = throw NotImplementedError()
@@ -87,7 +87,7 @@ magic-move
 
 # The primary constructor is the class header
 
-<DrawnAnnotation text="constructor" label="The `constructor` keyword is optional when there are no modifiers or annotations" :geometry="{ label: { x: 0.3894, y: 0.4756 } }"/>
+<DrawnAnnotation text="constructor" label="The `constructor` keyword is optional when there are no modifiers or annotations" :geometry="{ label: { x: 0.4865, y: 0.3855 } }"/>
 
 ```kotlin
 class Person constructor()
@@ -147,7 +147,7 @@ magic-move
 
 # The primary constructor is the class header
 
-<DrawnAnnotation text="val name: String" label="Constructor parameters can declare properties directly"/>
+<DrawnAnnotation text="val name: String" label="Constructor parameters can declare properties directly" :geometry="{ label: { x: 0.3455, y: 0.3670 } }"/>
 
 ```kotlin
 class Person(val name: String, var age: Int)
@@ -303,7 +303,7 @@ Hello Kotlin, my name is Olivia.
 
 # Nested classes
 
-<DrawnAnnotation text="class Nested" label="Has no access to the `Outer` class instance it's a `static inner`" />
+<DrawnAnnotation text="class Nested" label="Has no access to the `Outer` class instance it's a `static inner`"  :geometry="{ label: { x: 0.3807, y: 0.4246 } }"/>
 
 ```kotlin
 class Outer {
@@ -318,7 +318,7 @@ magic-move
 
 # Nested classes
 
-<DrawnAnnotation text="Outer.Nested" label="Fully qualified name is also _nested_ so prefix with outer classes" />
+<DrawnAnnotation text="Outer.Nested" label="Fully qualified name is also _nested_ so prefix with outer classes"  :geometry="{ label: { x: 0.3882, y: 0.5137 } }"/>
 
 ```kotlin
 class Outer {
@@ -335,7 +335,7 @@ magic-move
 
 # Nested classes
 
-<DrawnAnnotation text="inner" label="An `inner` class can access the `Outer` class instance" />
+<DrawnAnnotation text="inner" label="An `inner` class can access the `Outer` class instance"  :geometry="{ label: { x: 0.3259, y: 0.5648 } }"/>
 
 ```kotlin
 class Outer {
@@ -353,7 +353,7 @@ magic-move
 
 # Nested classes
 
-<DrawnAnnotation text="outerClass." label="To create an inner class we need an instance of the outer class" />
+<DrawnAnnotation text="outerClass." label="To create an inner class we need an instance of the outer class"  :geometry="{ label: { x: 0.3791, y: 0.7035 } }"/>
 
 ```kotlin
 class Outer {

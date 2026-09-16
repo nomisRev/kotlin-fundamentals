@@ -8,9 +8,3 @@ import presentation.support.*
 var number = 42
 
 var message = "Hello World!"
-
-suspend fun main() {
-    number += 1
-
-    message = "Hello from Kotlin!"
-}

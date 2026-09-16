@@ -151,6 +151,83 @@ len2("test")
 ```
 
 ---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 4</div>
+
+# Write a lambda
+
+> One parameter, so `it` will do
+
+```kotlin
+val isEven: (Int) -> Boolean = TODO()
+
+fun main() {
+  check(isEven(4))
+  check(!isEven(7))
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 4</div>
+
+# Name the parameters
+
+> Two parameters, so `it` is off the table
+
+```kotlin
+val add: (Int, Int) -> Int = TODO()
+
+fun main() {
+  check(add(2, 3) == 5)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 4</div>
+
+# Give the lambda a receiver
+
+> `this` is the `String`, so `uppercase()` needs no qualifier
+
+```kotlin
+val shout: String.() -> String = TODO()
+
+fun main() {
+  check("hi".shout() == "HI!")
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 4</div>
+
+# Reference instead of wrap
+
+> Replace the lambda with a `::` reference
+
+```kotlin
+val len: (String) -> Int = { it.length }
+
+fun main() {
+  check(len("Kotlin") == 6)
+}
+```
+
+---
 
 # Functions that take lambdas
 
@@ -380,7 +457,7 @@ val result: List<Int> = [1, 2, 3].mapNotNull { if (it % 2 == 0) it else null }
 
 # filterIsInstance()
 
-<DrawnAnnotation text="filterIsInstance" label="Filter by type" occurrence="2" />
+<DrawnAnnotation text="filterIsInstance" label="Filter by type" occurrence="2"  :geometry="{ label: { x: 0.5438, y: 0.4888 } }"/>
 
 ```kotlin
 fun <reified R> Iterable<*>.filterIsInstance(): List<R>
@@ -401,7 +478,7 @@ println(ints)
 # inline reified
 
 <DrawnAnnotation text="inline" />
-<DrawnAnnotation text="reified" label="Inlines a _reified_ function call with `KClass<R>` as parameter" />
+<DrawnAnnotation text="reified" label="Inlines a _reified_ function call with `KClass<R>` as parameter"  :geometry="{ label: { x: 0.3541, y: 0.2750 } }"/>
 
 ```kotlin
 inline fun <reified R> Iterable<*>.filterIsInstance(): List<R>
@@ -416,7 +493,7 @@ public <R> List<R> filterIsInstance(Iterable<R> values, Class<R> clazz)
 
 # Grouping
 
-<DrawnAnnotation text="List<T>" label="Aggregate values for a given key" />
+<DrawnAnnotation text="List<T>" label="Aggregate values for a given key"  :geometry="{ label: { x: 0.7857, y: 0.2766 } }"/>
 
 ```kotlin
 fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
@@ -570,6 +647,134 @@ val names = members
 ```
 
 ---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 6</div>
+
+# Transform
+
+> `map` each `Member` to its `name`
+
+```kotlin
+class Member(val name: String, val age: Int)
+
+fun names(members: List<Member>): List<String> = TODO()
+
+fun main() {
+  val members = [Member("Ada", 36), Member("Linus", 17)]
+  check(names(members) == ["Ada", "Linus"])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 6</div>
+
+# Select
+
+> `filter` on `age >= 18`
+
+```kotlin
+class Member(val name: String, val age: Int)
+
+fun adults(members: List<Member>): List<Member> = TODO()
+
+fun main() {
+  val ada = Member("Ada", 36)
+  val members = [ada, Member("Linus", 17)]
+  check(adults(members) == [ada])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 6</div>
+
+# Flatten
+
+> `flatMap`, `toList()` turns a `String` into its `Char`s
+
+```kotlin
+fun letters(words: List<String>): List<Char> = TODO()
+
+fun main() {
+  check(letters(["ab", "c"]) == ['a', 'b', 'c'])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 6</div>
+
+# Keep the non-null type
+
+> `toIntOrNull()` returns `Int?`, `mapNotNull` drops the `null`s
+
+```kotlin
+fun numbers(input: List<String>): List<Int> = TODO()
+
+fun main() {
+  check(numbers(["1", "two", "3"]) == [1, 3])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 5 / 6</div>
+
+# Group
+
+> `groupBy` on `length`
+
+```kotlin
+fun byLength(words: List<String>): Map<Int, List<String>> = TODO()
+
+fun main() {
+  check(byLength(["a", "bb", "cc"]) == mapOf(1 to ["a"], 2 to ["bb", "cc"]))
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 6 / 6</div>
+
+# Chain
+
+> `filter`, then `sortedBy`, then `map`
+
+```kotlin
+class Member(val name: String, val age: Int)
+
+fun adultNamesByAge(members: List<Member>): List<String> = TODO()
+
+fun main() {
+  val members = [
+    Member("Ada", 36),
+    Member("Linus", 17),
+    Member("Grace", 25),
+  ]
+  check(adultNamesByAge(members) == ["Grace", "Ada"])
+}
+```
+
+---
 
 # A function can return a function
 
@@ -600,6 +805,28 @@ eligible(28)
 ```console
 true
 false
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise</div>
+
+# Return a function
+
+> Return a lambda that captures `prefix`
+
+```kotlin
+fun startsWith(prefix: String): (String) -> Boolean = TODO()
+
+fun main() {
+  val isK = startsWith("K")
+  check(isK("Kotlin"))
+  check(!isK("Java"))
+  check(["Kotlin", "Java"].filter(startsWith("K")) == ["Kotlin"])
+}
 ```
 
 ---
@@ -820,4 +1047,48 @@ team.filter { it.age >= 18 }
 ```
 ```console
 [Ada]
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 2</div>
+
+# Make `Team` iterable
+
+> Implement `Iterable<Member>`, `override` its `iterator()`
+
+```kotlin no-compile
+class Member(val name: String, val age: Int)
+
+class Team(private val members: List<Member>)
+
+fun main() {
+  val team = Team([Member("Ada", 36), Member("Linus", 17)])
+  check(team.map { it.name } == ["Ada", "Linus"])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 2</div>
+
+# Make `Team` a literal target
+
+> A companion `operator fun of(vararg members: Member)`
+
+```kotlin no-compile
+class Team(private val members: List<Member>) : Iterable<Member> {
+  override operator fun iterator(): Iterator<Member> = members.iterator()
+}
+
+fun main() {
+  val team: Team = [Member("Ada", 36), Member("Linus", 17)]
+  check(team.count() == 2)
+}
 ```

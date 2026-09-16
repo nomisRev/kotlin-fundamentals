@@ -362,23 +362,134 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 6</div>
 
-# Control flow
+# Make `if` the value
 
-> `grade`: 90+ "A", 80..89 "B", else "F" — with `when`
->
-> `sumUntil`: sum up to (not including) `stopAt` — loop + `break`
+> Rewrite `abs` as one `if` expression, no `var` and no `return`
 
 ```kotlin
-fun grade(score: Int): String = TODO()
+fun abs(x: Int): Int {
+  var result = x
+  if (x < 0) result = -x
+  return result
+}
 
-fun sumUntil(numbers: List<Int>, stopAt: Int): Int = TODO()
+fun main() {
+  check(abs(-3) == 3)
+  check(abs(4) == 4)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 6</div>
+
+# Replace the `if` chain
+
+> Rewrite `grade` with a subject-less `when`
+
+```kotlin
+fun grade(score: Int): String =
+  if (score >= 90) "A"
+  else if (score >= 80) "B"
+  else "F"
 
 fun main() {
   check(grade(95) == "A")
+  check(grade(85) == "B")
   check(grade(40) == "F")
+}
+```
 
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 6</div>
+
+# Add a guard
+
+> Students aged 12 to 64 pay `8`, one guarded branch does it
+
+```kotlin
+fun ticketPrice(age: Int, student: Boolean): Int = when (age) {
+  in 0..11 -> 5
+  in 12..64 -> 12
+  else -> 6
+}
+
+fun main() {
+  check(ticketPrice(8, student = false) == 5)
+  check(ticketPrice(20, student = true) == 8)
+  check(ticketPrice(20, student = false) == 12)
+  check(ticketPrice(70, student = true) == 6)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 6</div>
+
+# Cover every entry
+
+> `when (light)` without `else`, the compiler knows all three entries
+
+```kotlin
+enum class Light { RED, AMBER, GREEN }
+
+fun next(light: Light): Light = TODO()
+
+fun main() {
+  check(next(Light.RED) == Light.GREEN)
+  check(next(Light.GREEN) == Light.AMBER)
+  check(next(Light.AMBER) == Light.RED)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 5 / 6</div>
+
+# Run the body first
+
+> `do` divides by `10` at least once, so `0` still has one digit
+
+```kotlin
+fun digitCount(n: Int): Int = TODO()
+
+fun main() {
+  check(digitCount(0) == 1)
+  check(digitCount(7) == 1)
+  check(digitCount(2024) == 4)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 6 / 6</div>
+
+# Stop early
+
+> A `for` loop that `break`s when it reaches `stopAt`
+
+```kotlin
+fun sumUntil(numbers: List<Int>, stopAt: Int): Int = TODO()
+
+fun main() {
   check(sumUntil(listOf(1, 2, 3, 4, 5), stopAt = 4) == 6)
   check(sumUntil(listOf(4, 6, 8), stopAt = 4) == 0)
 }
@@ -492,14 +603,57 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 3</div>
 
-# Null safety
+# Call it safely
 
-> `null` or empty → `'?'`, otherwise the uppercase first letter — no `!!`
+> `uppercase()` behind a `?.`, no `if`
 
 ```kotlin
-fun firstInitial(name: String?): Char = TODO()
+fun shout(text: String?): String? = TODO()
+
+fun main() {
+  check(shout("hi") == "HI")
+  check(shout(null) == null)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Fall back with Elvis
+
+> `?.` gives an `Int?`, `?:` turns it into an `Int`
+
+```kotlin
+fun lengthOrZero(text: String?): Int = TODO()
+
+fun main() {
+  check(lengthOrZero("Kotlin") == 6)
+  check(lengthOrZero(null) == 0)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Drop the `!!`
+
+> Remove both `!!`, the null check already smart-casts `name`
+
+```kotlin
+fun firstInitial(name: String?): Char {
+  if (name == null || name!!.isEmpty()) return '?'
+  return name!!.uppercase().first()
+}
 
 fun main() {
   check(firstInitial("simon") == 'S')
@@ -645,16 +799,54 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 3</div>
 
-# Strings
+# Interpolate
 
-> `$item` interpolation for the header, `trimIndent()` for the frame
+> `$name` for the variable, `${...}` for the expression
+
+```kotlin
+fun birthday(name: String, age: Int): String = TODO()
+
+fun main() {
+  check(birthday("Ada", 36) == "Ada turns 37 next year")
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Frame it with a raw string
+
+> One raw string with `$item` and `$price`, `trimIndent()` removes the indentation
 
 ```kotlin
 fun receipt(item: String, price: Double): String = TODO()
 
 fun main() {
   check(receipt("Coffee", 3.5) == "Coffee costs 3.5\n----------\nThank you!")
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Stop escaping `$`
+
+> Rewrite `payload` with a `$$` prefix so `$id` needs no `${'$'}`
+
+```kotlin
+fun payload(name: String): String = "{ \"${'$'}id\": \"$name\" }"
+
+fun main() {
+  check(payload("kodee") == "{ \"${'$'}id\": \"kodee\" }")
 }
 ```

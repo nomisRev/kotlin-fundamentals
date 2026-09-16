@@ -5,6 +5,6 @@ package presentation.snippets.lesson2.slide38
 
 import presentation.support.*
 
-var number = 42
+var number: Int = 42
 
-var message = "Hello World!"
+var message: String = "Hello World!"
