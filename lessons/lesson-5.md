@@ -156,7 +156,7 @@ magic-move
 # Only `html` builds an `HtmlBuilder`
 
 <DrawnAnnotation text="internal constructor" label="Only this module can construct it" :geometry="{ label: { x: 0.74, y: 0.196 } }"/>
-<DrawnAnnotation text="HtmlBuilder.()" :line="13" label="The type stays public, it is the receiver" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.78, y: 0.807 } }"/>
+<DrawnAnnotation text="HtmlBuilder.()" :line="13" label="The type stays public, it is the receiver" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.7444, y: 0.8097 } }"/>
 
 ```kotlin
 class HtmlBuilder internal constructor() {

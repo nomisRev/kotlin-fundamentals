@@ -786,7 +786,7 @@ Money(cents=750)
 
 # `<` needs a `compareTo`
 
-<InlineCompilerError :line="8" text="<" message="Unresolved reference 'compareTo' on receiver of type 'Money'" style="--inline-compiler-error-message-size: 1.35rem">
+<InlineCompilerError :line="8" text="<" message="Unresolved reference 'compareTo' on receiver of type 'Money'">
 
 ```kotlin
 @JvmInline
@@ -829,7 +829,7 @@ false
 
 # `Comparable` unlocks sorting
 
-<InlineCompilerError :line="8" text="sorted" message="fun <T : Comparable<T>> Iterable<T>.sorted(): List<T> is inapplicable because of a receiver type mismatch" style="--inline-compiler-error-message-size: 1.2rem">
+<InlineCompilerError :line="8" text="sorted" message="fun <T : Comparable<T>> Iterable<T>.sorted(): List<T> is inapplicable because of a receiver type mismatch" style="--inline-compiler-error-message-size: 1.25rem">
 
 ```kotlin
 @JvmInline
@@ -1184,7 +1184,7 @@ val copied = Vector.of(1.0, 0.0).copy(x = Double.NaN)
 > 
 > This will give us better static interoperability with Java
 
-<DrawnAnnotation text="companion val" label="Create static extensions" />
+<DrawnAnnotation text="companion val" label="Create static extensions"  :geometry="{ label: { x: 0.2110, y: 0.7862 } }"/>
 
 ```kotlin
 data class Vector(val x: Double, val y: Double) {
@@ -1353,7 +1353,7 @@ magic-move
 
 # Sealed classes close a hierarchy
 
-<DrawnAnnotation text="data object" label="`toString()` prints `Loading` instead of `package.Loading@52cc8049`\nUse this to give empty `{ }` data a type" :geometry="{ label: { x: 0.4838, y: 0.4624, width: 0.6815 } }"/>
+<DrawnAnnotation text="data object" label="`toString()` prints `Loading` instead of `package.Loading@52cc8049`\nUse this to give empty `{ }` data a type" :geometry="{ label: { x: 0.4838, y: 0.5020, width: 0.6815 } }"/>
 
 ```kotlin
 sealed class UiState {
@@ -1424,7 +1424,7 @@ magic-move
 <SmartCast text="state" occurrence="3">
 <SmartCast text="state" occurrence="4">
 <SmartCast text="state" occurrence="5">
-<DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression" />
+<DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression"  :geometry="{ label: { x: 0.4920, y: 0.8017 } }"/>
 
 ```kotlin
 sealed class UiState {
@@ -1524,7 +1524,7 @@ Polygon(6).draw() // Drawing a 6-sided shape
 # The interface carries the annotation
 
 <DrawnAnnotation text="@IgnorableReturnValue" label="Like `Set.add`, the `Boolean` is informative, not required" :geometry="{ label: { x: 0.62, y: 0.24 } }"/>
-<DrawnAnnotation text="override fun register" label="Overrides inherit it" :geometry="{ label: { x: 0.70, y: 0.475 } }"/>
+<DrawnAnnotation text="override fun register" label="Overrides inherit it" :geometry="{ label: { x: 0.4075, y: 0.6360 } }"/>
 
 ```kotlin
 interface Registry {
@@ -1680,7 +1680,7 @@ class Student(val id: String, name: String, age: Int) : Person(name, age) {
 # Classes are final by default
 
 <DrawnAnnotation text="open" :line="7" />
-<DrawnAnnotation text="final" :line="8" label="`final` limits function for further extension" />
+<DrawnAnnotation text="final" :line="8" label="`final` limits function for further extension"  :geometry="{ label: { x: 0.3029, y: 0.7617 } }"/>
 
 ```kotlin
 open class Person(val name: String, val age: Int) {
@@ -2016,5 +2016,3 @@ thermostat.target = 25
 check(runCatching { thermostat.target = 40 }.isFailure)
 check(thermostat.target == 25)
 ```
-
----

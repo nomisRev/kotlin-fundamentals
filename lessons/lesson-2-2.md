@@ -106,7 +106,7 @@ magic-move
 
 # `when` statements
 
-<DrawnAnnotation text="else ->" label="`else` covers  all other cases"  :geometry="{ label: { x: 0.2275, y: 0.4331 } }"/>
+<DrawnAnnotation text="else ->" label="`else` covers  all other cases"  :geometry="{ label: { x: 0.2438, y: 0.4620 } }"/>
 
 ```kotlin
 fun max(a: Int, b: Int): Int = 
@@ -244,7 +244,7 @@ when (val x = calculate()) {
 > Stable since Kotlin 2.2.0
 
 <DrawnAnnotation text="if x % 2 == 0" on="0" label="The guard runs only when the condition match succeeds" />
-<DrawnAnnotation text="in 1..10" occurrence="3" label="We _should_ typically always specify counter condition" on="1" />
+<DrawnAnnotation text="in 1..10" occurrence="3" label="We _should_ typically always specify counter condition" on="1"  :geometry="{ label: { x: 0.3496, y: 0.5818 } }"/>
 
 ```kotlin
 fun describe(x: Int) = when (x) {

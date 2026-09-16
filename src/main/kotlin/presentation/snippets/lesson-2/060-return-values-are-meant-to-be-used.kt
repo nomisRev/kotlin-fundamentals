@@ -8,5 +8,5 @@ import presentation.support.*
 fun sum(a: Int, b: Int): Int = a + b
 
 suspend fun main() {
-  sum(1, 2)
+    sum(1, 2)
 }

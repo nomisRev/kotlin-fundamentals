@@ -60,10 +60,16 @@ class: kotlin-history-slide
 src: ./lessons/lesson-1.md
 ---
 ---
-src: ./lessons/lesson-2.md
+src: ./lessons/lesson-2-1.md
 ---
 ---
 src: ./lessons/lesson-2-2.md
+---
+---
+src: ./lessons/lesson-2-3.md
+---
+---
+src: ./lessons/lesson-2-4.md
 ---
 ---
 src: ./lessons/lesson-3.md
