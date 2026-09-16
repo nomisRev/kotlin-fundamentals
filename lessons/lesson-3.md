@@ -265,6 +265,7 @@ fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 
 # Collections API
 
+- Literals and ranges
 - Transforming and filtering
 - Sorting, and grouping
 - Partitioning
@@ -334,6 +335,116 @@ val iterable: Iterable<Int> = [1, 2, 3]
 
 fun sum(numbers: Iterable<Int>): Int = numbers.sum()
 sum([1, 2, 3])
+```
+
+---
+
+# A range is an `Iterable` too
+
+<DrawnAnnotation text="1..10" on="0" label="Both ends included: `1` up to and including `10`" :geometry="{ label: { x: 0.5981, y: 0.2641 } }" />
+<DrawnAnnotation text="toList()" on="1" label="`IntRange` is lazy and needs to be explicitly converted" :geometry="{ label: { x: 0.5967, y: 0.2886 } }" />
+
+```kotlin
+val digits: IntRange = 1..10
+
+println(digits.toList())
+```
+```console
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+
+---
+magic-move
+---
+
+<DrawnAnnotation text="..<" label="Open end, `10` is excluded" :geometry="{ label: { x: 0.50, y: 0.195 } }" />
+
+```kotlin
+val digits = 1..<10
+
+println(digits.toList())
+```
+```console
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+---
+magic-move
+---
+
+<DrawnAnnotation text="10 in digits" label="`in` asks `contains`, nothing is iterated" :geometry="{ label: { x: 0.5049, y: 0.2954 } }" />
+
+```kotlin
+val digits = 1..<10
+
+println(digits)
+println(9 in digits)
+println(10 in digits)
+```
+```console
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+true
+false
+```
+
+---
+magic-move
+---
+
+# `..` only counts up
+
+<DrawnAnnotation text="downTo" label="An infix function that builds an `IntProgression`" :geometry="{ label: { x: 0.5632, y: 0.2953 } }" />
+
+```kotlin
+val digits = 10 downTo 1
+
+println(digits.toList())
+```
+```console
+[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+```
+
+---
+magic-move
+---
+
+# `..` only counts up
+
+<DrawnAnnotation text="step 3" label="Every third element, starting at `1`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5100, y: 0.2939 } }" />
+
+```kotlin
+val digits = 1..10 step 3
+
+println(digits.toList())
+```
+```console
+[1, 4, 7, 10]
+```
+
+---
+
+# `..` works on any `Comparable`
+
+<DrawnAnnotation text="startsAt..<endsAt" on="0" label="`..` is `operator fun rangeTo`, every `Comparable` has it" :geometry="{ label: { x: 0.6564, y: 0.3534 } }" />
+<DrawnAnnotation text="'a'..'e'" on="1" label="`CharRange` iterates like `IntRange`" :geometry="{ label: { x: 0.5293, y: 0.4358 } }" />
+<DrawnAnnotation text="1.0..3.0" on="2" label="`in` works, `for` does not: there is no next `Double`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5585, y: 0.5371 } }" />
+
+```kotlin
+import kotlin.time.Clock
+import kotlin.time.Instant
+
+data class Talk(val title: String, val startsAt: Instant, val endsAt: Instant)
+
+fun Talk.isLive(): Boolean = Clock.System.now() in startsAt..<endsAt
+
+
+println(('a'..'e').toList())
+
+println(2.5 in 1.0..3.0)
+```
+```console
+[a, b, c, d, e]
+true
 ```
 
 ---

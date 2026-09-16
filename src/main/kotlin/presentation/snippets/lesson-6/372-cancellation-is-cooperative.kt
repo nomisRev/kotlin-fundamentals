@@ -5,14 +5,12 @@ package presentation.snippets.lesson6.slide372
 
 import presentation.support.*
 import kotlin.random.Random
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 fun compute() = println(Random.nextInt())
 
 val job = scope.launch {
   while (true) {
-    ensureActive()
     compute()
   }
 }

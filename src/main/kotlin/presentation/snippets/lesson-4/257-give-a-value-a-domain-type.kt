@@ -6,8 +6,13 @@ package presentation.snippets.lesson4.slide257
 import presentation.support.*
 
 @JvmInline
-value class Email(val value: String) {
-    init {
-        require(value.contains("@")) { "Not a valid email" }
-    }
-}
+value class EmployeeId(val value: Long)
+
+@JvmInline
+value class DepartmentId(val value: Long)
+
+@JvmInline
+value class Email(val value: String)
+
+@JvmInline
+value class Name(val value: String)

@@ -9,4 +9,5 @@ import kotlinx.coroutines.launch
 
 val job = scope.launch {
   val speaker = async { fetchSpeaker() }
+  val talks = async { fetchTalks() }
 }

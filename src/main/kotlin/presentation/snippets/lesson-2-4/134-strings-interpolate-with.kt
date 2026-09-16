@@ -8,5 +8,5 @@ import presentation.support.*
 val name = "John"
 
 suspend fun main() {
-    println("Hello $name!") // Hello John!
+    println($$"$$name owes you 100$") // John owes you 100$
 }

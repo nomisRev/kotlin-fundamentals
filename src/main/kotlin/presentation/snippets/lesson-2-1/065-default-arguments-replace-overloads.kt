@@ -5,6 +5,6 @@ package presentation.snippets.lesson21.slide65
 
 import presentation.support.*
 
-fun sum(a: Int, b: Int): Int = sum(a, b, 0)
+fun sum(a: Int, b: Int, c: Int = 0): Int = a + b + c
 
-fun sum(a: Int, b: Int, c: Int): Int = a + b + c
+val two = sum(1, 1)

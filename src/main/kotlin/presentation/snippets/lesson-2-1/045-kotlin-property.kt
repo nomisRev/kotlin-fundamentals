@@ -5,7 +5,8 @@ package presentation.snippets.lesson21.slide45
 
 import presentation.support.*
 
-var text = ""
-
-val isEmpty: Boolean
-  get() = text.isEmpty()
+val number: Int
+  get() {
+    println("get number")
+    return 42
+  }

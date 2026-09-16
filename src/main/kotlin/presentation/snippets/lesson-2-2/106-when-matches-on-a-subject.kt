@@ -5,10 +5,10 @@ package presentation.snippets.lesson22.slide106
 
 import presentation.support.*
 
-fun describe(x: Int) {
-  when (x) {
+suspend fun main() {
+  when (val x = calculate()) {
     1 -> println("x == 1")
     2 -> println("x == 2")
-    in 3..10 -> println("in 3..10")
+    specialValue() -> println("$x matches the special value")
   }
 }

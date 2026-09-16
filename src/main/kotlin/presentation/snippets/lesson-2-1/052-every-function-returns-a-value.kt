@@ -5,11 +5,8 @@ package presentation.snippets.lesson21.slide52
 
 import presentation.support.*
 
-fun helloWorld(): Unit {
+fun helloWorld() {
   println("Hello World!")
-  return Unit
 }
 
-suspend fun main() {
-  helloWorld()
-}
+val unit: Unit = helloWorld()
