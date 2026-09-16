@@ -380,7 +380,7 @@ magic-move
 
 # Build system: Gradle
 
-<DrawnAnnotation text="mavenCentral" label="Need to explicitly referenve mavenCentral"/>
+<DrawnAnnotation text="mavenCentral" label="Need to explicitly reference `mavenCentral()`"/>
 
 ```kotlin gradle
 plugins {
@@ -570,7 +570,7 @@ kodee: heart
 
 # Run it from the CLI
 
-<DrawnAnnotation text="./kotlin" label="Will boostrap Toolchain on first run" />
+<DrawnAnnotation text="./kotlin" label="Will bootstrap the Toolchain on first run" />
 
 - `./kotlin run` or `kotlin run` if Kotlin Toolchain is installed
 

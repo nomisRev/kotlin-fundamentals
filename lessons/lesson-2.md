@@ -525,7 +525,7 @@ sum(list)
 magic-move
 ---
 
-# Colletion literals
+# Collection literals
 
 <DrawnAnnotation text="[1, 2, 3]"/>
 <DrawnAnnotation text="[1, 2, 3, 4, 5, 6]"/>

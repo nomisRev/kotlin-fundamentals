@@ -82,3 +82,27 @@ The slide snippets compile against Ktor's actual server-core API; the context
 parameter examples do not require starting a server. Kotlin 2.4 supports context
 parameters without the old experimental context-parameter flag. Explicit named
 context arguments are not needed for this lesson.
+
+## Lesson 6: Coroutines
+
+Structured concurrency with an animated Job hierarchy beside the code
+(`components/JobTree.vue`, staged by the slide's `clicks:` count), wrapping a
+Java SDK in each of its asynchronous styles (callback, `CompletableFuture`,
+Reactive Streams `Publisher`), one scope composing all three, and Flow. The
+Java SDK the slides wrap is `src/main/java/presentation/support/ConferenceSdk.java`;
+the Kotlin helpers are in `src/main/kotlin/presentation/support/Conference.kt`.
+
+The exercises live in `exercises/src/coroutines/` (Kotlin Toolchain project,
+`= TODO()` bodies with the task as KDoc) with tests in `exercises/test/coroutines/`:
+
+```bash
+cd exercises
+./kotlin test
+```
+
+The lesson's fences compile on their own, Java SDK included:
+
+```bash
+npm run snippets:check
+./gradlew compileLesson6Kotlin compileLesson6Java
+```

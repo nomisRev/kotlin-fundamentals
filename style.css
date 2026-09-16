@@ -388,3 +388,13 @@ html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6
   letter-spacing: 0.02em;
   color: #e4463b;
 }
+
+/* Lesson 6: the Job hierarchy beside the snippet. The code window keeps the
+   deck's type size (it is sized from the canvas, not the block) and leaves the
+   right side of the slide to the tree. Keep those snippets under 48 columns. */
+.slidev-layout.job-slide .slidev-code-wrapper { width: calc(100% - 33rem); }
+.slidev-layout.job-slide .jobtree { position: absolute; top: 9rem; right: 4rem; width: 31rem; }
+/* A tree on its own, without code beside it. */
+.slidev-layout .jobtree-centre { width: min(100%, 50rem); margin: 5rem auto 0; }
+.slidev-layout .jobtree-centre .jobtree-node { font-size: 1.6rem; }
+.slidev-layout .jobtree-centre .jobtree-fan { height: 4.5rem; }

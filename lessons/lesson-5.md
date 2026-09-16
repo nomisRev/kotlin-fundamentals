@@ -49,6 +49,8 @@ magic-move
 
 <DrawnAnnotation text="  b" label="Called on `this.` `HtmlBuilder` only available within `html { }`"  :geometry="{ label: { x: 0.3777, y: 0.5848 } }"/>
 
+<TypeHint :line="7" receiver="HtmlBuilder">
+
 ```kotlin
 class HtmlBuilder {
     fun body(block: BodyBuilder.() -> Unit) = TODO()       
@@ -60,6 +62,8 @@ val index = html {
     body { }
 }
 ```
+
+</TypeHint>
 
 ---
 magic-move
@@ -211,74 +215,250 @@ class BodyBuilder
 
 > Only the nearest receiver of this DSL is implicitly available.
 
+<TypeHint :line="1" receiver="HtmlBuilder" >
+<TypeHint :line="2" receiver="BodyBuilder" >
 <InlineCompilerError text="body" :line="3" message="'fun body(block: BodyBuilder.() -> Unit): Unit' cannot be called in this context" >
 
 ```kotlin
-html { // HtmlBuilder.() -> Unit
-    body { // BodyBuilder.() -> Unit
+html {
+    body {
         body {
-              // ↑ Only BodyBuilder visible
+
         } 
     }
 }
 ```
 
 </InlineCompilerError>
+</TypeHint>
+</TypeHint>
 
 ---
 
 # Extending library DSLs
 
-```kotlin
-import io.ktor.server.routing.*
-import io.ktor.server.response.*
+<TypeHint :line="1" receiver="BODY">
 
-fun Route.greetingRoutes() {
-  get("/hello") { // RoutingContext.() -> Unit
-    call.respondText("Hello, Ada")
+```kotlin
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
+
+fun Agenda.render(): String = createHTML().body {
+  h1 { +title }
+  sessions.forEach { session ->
+    val label = "${session.title} · ${session.minutes} min"
+    div("session") { +label }
   }
 }
 ```
+
+</TypeHint>
 
 ---
 magic-move
 ---
 
-# An ordinary extension can extend Ktor
+# An ordinary extension can extend the DSL
+
+<TypeHint :line="1" receiver="BODY">
+<DrawnAnnotation text="FlowContent." label="Available inside every tag that accepts flow content" :geometry="{ label: { x: 0.3276, y: 0.6573 } }"/>
 
 ```kotlin
-import io.ktor.server.routing.*
-import io.ktor.server.response.*
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
 
-fun Route.greetingRoutes() {
-  get("/hello") { // RoutingContext.() -> Unit
-    respondGreeting(User("Ada"))
-  }
+fun Agenda.render(): String = createHTML().body {
+  h1 { +title }
+  sessions.forEach { sessionCard(it) }
 }
 
-suspend fun RoutingContext.respondGreeting(user: User) {
-    call.respondText("Hello, ${user.name}")
+fun FlowContent.sessionCard(session: Session) {
+  val label = "${session.title} · ${session.minutes} min"
+  div("session") { +label }
 }
 ```
 
+</TypeHint>
+
 ---
 
-# Keep the user as the extension receiver
+# Keep the session as the extension receiver
+
+<TypeHint :line="1" receiver="BODY">
+<DrawnAnnotation text="context(html: FlowContent)" label="Satisfied by the `body { }` receiver, nothing is passed" :geometry="{ label: { x: 0.3490, y: 0.7019 } }"/>
+<DrawnAnnotation text="it.card()"/>
 
 ```kotlin
-import io.ktor.server.routing.*
-import io.ktor.server.response.*
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
 
-fun Route.greetingRoutes() {
-  get("/hello") {
-    User("Ada").respondGreeting()
+fun Agenda.render(): String = createHTML().body {
+  h1 { +title }
+  sessions.forEach { it.card() }
+}
+
+context(html: FlowContent)
+fun Session.card() {
+  val label = "$title · $minutes min"
+  html.div("session") { +label }
+}
+```
+
+</TypeHint>
+
+---
+
+# Keep the session as the extension receiver
+
+<TypeHint :line="1" receiver="BODY">
+<TypeHint :line="8" receiver="Session">
+<DrawnAnnotation text=".cards()" on="0" />
+<DrawnAnnotation text="Iterable" label="Iterable is more flexible and allows `List`, `Set`, ... and custom `Iterable` types" on="0" :geometry="{ label: { x: 0.5161, y: 0.6961 } }"/>
+<DrawnAnnotation text="with(it)" label="Leverage `with` `Session.` to avoid refactoring the implementation" on="1"  :geometry="{ label: { x: 0.4801, y: 0.7039 } }"/>
+
+```kotlin
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
+
+fun Agenda.render(): String = createHTML().body {
+  h1 { +title }
+  sessions.cards()
+}
+
+context(html: FlowContent)
+fun Iterable<Session>.cards() = forEach {
+    with(it) {
+        val label = "$title · $minutes min"
+        html.div("session") { +label }
+    }
+}
+```
+
+</TypeHint>
+</TypeHint>
+
+---
+
+# Keep the session as the extension receiver
+
+<TypeHint :line="1" receiver="BODY">
+<TypeHint :line="8" receiver="Session">
+<DrawnAnnotation text="+" occurrence="2" />
+<DrawnAnnotation text="operator" />
+<DrawnAnnotation text="unaryPlus" label="Create 1st party syntax for your own domain"  :geometry="{ label: { x: 0.3637, y: 0.7038 } }"/>
+
+```kotlin
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
+
+fun Agenda.render(): String = createHTML().body {
+  h1 { +title }
+  +sessions
+}
+
+context(html: FlowContent)
+operator fun Iterable<Session>.unaryPlus() = forEach {
+    with(it) {
+        val label = "$title · $minutes min"
+        html.div("session") { +label }
+    }
+}
+```
+
+</TypeHint>
+</TypeHint>
+
+---
+
+# A receiver satisfies a context parameter
+
+<TypeHint :line="7" receiver="Clock">
+<DrawnAnnotation text="with(Clock.System)" label="`Clock` is `this` and satisfies `context(clock: Clock)`" :geometry="{ label: { x: 0.3340, y: 0.6559 } }"/>
+
+```kotlin
+import kotlin.time.Clock
+import kotlin.time.Instant
+
+data class Talk(val title: String, val startsAt: Instant, val endsAt: Instant)
+
+context(clock: Clock)
+fun Talk.isLive(): Boolean = clock.now() in startsAt..<endsAt
+
+fun liveTalks(talks: List<Talk>): List<Talk> =
+  with(Clock.System) {
+    talks.filter { it.isLive() }
   }
+```
+
+</TypeHint>
+
+---
+magic-move
+---
+
+# `context` supplies a context without a receiver
+
+<TypeHint :line="7" context="Clock">
+<DrawnAnnotation text="context(Clock.System)" label="Only a context, `this` stays what it was" :geometry="{ label: { x: 0.2759, y: 0.6531 } }"/>
+
+```kotlin
+import kotlin.time.Clock
+import kotlin.time.Instant
+
+data class Talk(val title: String, val startsAt: Instant, val endsAt: Instant)
+
+context(clock: Clock)
+fun Talk.isLive(): Boolean = clock.now() in startsAt..<endsAt
+
+fun liveTalks(talks: List<Talk>): List<Talk> =
+  context(Clock.System) {
+    talks.filter { it.isLive() }
+  }
+```
+
+</TypeHint>
+
+---
+
+# A context is not a receiver
+
+> A receiver resolves context parameters, a context never resolves members
+
+<TypeHint :line="1" receiver="Clock">
+<TypeHint :line="5" context="Clock">
+<InlineCompilerError text="now()" :line="6" message="Unresolved reference 'now'.">
+
+```kotlin
+with(Clock.System) {
+  now()
 }
 
-context(routing: RoutingContext)
-suspend fun User.respondGreeting() {
-    routing.call.respondText("Hello, $name")
+context(Clock.System) {
+  now()
 }
+```
+
+</InlineCompilerError>
+</TypeHint>
+</TypeHint>
+
+---
+
+# Pass a context argument by name
+
+> `-Xexplicit-context-arguments` · experimental in Kotlin 2.4
+
+<DrawnAnnotation text="logger = Logger(&quot;APP&quot;)" label="One call, nothing to wrap in `with` or `context`"/>
+
+```kotlin
+class Logger(val tag: String) {
+  fun log(message: String) = println("[$tag] $message")
+}
+
+context(logger: Logger)
+fun greet(name: String) = logger.log("hello, $name")
+
+greet(logger = Logger("APP"), name = "Grace")
 ```
 
 ---
@@ -377,7 +557,9 @@ Session.insert is a member extension on another value inside its scope.
 | `run { ... }`, `with(value) { ... }` | Return the block's result |
 | `session.insert()` | A member extension uses the builder's scope |
 | `+session` | Call `session.unaryPlus()` |
-| `context(routing: RoutingContext)` | Require a context for the operation |
+| `context(html: FlowContent)` | Require a context for the operation |
+| `context(value) { ... }` | Supply a context, keep the receiver |
+| `greet(logger = log)` | Pass a context argument by name |
 
 <!--
 Closing check: ask who owns the state and what each expression returns.

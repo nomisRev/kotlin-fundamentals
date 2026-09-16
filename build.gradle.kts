@@ -7,8 +7,12 @@ repositories {
 }
 
 dependencies {
-  implementation("io.ktor:ktor-server-core-jvm:3.4.0")
   implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0")
+  // Lesson 6: coroutines, plus the interop modules the slides wrap Java SDKs with.
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.11.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
+  implementation("io.projectreactor:reactor-core:3.7.11")
 }
 
 kotlin {
@@ -59,6 +63,18 @@ kotlin.sourceSets.named("lesson5") {
   kotlin.include("exercises/lesson5/**")
 }
 configurations[lesson5.implementationConfigurationName].extendsFrom(configurations.implementation.get())
+
+// Lesson 6 compiles on its own too, Java SDK included, so its fences are
+// checked while earlier lessons still have fences that do not compile.
+val lesson6 = sourceSets.create("lesson6")
+kotlin.sourceSets.named("lesson6") {
+  kotlin.srcDir("src/main/kotlin")
+  kotlin.include("presentation/support/Conference.kt")
+  kotlin.include("presentation/snippets/lesson-6/**")
+}
+lesson6.java.srcDirs("src/main/java")
+lesson6.java.include("presentation/support/**", "snippets/lesson-6/**")
+configurations[lesson6.implementationConfigurationName].extendsFrom(configurations.implementation.get())
 
 // The incomplete student starter is checked only when explicitly requested.
 val lesson5ReferenceCheck = tasks.register<JavaExec>("lesson5ReferenceCheck") {

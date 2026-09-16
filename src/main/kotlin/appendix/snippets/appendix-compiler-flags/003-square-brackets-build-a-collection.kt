@@ -8,3 +8,10 @@ fun sum(numbers: Iterable<Int>): Int = numbers.sum()
 val six = sum([1, 2, 3])
 
 val twentyOne = sum([1, 2, 3, 4, 5, 6])
+
+
+
+data class Tags(val key: String, val tags: Array<String>)
+//  override fun equals(other: Any?): Boolean = TODO()
+//  override fun hashCode(): Int = TODO()
+//}

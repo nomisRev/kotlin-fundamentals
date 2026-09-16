@@ -9,7 +9,6 @@ data class Session(val title: String, val speaker: String?, val minutes: Int)
 data class Agenda(val title: String, val sessions: List<Session>)
 data class ScheduledSession(val session: Session, val startsAt: LocalTime)
 data class DisplayConfig(val showSpeakers: Boolean = true)
-data class User(val name: String)
 
 @AgendaDsl
 class SessionBuilder(private val title: String) {
