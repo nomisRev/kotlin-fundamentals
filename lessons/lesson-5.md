@@ -47,6 +47,8 @@ magic-move
 
 # DSL entrypoint
 
+<DrawnAnnotation text="  b" label="Called on `this.` `HtmlBuilder` only available within `html { }`"  :geometry="{ label: { x: 0.3777, y: 0.5848 } }"/>
+
 ```kotlin
 class HtmlBuilder {
     fun body(block: BodyBuilder.() -> Unit) = TODO()       
@@ -225,7 +227,7 @@ html { // HtmlBuilder.() -> Unit
 
 ---
 
-# Ktor supplies a route-handler receiver
+# Extending library DSLs
 
 ```kotlin
 import io.ktor.server.routing.*
@@ -237,7 +239,6 @@ fun Route.greetingRoutes() {
   }
 }
 ```
-
 
 ---
 magic-move
@@ -443,7 +444,7 @@ fun example(calculator: Calculator) {
 <DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_"/>
 
 ```kotlin
-fun <A> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B>
+fun <A, B> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B> = TODO()
 
 [1, 2, 3].map(Unit) { input -> input * 2 }
 ```

@@ -8,3 +8,6 @@ settings:
     freeCompilerArgs:
       - "-Xcollection-literals"
       - "-Xintrinsic-const-evaluation"
+      - "-Xreturn-value-checker=full"
+      - "-Xcontext-sensitive-resolution"
+      - "-Xname-based-destructuring=complete"

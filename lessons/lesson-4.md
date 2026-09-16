@@ -370,13 +370,13 @@ val innerClass = outerClass.Inner()
 
 ---
 
-# Data classes generate the boilerplate
+# Data
 
-<DrawnAnnotation text="data class"/>
-
-```kotlin
-data class Person(val name: String, val age: Int)
-```
+- In Java known as 'POJO'. Lombok, AutoValue, Immutables, ...
+- Prefer `val` and immutability
+- Represents a set of named properties
+- Equals, hash, toString
+- Way to _update_ immutable data (Java builders)
 
 ---
 
@@ -386,11 +386,73 @@ data class Person(val name: String, val age: Int)
 data class Person(val name: String, val age: Int)
 ```
 
-A data class must:
-- have at least one primary constructor parameter
-- The primary constructor must have only property (val / var) parameters
-- vararg parameters are forbidden
-- For Array properties it's recommended to override equals() / hashCode()
+---
+
+# Data class requirements
+
+<InlineCompilerError text="()" message="Data class must have at least one primary constructor parameter">
+
+```kotlin
+data class Tags()
+```
+
+</InlineCompilerError>
+
+---
+
+# Data class requirements
+
+<InlineCompilerError text="key: String" message="Primary constructor must only have property val/var parameters" style="--inline-compiler-error-message-size: 1.55rem">
+
+```kotlin
+data class Tags(key: String)
+```
+
+</InlineCompilerError>
+
+---
+
+# Data class requirements
+
+<InlineCompilerError text="vararg tags: String" message="Primary constructor vararg parameters are prohibited for data classes">
+
+```kotlin
+data class Tags(
+    val key: String,
+    vararg tags: String
+)
+```
+
+</InlineCompilerError>
+
+---
+
+# Data class requirements
+
+<Warning text="val tags: Array<String>" message="Property with Array type in a data class\nit is recommended to override equals() and hashCode() ">
+
+```kotlin
+data class Tags(
+    val key: String,
+    val tags: Array<String>
+)
+```
+
+</Warning>
+
+---
+
+# Data class requirements
+
+<DrawnAnnotation text="equals" />
+<DrawnAnnotation text="hashCode" label="Explicitly specify Array behavior"  :geometry="{ label: { x: 0.3835, y: 0.4132 } }"/>
+
+```kotlin
+data class Tags(val key: String, val tags: Array<String>) {
+    override fun equals(other: Any?): Boolean = TODO()
+    override fun hashCode(): Int = TODO()
+}
+```
 
 ---
 
@@ -401,7 +463,7 @@ A data class must:
 data class User(val name: String, val age: Int)
 
 val user = User("Ada", 36)
-println(user)                   
+println(user)                  
 ```
 ```console
 User(name=Ada, age=36)
@@ -640,7 +702,7 @@ false
 
 # `Comparable` unlocks sorting
 
-<InlineCompilerError :line="8" text="sorted" message="Candidate 'fun <T : Comparable<T>> Iterable<T>.sorted(): List<T>' is inapplicable because of a receiver type mismatch" style="--inline-compiler-error-message-size: 1.2rem">
+<InlineCompilerError :line="8" text="sorted" message="fun <T : Comparable<T>> Iterable<T>.sorted(): List<T> is inapplicable because of a receiver type mismatch" style="--inline-compiler-error-message-size: 1.2rem">
 
 ```kotlin
 @JvmInline
@@ -858,7 +920,7 @@ val zero = Vector.Zero
 > 
 > This will give us better static interoperability with Java
 
-<DrawnAnnotation text="companion val" label="Create static extensions on types we do not own" />
+<DrawnAnnotation text="companion val" label="Create static extensions" />
 
 ```kotlin
 data class Vector(val x: Double, val y: Double) {
@@ -873,134 +935,27 @@ companion val Vector.UnitX
 
 ---
 
-# Representing states by Booleans
+# Companion extensions and blocks (Not released)
 
-<DrawnAnnotation text="String?" label="non-null if `hasError && isLoading == false`" on="0"  :geometry="{ label: { x: 0.5834, y: 0.2611 } }"/>
-<DrawnAnnotation text="Throwable?" label="non-null if `hasError == true`" on="1"  :geometry="{ label: { x: 0.5075, y: 0.3184 } }"/>
-<DrawnAnnotation text="isLoading" label="When `true` `text` and `error` are `null`" on="2"  :geometry="{ label: { x: 0.5504, y: 0.4320 } }"/>
+> `-Xcompanion-blocks-and-extensions`
+>
+> This will give us better static interoperability with Java
 
-```kotlin
-data class UiState(
-    val text: String?,
-    val error: Throwable?,
-    val hasError: Boolean,
-    val isLoading: Boolean
-)
-```
-
-<div v-click="3" class="dont-do-this">DON'T DO THIS!</div>
-
----
-
-# Sealed classes close a hierarchy
-
-<DrawnAnnotation text="sealed class" label="Sealed hierarchy, all subclasses are known and live in the same module & package" :geometry="{ label: { x: 0.6829, y: 0.2198, width: 0.4449 } }"/>
+<DrawnAnnotation text="UUID" label="Create static extensions on types we do not own nor have a `companion` defined"  :geometry="{ label: { x: 0.4719, y: 0.9086 } }"/>
 
 ```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val error: Throwable) : UiState()
+data class Vector(val x: Double, val y: Double) {
+    companion {
+        val Zero: Vector = Vector(0.0, 0.0)
+    }
 }
+
+companion val Vector.UnitX
+  get() = Vector(1.0, 0.0)
+
+companion val UUID.Empty
+  get() = UUID(0L, 0L)
 ```
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<DrawnAnnotation text="data object" label="`toString()` prints `Loading` instead of `package.Loading@52cc8049`" :geometry="{ label: { x: 0.4838, y: 0.4624, width: 0.6815 } }"/>
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val error: Throwable) : UiState()
-}
-```
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<SmartCast text="state" occurrence="3">
-<SmartCast text="state" occurrence="4">
-<DrawnAnnotation text="when (state)" label="Exhaustive without `else` since all subtypes are known"/>
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val error: Throwable) : UiState()
-}
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content -> state.text
-  is UiState.Error -> "Error: ${state.error.message}"
-}
-```
-
-</SmartCast>
-</SmartCast>
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<SmartCast text="state" occurrence="3">
-<InlineCompilerError text="when (state) {" message="'when' expression must be exhaustive.\nAdd the 'is Error' branch or an 'else' branch">
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val error: Throwable) : UiState()
-}
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content -> state.text
-}
-```
-
-</InlineCompilerError>
-</SmartCast>
-
----
-magic-move
----
-
-# Sealed classes close a hierarchy
-
-<SmartCast text="state" occurrence="3">
-<SmartCast text="state" occurrence="4">
-<SmartCast text="state" occurrence="5">
-<DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression" />
-
-```kotlin
-sealed class UiState {
-  data object Loading : UiState()
-  data class Content(val text: String) : UiState()
-  data class Error(val error: Throwable) : UiState()
-}
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content if state.text.contains("error") -> "Unknown error"
-  is UiState.Content -> state.text
-  is UiState.Error -> "Error: ${state.error.message}"
-}
-```
-
-</SmartCast>
-</SmartCast>
-</SmartCast>
 
 ---
 
@@ -1092,6 +1047,137 @@ fun message(problem: Problem): String = when (problem) {
   DATABASE -> "Database failed"
 }
 ```
+
+---
+
+# Representing states by Booleans
+
+<DrawnAnnotation text="String?" label="non-null if `hasError && isLoading == false`" on="0"  :geometry="{ label: { x: 0.5834, y: 0.2611 } }"/>
+<DrawnAnnotation text="Throwable?" label="non-null if `hasError == true`" on="1"  :geometry="{ label: { x: 0.5075, y: 0.3184 } }"/>
+<DrawnAnnotation text="isLoading" label="When `true` `text` and `error` are `null`" on="2"  :geometry="{ label: { x: 0.5504, y: 0.4320 } }"/>
+
+```kotlin
+data class UiState(
+    val text: String?,
+    val error: Throwable?,
+    val hasError: Boolean,
+    val isLoading: Boolean
+)
+```
+
+<div v-click="3" class="dont-do-this">DON'T DO THIS!</div>
+
+---
+
+# Sealed classes close a hierarchy
+
+<DrawnAnnotation text="sealed class" label="Sealed hierarchy, all subclasses are known and live in the same module & package" :geometry="{ label: { x: 0.6829, y: 0.2198, width: 0.4449 } }"/>
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+```
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<DrawnAnnotation text="data object" label="`toString()` prints `Loading` instead of `package.Loading@52cc8049`\nUse this to give empty `{ }` data a type" :geometry="{ label: { x: 0.4838, y: 0.4624, width: 0.6815 } }"/>
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+```
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<SmartCast text="state" occurrence="4">
+<DrawnAnnotation text="when (state)" label="Exhaustive without `else` since all subtypes are known"/>
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content -> state.text
+  is UiState.Error -> "Error: ${state.error.message}"
+}
+```
+
+</SmartCast>
+</SmartCast>
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<InlineCompilerError text="when (state) {" message="'when' expression must be exhaustive.\nAdd the 'is Error' branch or an 'else' branch">
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content -> state.text
+}
+```
+
+</InlineCompilerError>
+</SmartCast>
+
+---
+magic-move
+---
+
+# Sealed classes close a hierarchy
+
+<SmartCast text="state" occurrence="3">
+<SmartCast text="state" occurrence="4">
+<SmartCast text="state" occurrence="5">
+<DrawnAnnotation text="if state.text.contains(&quot;error&quot;)" label="Match on inner values. Smart-casting is applied in if-guard expression" />
+
+```kotlin
+sealed class UiState {
+  data object Loading : UiState()
+  data class Content(val text: String) : UiState()
+  data class Error(val error: Throwable) : UiState()
+}
+
+fun message(state: UiState) = when (state) {
+  UiState.Loading -> "Loading…"
+  is UiState.Content if state.text.contains("error") -> "Unknown error"
+  is UiState.Content -> state.text
+  is UiState.Error -> "Error: ${state.error.message}"
+}
+```
+
+</SmartCast>
+</SmartCast>
+</SmartCast>
 
 ---
 
