@@ -190,9 +190,9 @@ suspend fun dashboard(): Dashboard =
 
 # `async` needs a scope, returns a `Deferred`
 
-<DrawnAnnotation text="CoroutineScope.async" label="An extension on `CoroutineScope`: a child of that scope" on="1" :geometry="{ label: { x: 0.3435, y: 0.3745 } }"/>
-<DrawnAnnotation text="suspend CoroutineScope.() -> T" label="The body can start nested coroutines and produces a `T`" on="2" :geometry="{ label: { x: 0.3734, y: 0.3905 } }"/>
-<DrawnAnnotation text="Deferred<T>" label="A reference to the value, to be awaited or cancelled" on="3"  :geometry="{ label: { x: 0.3965, y: 0.3742 } }"/>
+<DrawnAnnotation text="CoroutineScope.async" label="An extension on `CoroutineScope`: a child of that scope" on="0" :geometry="{ label: { x: 0.3435, y: 0.3745 } }"/>
+<DrawnAnnotation text="suspend CoroutineScope.() -> T" label="The body can start nested coroutines and produces a `T`" on="1" :geometry="{ label: { x: 0.3734, y: 0.3905 } }"/>
+<DrawnAnnotation text="Deferred<T>" label="A reference to the value, to be awaited or cancelled" on="2"  :geometry="{ label: { x: 0.3965, y: 0.3742 } }"/>
 
 ```kotlin no-compile
 fun <T> CoroutineScope.async(
@@ -426,11 +426,104 @@ suspend fun dashboard(): Dashboard =
   ]"
 />
 
-<!--
-Click 1: the second child throws. Click 2: the scope cancels its sibling. Click 3:
-the sibling has finished cancelling. Click 4: only now does the scope fail and
-rethrow to the caller.
--->
+---
+class: job-slide
+---
+
+# `cancel()` cancels the coroutine and its children
+
+<DrawnAnnotation text="scope.launch" label="A child of the application scope"/>
+
+```kotlin
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+}
+```
+
+<JobTree :root="{ label: 'launch' }" />
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `cancel()` cancels the coroutine and its children
+
+```kotlin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
+}
+```
+
+<JobTree
+:root="{ label: 'launch' }"
+:children="[
+{ label: 'async fetchSpeaker()' },
+]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `cancel()` cancels the coroutine and its children
+
+```kotlin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
+  val talks = async { fetchTalks() }
+}
+```
+
+<JobTree
+:root="{ label: 'launch' }"
+:children="[
+{ label: 'async fetchSpeaker()' },
+{ label: 'async fetchTalks()' },
+]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 4
+---
+
+# `cancel()` cancels the coroutine and its children
+
+<DrawnAnnotation text="job.cancel()" label="Cancels `launch`, and `launch` cancels both `async`" color="var(--fundamentals-cancel)" :on="1"/>
+<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" color="var(--fundamentals-cancel)" :on="2" :geometry="{ label: { x: 0.5992, y: 0.6162 } }"/>
+<DrawnAnnotation text="scope.launch" label="Cancelled once both children are" color="var(--fundamentals-cancel)" :on="4" :geometry="{ label: { x: 0.4019, y: 0.5055 } }"/>
+
+```kotlin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
+  val talks = async { fetchTalks() }
+  Dashboard(speaker.await(), talks.await())
+}
+
+job.cancel()
+```
+
+<JobTree
+:root="{ label: 'launch', cancelling: 1, cancelled: 4 }"
+:children="[
+{ label: 'async fetchSpeaker()', cancelling: 2, cancelled: 3 },
+{ label: 'async fetchTalks()', cancelling: 2, cancelled: 3 },
+]"
+:cancel="1"
+/>
 
 ---
 clicks: 2
@@ -490,7 +583,7 @@ the parent completely cancelled, which is what `cancelAndJoin()` waits for.
 # A service takes a scope and keeps it private
 
 <DrawnAnnotation text="private val scope: CoroutineScope" label="Inject it, never extend `CoroutineScope`" :geometry="{ label: { x: 0.7196, y: 0.2643 } }"/>
-<DrawnAnnotation text="SupervisorJob()" label="One failed notification does not cancel the others" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5228, y: 0.5999 } }"/>
+<DrawnAnnotation text="SupervisorJob()" label="One failed notification does not cancel the others\nDo not forget to pass parent job!" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5228, y: 0.6348 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.CoroutineScope
@@ -508,112 +601,6 @@ val notifier = Notifier(
   CoroutineScope(SupervisorJob() + Dispatchers.Default),
 )
 ```
-
----
-class: job-slide
----
-
-# `cancel()` cancels the coroutine and its children
-
-<DrawnAnnotation text="scope.launch" label="A child of the application scope"/>
-
-```kotlin
-import kotlinx.coroutines.launch
-
-val job = scope.launch {
-}
-```
-
-<JobTree :root="{ label: 'launch' }" />
-
----
-magicMove: true
-class: job-slide
----
-
-# `cancel()` cancels the coroutine and its children
-
-```kotlin
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-
-val job = scope.launch {
-  val speaker = async { fetchSpeaker() }
-}
-```
-
-<JobTree
-  :root="{ label: 'launch' }"
-  :children="[
-    { label: 'async fetchSpeaker()' },
-  ]"
-/>
-
----
-magicMove: true
-class: job-slide
----
-
-# `cancel()` cancels the coroutine and its children
-
-```kotlin
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-
-val job = scope.launch {
-  val speaker = async { fetchSpeaker() }
-  val talks = async { fetchTalks() }
-}
-```
-
-<JobTree
-  :root="{ label: 'launch' }"
-  :children="[
-    { label: 'async fetchSpeaker()' },
-    { label: 'async fetchTalks()' },
-  ]"
-/>
-
----
-magicMove: true
-class: job-slide
-clicks: 4
----
-
-# `cancel()` cancels the coroutine and its children
-
-<DrawnAnnotation text="job.cancel()" label="Cancels `launch`, and `launch` cancels both `async`" color="var(--fundamentals-cancel)" :on="1"/>
-<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" color="var(--fundamentals-cancel)" :on="2" :geometry="{ label: { x: 0.5992, y: 0.6162 } }"/>
-<DrawnAnnotation text="scope.launch" label="Cancelled once both children are" color="var(--fundamentals-cancel)" :on="4" :geometry="{ label: { x: 0.4019, y: 0.5055 } }"/>
-
-```kotlin
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-
-val job = scope.launch {
-  val speaker = async { fetchSpeaker() }
-  val talks = async { fetchTalks() }
-  println(speaker.await().name)
-  println(talks.await().size)
-}
-
-job.cancel()
-```
-
-<JobTree
-  :root="{ label: 'launch', cancelling: 1, cancelled: 4 }"
-  :children="[
-    { label: 'async fetchSpeaker()', cancelling: 2, cancelled: 3 },
-    { label: 'async fetchTalks()', cancelling: 2, cancelled: 3 },
-  ]"
-  :cancel="1"
-/>
-
-<!--
-Click 1: `cancel()` reaches `launch`. Click 2: it cancels both `async` children,
-whose `delay` throws. Click 3: the children have finished cancelling. Click 4: the
-`launch` is completely cancelled.
--->
 
 ---
 
@@ -839,7 +826,7 @@ magic-move
 
 <DrawnAnnotation text="suspendCancellableCoroutine" on="0" label="Resumes with `CancellationException` when the coroutine is cancelled" :geometry="{ label: { x: 0.4884, y: 0.8456 } }"/>
 <DrawnAnnotation text="val call =" on="1" label="Keep the handle the SDK hands back" :geometry="{ label: { x: 0.4126, y: 0.8435 } }"/>
-<DrawnAnnotation text="invokeOnCancellation { call.cancel() }" on="3" label="and use it to stop the SDK's work"/>
+<DrawnAnnotation text="invokeOnCancellation { call.cancel() }" on="2" label="and use it to stop the SDK's work"/>
 
 ```kotlin
 import kotlin.coroutines.resume
@@ -855,7 +842,7 @@ suspend fun ConferenceSdk.speaker(id: Long): Speaker =
         override fun onFailure(error: Throwable) =
             cont.resumeWithException(error)
     })
-      cont.invokeOnCancellation { call.cancel() }
+    cont.invokeOnCancellation { call.cancel() }
   }
 
 val job = scope.launch { println(sdk.speaker(1).name) }

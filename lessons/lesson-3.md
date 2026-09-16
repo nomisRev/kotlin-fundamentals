@@ -50,26 +50,27 @@ val increment: (Int) -> Int = {
 
 ---
 
-# Ignore a parameter with `_`
-
-> Like `val _ =` for return values, `_` marks a value we deliberately ignore
-
-<DrawnAnnotation text="_" label="The argument is still required, but we don't use it" />
-
-```kotlin
-val alwaysOne: (Int) -> Int = { _ -> 1 }
-
-alwaysOne(42) // 1
-```
-
----
-
 # Parameterless lambdas
 
 <DrawnAnnotation text="()" label="The parameter types list may be empty" />
 
 ```kotlin
 val lazyOne: () -> Int = { 1 }
+```
+
+---
+
+# Ignore a parameter with `_`
+
+> Like `val _ =` for return values, `_` marks a value we deliberately ignore
+
+<DrawnAnnotation text="_" label="The argument is still required, but we don't use it"  :geometry="{ label: { x: 0.3808, y: 0.5861 } }"/>
+
+```kotlin
+val example: (Int, String, Boolean) -> Int =
+    { int, _, bool -> if (bool) int else 0 }
+
+example(42, "ignored", true) // 42
 ```
 
 ---
@@ -92,7 +93,7 @@ val nullLambda: (() -> Unit)? = null
 
 # Lambda with receiver
 
-<DrawnAnnotation text="String.()" label="`lambda with receiver`, extension function equivalent for lambda (DSL lesson)."/>
+<DrawnAnnotation text="String.()" label="`lambda with receiver`, extension function equivalent for lambda"/>
 <DrawnAnnotation text="this." label="`this` `String` receiver value inside lambda" on="1" color="var(--fundamentals-blue)"/>
 
 ```kotlin
@@ -457,8 +458,8 @@ val result: List<Int> = [1, 2, 3].mapNotNull { if (it % 2 == 0) it else null }
 
 <DrawnAnnotation text="filterIsInstance" label="Filter by type" occurrence="2"  :geometry="{ label: { x: 0.5438, y: 0.4888 } }"/>
 
-```kotlin no-compile
-fun <reified R> Iterable<*>.filterIsInstance(): List<R>
+```kotlin
+inline fun <reified R> Iterable<*>.filterIsInstance(): List<R> = TODO()
 
 val numbers: List<Number> = [1, 2, 3.0, 4.0f, 0x10]
 println(numbers)

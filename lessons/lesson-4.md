@@ -1163,6 +1163,23 @@ val zero = Vector.Zero
 magic-move
 ---
 
+# Companion object
+
+```kotlin
+data class Vector(val x: Double, val y: Double) {
+    companion object {
+        @JvmStatic
+        val Zero: Vector = Vector(0.0, 0.0)
+    }
+}
+
+val zero = Vector.Zero
+```
+
+---
+magic-move
+---
+
 # The companion is the only door
 
 <DrawnAnnotation text="fun of(" label="Validate, then construct" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.8, y: 0.525 } }"/>
@@ -1254,7 +1271,8 @@ val copied = Vector.of(1.0, 0.0).copy(x = Double.NaN)
 > 
 > This will give us better static interoperability with Java
 
-<DrawnAnnotation text="companion val" label="Create static extensions"  :geometry="{ label: { x: 0.2110, y: 0.7862 } }"/>
+<DrawnAnnotation text="val Zero" label="No `@JvmStatic` needed"  :geometry="{ label: { x: 0.3609, y: 0.5214 } }"/>
+<DrawnAnnotation text="companion val" label="Create static extensions"  :geometry="{ label: { x: 0.2243, y: 0.7796 } }"/>
 
 ```kotlin
 data class Vector(val x: Double, val y: Double) {

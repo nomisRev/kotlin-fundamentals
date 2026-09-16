@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "slidev --open",
-    "present": "slidev --remote",
+    "present": "slidev --remote=secret",
     "build": "slidev build",
     "export": "slidev export",
     "screenshot": "slidev export --format png",

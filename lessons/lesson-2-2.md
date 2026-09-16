@@ -14,7 +14,7 @@ kodee: wave
 
 ---
 
-# `if` is an expression
+# `if` as an expression
 
 <InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression.">
 
@@ -29,7 +29,7 @@ fun max(a: Int, b: Int) =
 magic-move
 ---
 
-# `if` is an expression
+# `if` as an expression
 
 <InlineCompilerError text="if" message="'if' must have both main and 'else' branches when used as an expression.">
 <DrawnAnnotation text="): Int =" label="A value is expected, so `if` is used as an expression" on="1" :geometry="{ label: { x: 0.5569, y: 0.3243 } }"/>
@@ -45,7 +45,7 @@ fun max(a: Int, b: Int): Int =
 magic-move
 ---
 
-# `if` is an expression
+# `if` as an expression
 
 <DrawnAnnotation text="else b" label="Both branches supply the value" :geometry="{ label: { x: 0.4450, y: 0.3079 } }"/>
 
@@ -58,7 +58,7 @@ fun max(a: Int, b: Int): Int =
 magic-move
 ---
 
-# `if` is an expression
+# `if` as an expression
 
 <DrawnAnnotation text=") {"/>
 <DrawnAnnotation text="second" :occurrence="3" label="The last expression is the value of the block" :geometry="{ label: { x: 0.3082, y: 0.6127 } }"/>
@@ -72,6 +72,23 @@ fun max(first: Int, second: Int): Int =
     println("Second")
     second
   }
+```
+
+---
+magic-move
+---
+
+# `if` as a statement
+
+<DrawnAnnotation text="}" label="As a statement `if` requires no `else` use sparingly"  :geometry="{ label: { x: 0.3493, y: 0.5191 } }"/>
+
+```kotlin
+fun max(first: Int, second: Int) {
+  if (first > second) {
+    println("First")
+    first
+  }
+}
 ```
 
 ---

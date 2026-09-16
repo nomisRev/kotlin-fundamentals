@@ -176,33 +176,6 @@ fun html(block: HtmlBuilder.() -> Unit): String =
 ```
 
 ---
-magic-move
----
-
-# Only `html` builds an `HtmlBuilder`
-
-<InlineCompilerError text="HtmlBuilder.() -> Unit" :line="13" message="'public' function exposes its 'internal' parameter type argument 'HtmlBuilder'">
-
-```kotlin
-internal class HtmlBuilder {
-    private val buffer = StringBuilder()
-        
-    fun body(block: BodyBuilder.() -> Unit) {
-        buffer.append("<body>")
-        BodyBuilder(buffer).block()
-        buffer.append("</body>")
-    }
-    
-    override fun toString(): String = buffer.toString()
-}
-
-fun html(block: HtmlBuilder.() -> Unit): String = 
-    HtmlBuilder().apply(block).toString()
-```
-
-</InlineCompilerError>
-
----
 
 # Special syntax
 
@@ -317,7 +290,7 @@ magic-move
 # An ordinary extension can extend the DSL
 
 <TypeHint :line="1" receiver="BODY">
-<DrawnAnnotation text="FlowContent." label="Available inside every tag that accepts flow content" :geometry="{ label: { x: 0.3276, y: 0.6573 } }"/>
+<DrawnAnnotation text="FlowContent." label="Available inside every tag that accepts `FlowContent` and all subtypes (`BODY`)" :geometry="{ label: { x: 0.4393, y: 0.6599 } }"/>
 
 ```kotlin
 import kotlinx.html.*
@@ -627,25 +600,3 @@ check(talks.sessions.single() == Session("Receivers", "Ada", 5))
 | `context(html: FlowContent)` | Require a context for the operation |
 | `context(value) { ... }` | Supply a context, keep the receiver |
 | `greet(logger = log)` | Pass a context argument by name |
-
-<!--
-Closing check: ask who owns the state and what each expression returns.
-@DslMarker controls implicit access; the runtime consumes the completed data.
-Optional scope-function reference: let uses an argument and returns the lambda
-result; also uses an argument and returns the original value. Both are ordinary
-functions too. Do not add them to the required exercise.
--->
-
----
-
-# Functions that take lambdas
-
-<DrawnAnnotation text="transform: (A) -> B)" />
-<DrawnAnnotation text=" { " />
-<DrawnAnnotation text=" }" label="Any function type as _last_ parameter allows _trailing lambda syntax_"/>
-
-```kotlin
-fun <A, B> Iterable<A>.map(dummy: Unit, transform: (A) -> B): List<B> = TODO()
-
-[1, 2, 3].map(Unit) { input -> input * 2 }
-```

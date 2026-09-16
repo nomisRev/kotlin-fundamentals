@@ -124,7 +124,7 @@ val number: Int = 42
 
 # Kotlin Property
 
-<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" :geometry="{ label: { x: 0.59, y: 0.447 } }"/>
+<DrawnAnnotation text="return 42" label="No backing field when the getter never reads `field`" :geometry="{ label: { x: 0.59, y: 0.447 } }"/>
 
 > `val` property has `get`
 
@@ -183,70 +183,6 @@ magic-move
 val list: List<String> = listOf("Hello World!")
 list.remove("Hello World!")
 list.add("Hello Student!")
-```
-
-</InlineCompilerError>
-</InlineCompilerError>
-
-<!--
-It is important to note that `val` implies read-only.
-If a mutable structure is assigned, the variable cannot be mutated (reassigned), but the actual structure can.
-
-In the example, we have a mutable list which contains Hello World.
-If we want to replace the message to greet the student instead, the variable cannot be reassigned.
-However, as it is a mutable list, we can modify the messages.
--->
-
----
-
-# Parameters are values, not variables
-
-> Object references are passed by value
-
-<InlineCompilerError :line="2" text="mutableList" message="'val' cannot be reassigned.">
-
-```kotlin
-fun changeGreeting(mutableList: MutableList<String>) {
-  mutableList = mutableListOf("Hello Student!")
-}
-```
-
-</InlineCompilerError>
-
----
-magic-move
----
-
-# Parameters are values, not variables
-
-> Object references are passed by value
-
-<DrawnAnnotation text="remove"/>
-<DrawnAnnotation text="add" label="A mutable value can still be mutated"/>
-
-```kotlin
-fun changeGreeting(mutableList: MutableList<String>) {
-  mutableList.remove("Hello World!")
-  mutableList.add("Hello Student!")
-}
-```
-
----
-magic-move
----
-
-# Parameters are values, not variables
-
-> Object references are passed by value
-
-<InlineCompilerError text="remove" message="Unresolved reference 'remove'.">
-<InlineCompilerError text="add" message="Unresolved reference 'add'.">
-
-```kotlin
-fun changeGreeting(list: List<String>) {
-  list.remove("Hello World!")
-  list.add("Hello Student!")
-}
 ```
 
 </InlineCompilerError>
@@ -358,7 +294,7 @@ magic-move
 
 # Expression bodies drop the block
 
-<DrawnAnnotation text="= a + b" label="_assign_ a single expression to the function\nno braces and no `return`"/>
+<DrawnAnnotation text="= a + b" label="_assign_ a single expression to the function\nno braces and optional `return`"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
@@ -750,8 +686,8 @@ magic-move
 
 # `*` needs the `operator` modifier
 
-<DrawnAnnotation text="operator" label="Marks `times` as the implementation of `*`" :geometry="{ label: { x: 0.72, y: 0.47 } }" />
-<DrawnAnnotation text="times" label="The function name picks the symbol" :geometry="{ label: { x: 0.30, y: 0.47 } }" />
+<DrawnAnnotation text="operator" label="Marks `times` as the implementation of `*`" :geometry="{ label: { x: 0.4031, y: 0.2809 } }" />
+<DrawnAnnotation text="times" :geometry="{ label: { x: 0.30, y: 0.47 } }" />
 
 ```kotlin
 operator fun String.times(n: Int): String = repeat(n)
@@ -801,8 +737,8 @@ true
 
 # Declarations are public by default
 
-<DrawnAnnotation text="fun String.shout()" label="No modifier is `public`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4506, y: 0.5392 } }"/>
-<DrawnAnnotation text="private fun" label="`private` at top level means this file" :geometry="{ label: { x: 0.5643, y: 0.6010 } }"/>
+<DrawnAnnotation text="fun String.shout()" on="0" label="No modifier is `public`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.4506, y: 0.5392 } }"/>
+<DrawnAnnotation text="private fun" on="1" label="`private` at top level means this file" :geometry="{ label: { x: 0.5643, y: 0.6010 } }"/>
 
 ```kotlin
 fun String.shout(): String = normalized().uppercase() + "!"
