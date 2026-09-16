@@ -5,13 +5,8 @@ package presentation.snippets.lesson22.slide100
 
 import presentation.support.*
 
-fun describe(x: Int) {
-  when (x) {
-    1 -> println("x == 1")
-    2 -> println("x == 2")
-    3, 4 -> {
-      println("Multiline code block!")
-      println("3 or 4")
-    }
-  }
+fun describe(x: Int) = when (x) {
+  1 -> "x == 1"
+  2 -> "x == 2"
+  else -> "x is neither 1 nor 2"
 }

@@ -638,54 +638,6 @@ functions too. Do not add them to the required exercise.
 
 ---
 
-# Return values are meant to be used
-
-> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
-
-<DrawnAnnotation text="@MustUseReturnValues"/>
-<DrawnAnnotation text="calculator.calculate()" label="Ignoring the result is a compiler warning" color="red"/>
-
-```kotlin
-@MustUseReturnValues
-class Calculator {
-  fun calculate(): Int = 42
-}
-
-fun example(calculator: Calculator) {
-  calculator.calculate()
-  val result = calculator.calculate()
-}
-```
-
----
-magic-move
----
-
-# Return values are meant to be used
-
-> Experimental in Kotlin 2.3.0 with `-Xreturn-value-checker=full`
-
-<DrawnAnnotation text="@IgnorableReturnValue"/>
-<DrawnAnnotation text="calculator.add(1)" label="Opting out is explicit, ignoring this result is intentional"/>
-
-```kotlin
-@MustUseReturnValues
-class Calculator {
-  private var total = 0
-  fun calculate(): Int = total
-
-  @IgnorableReturnValue
-  fun add(value: Int): Calculator = apply { total += value }
-}
-
-fun example(calculator: Calculator) {
-  calculator.add(1)
-  val result = calculator.calculate()
-}
-```
-
----
-
 # Functions that take lambdas
 
 <DrawnAnnotation text="transform: (A) -> B)" />

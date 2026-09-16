@@ -368,6 +368,58 @@ fun sum(a: Int, b: Int): Int = a + b
 magic-move
 ---
 
+# Return values are meant to be used
+
+> Experimental, enabled with `-Xreturn-value-checker=full`
+
+<Warning :line="3" text="sum(1, 2)" message="Unused return value of 'sum'.">
+
+```kotlin
+fun sum(a: Int, b: Int): Int = a + b
+
+sum(1, 2)
+```
+
+</Warning>
+
+---
+magic-move
+---
+
+# Return values are meant to be used
+
+> Experimental, enabled with `-Xreturn-value-checker=full`
+
+<DrawnAnnotation text="val _ =" label="Discard a result on purpose with `_`" :geometry="{ label: { x: 0.44, y: 0.40 } }"/>
+
+```kotlin
+fun sum(a: Int, b: Int): Int = a + b
+
+val _ = sum(1, 2)
+```
+
+---
+magic-move
+---
+
+# Return values are meant to be used
+
+> Experimental, enabled with `-Xreturn-value-checker=full`
+
+<DrawnAnnotation text="greet(&quot;Ada&quot;)" label="`Unit` is never a dropped result" :geometry="{ label: { x: 0.36, y: 0.50 } }"/>
+
+```kotlin
+fun sum(a: Int, b: Int): Int = a + b
+fun greet(name: String) = println("Hello!")
+
+val _ = sum(1, 2)
+greet("Ada")
+```
+
+---
+magic-move
+---
+
 # Default arguments replace overloads
 
 <DrawnAnnotation text="= sum(a, b, 0)" label="Explicit overload for an optional `c`" :geometry="{ label: { x: 0.4690, y: 0.3677 } }"/>

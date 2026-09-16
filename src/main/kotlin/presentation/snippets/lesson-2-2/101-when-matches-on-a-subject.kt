@@ -9,6 +9,5 @@ fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
-    in 3..10 -> println("in 3..10")
   }
 }

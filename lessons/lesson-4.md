@@ -564,6 +564,54 @@ false
 ```
 
 ---
+magic-move
+---
+
+# A dropped `copy` changes nothing
+
+> `-Xreturn-value-checker=full`
+
+<Warning :line="4" text="user.copy(age = 37)" message="Unused return value of 'copy'.">
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+val user = User("Ada", 36)
+user.copy(age = 37)
+println(user)
+```
+```console
+User(name=Ada, age=36)
+```
+
+</Warning>
+
+---
+
+# A result that is safe to drop opts out
+
+<DrawnAnnotation text="@IgnorableReturnValue" label="`add` returns `this` for chaining, dropping it is intended" :geometry="{ label: { x: 0.64, y: 0.24 } }"/>
+<DrawnAnnotation text="counter.add(1)" :line="10"/>
+
+```kotlin
+class Counter(var total: Int = 0) {
+  @IgnorableReturnValue
+  fun add(value: Int): Counter {
+    total += value
+    return this
+  }
+}
+
+val counter = Counter()
+counter.add(1)
+counter.add(2).add(3)
+println(counter.total)
+```
+```console
+6
+```
+
+---
 
 # Avoid primitive obsession
 
@@ -1424,6 +1472,30 @@ interface Shape {
 class Polygon(override val sides: Int) : Shape
 
 Polygon(6).draw() // Drawing a 6-sided shape
+```
+
+---
+
+# The interface carries the annotation
+
+<DrawnAnnotation text="@IgnorableReturnValue" label="Like `Set.add`, the `Boolean` is informative, not required" :geometry="{ label: { x: 0.62, y: 0.24 } }"/>
+<DrawnAnnotation text="override fun register" label="Overrides inherit it" :geometry="{ label: { x: 0.70, y: 0.475 } }"/>
+
+```kotlin
+interface Registry {
+  @IgnorableReturnValue
+  fun register(user: Member): Boolean
+}
+
+class InMemoryRegistry : Registry {
+  private val users = mutableSetOf<Member>()
+
+  override fun register(user: Member): Boolean = users.add(user)
+}
+
+fun onboard(registry: Registry) {
+  registry.register(Member("Ada", 36))
+}
 ```
 
 ---
