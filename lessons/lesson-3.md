@@ -1032,17 +1032,17 @@ kodee: heart
 
 <div class="lesson-number">Exercise 1 / 2</div>
 
-# Make `Team` iterable
+# Make `Playlist` iterable
 
-> Implement `Iterable<Member>`, `override` its `iterator()`
+> Implement `Iterable<Song>`, `override` its `iterator()`
 
 ```kotlin no-compile
-class Member(val name: String, val age: Int)
+class Song(val title: String, val minutes: Int)
 
-class Team(private val members: List<Member>)
+class Playlist(private val songs: List<Song>)
 
-val team = Team([Member("Ada", 36), Member("Linus", 17)])
-check(team.map { it.name } == ["Ada", "Linus"])
+val playlist = Playlist([Song("Intro", 3), Song("Outro", 4)])
+check(playlist.map { it.title } == ["Intro", "Outro"])
 ```
 
 ---
@@ -1052,15 +1052,15 @@ kodee: heart
 
 <div class="lesson-number">Exercise 2 / 2</div>
 
-# Make `Team` a literal target
+# Make `Playlist` a literal target
 
-> A companion `operator fun of(vararg members: Member)`
+> A companion `operator fun of(vararg songs: Song)`
 
 ```kotlin no-compile
-class Team(private val members: List<Member>) : Iterable<Member> {
-  override operator fun iterator(): Iterator<Member> = members.iterator()
+class Playlist(private val songs: List<Song>) : Iterable<Song> {
+  override operator fun iterator(): Iterator<Song> = songs.iterator()
 }
 
-val team: Team = [Member("Ada", 36), Member("Linus", 17)]
-check(team.count() == 2)
+val playlist: Playlist = [Song("Intro", 3), Song("Outro", 4)]
+check(playlist.sumOf { it.minutes } == 7)
 ```

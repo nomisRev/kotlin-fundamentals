@@ -55,7 +55,7 @@ const stage = computed(() => Math.min($clicks.value, 5))
         <g class="node fade" :class="{ visible: stage >= 2 }" style="--delay: 500ms"><rect x="714.566" y="480.130" width="195.373" height="83.528" rx="999" /><text x="812.25" y="521.89">Unit</text></g>
         <g class="node fade" :class="{ visible: stage >= 3 }" style="--delay: 500ms"><rect x="937.461" y="480.130" width="195.373" height="83.528" rx="999" /><text x="1035.15" y="521.89">Fruit</text></g>
 
-        <g class="node fade" :class="{ visible: stage >= 1 }" style="--delay: 2100ms"><rect x="412.597" y="666.612" width="140.513" height="83.528" rx="999" /><text x="482.85" y="708.38">Char</text></g>
+        <g class="node fade" :class="{ visible: stage >= 1 }" style="--delay: 2100ms"><rect x="412.597" y="666.612" width="140.513" height="83.528" rx="999" /><text x="482.85" y="708.38">Int</text></g>
         <text class="ellipsis fade" :class="{ visible: stage >= 1 }" style="--delay: 1320ms" x="579.59" y="705.25">…</text>
         <g class="node fade" :class="{ visible: stage >= 1 }" style="--delay: 2400ms"><rect x="595.139" y="666.612" width="178.585" height="83.528" rx="999" /><text x="684.43" y="708.38">Double</text></g>
         <g class="node fade" :class="{ visible: stage >= 3 }" style="--delay: 1480ms"><rect x="838.314" y="665.489" width="195.373" height="83.528" rx="999" /><text x="936" y="707.25">Banana</text></g>

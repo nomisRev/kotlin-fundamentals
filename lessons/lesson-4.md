@@ -616,7 +616,7 @@ magic-move
 # `copy(...)`
 
 <DrawnAnnotation text="copy" label="Compiler generated method to `copy` an instance with new values" :geometry="{ label: { x: 0.5055, y: 0.3508 } }"/>
-<DrawnAnnotation text="age = " label="Relies on argument names, and default values"  :geometry="{ label: { x: 0.4308, y: 0.7371 } }"/>
+<DrawnAnnotation text="age = " label="Relies on argument names, and default values"  :geometry="{ label: { x: 0.5225, y: 0.3919 } }"/>
 
 ```kotlin no-compile
 data class User(val name: String, val age: Int) {
