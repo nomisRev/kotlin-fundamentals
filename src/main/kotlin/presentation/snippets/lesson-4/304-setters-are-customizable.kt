@@ -7,18 +7,4 @@ import presentation.support.*
 
 class TextBuffer {
   var text = ""
-    set(value) {
-      println("Appending text: $value")
-      field += value
-    }
-}
-
-val buffer = TextBuffer()
-
-suspend fun main() {
-  buffer.text = "Hello"
-
-  buffer.text = ", world!"
-
-  println(buffer.text)
 }

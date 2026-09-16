@@ -6,7 +6,3 @@ package presentation.snippets.lesson3.slide177
 import presentation.support.*
 
 fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T> = TODO()
-
-suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"].associateBy { it.length }
-}

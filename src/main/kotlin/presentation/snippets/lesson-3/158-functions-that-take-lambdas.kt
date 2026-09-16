@@ -8,5 +8,5 @@ import presentation.support.*
 fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 
 suspend fun main() {
-    [1, 2, 3].map { it * 2 }
+    [1, 2, 3].map({ input -> input * 2 })
 }

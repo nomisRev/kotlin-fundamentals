@@ -10,5 +10,5 @@ fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
 ): List<T> = TODO()
 
 suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"].sortedWith { a, b -> a.compareTo(b) }
+    ["a", "aaa", "bb", "ab", null, "ccc", null].sortedByDescending { it?.length }
 }

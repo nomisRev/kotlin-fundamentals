@@ -10,7 +10,7 @@ kodee: wave
 
 # Kotlin Syntax
 
-## Values, functions and control flow
+## Properties and functions
 
 ---
 
@@ -406,7 +406,7 @@ magic-move
 
 > Experimental, enabled with `-Xreturn-value-checker=full`
 
-<DrawnAnnotation text="greet(&quot;Ada&quot;)" label="`Unit` is never a dropped result" :geometry="{ label: { x: 0.36, y: 0.50 } }"/>
+<DrawnAnnotation text="greet(&quot;Ada&quot;)" label="`Unit` can be safely ignored" :geometry="{ label: { x: 0.36, y: 0.50 } }"/>
 
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
@@ -535,7 +535,7 @@ magic-move
 # Spread operator
 
 <DrawnAnnotation text="*" occurrence="2"/>
-<DrawnAnnotation text="toIntArray()" label="Double copy"/>
+<DrawnAnnotation text="toIntArray()" label="Double copy (double expensive)"/>
 
 ```kotlin
 fun sum(vararg numbers: Int): Int = numbers.sum()
@@ -741,6 +741,7 @@ true
 | `a * b` | `a.times(b)` |
 | `a / b` | `a.div(b)` |
 | `a % b` | `a.rem(b)` |
+| `+a` | `a.unaryPlus()` |
 | `-a` | `a.unaryMinus()` |
 | `a < b` | `a.compareTo(b) < 0` |
 | `a == b` | `a?.equals(b) ?: (b === null)` |
@@ -912,5 +913,3 @@ kodee: heart
 check(3 * "Ho" == "HoHoHo")
 check(0 * "Hi" == "")
 ```
-
----

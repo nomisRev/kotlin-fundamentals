@@ -8,5 +8,5 @@ import presentation.support.*
 fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T> = TODO()
 
 suspend fun main() {
-    ["a", "aaa", "bb", "ab", null, "ccc", null].sortedBy { it?.length }
+    ["a", "aaa", "bb", "ab", "ccc"].sortedBy { it.length }
 }

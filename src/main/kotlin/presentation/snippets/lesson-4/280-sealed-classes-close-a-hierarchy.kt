@@ -10,9 +10,3 @@ sealed class UiState {
   data class Content(val text: String) : UiState()
   data class Error(val error: Throwable) : UiState()
 }
-
-fun message(state: UiState) = when (state) {
-  UiState.Loading -> "Loading…"
-  is UiState.Content -> state.text
-  is UiState.Error -> "Error: ${state.error.message}"
-}

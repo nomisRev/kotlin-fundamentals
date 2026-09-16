@@ -6,7 +6,3 @@ package presentation.snippets.lesson3.slide174
 import presentation.support.*
 
 fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> = TODO()
-
-suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"].groupBy { it.length }
-}

@@ -6,5 +6,3 @@ package presentation.snippets.lesson4.slide212
 import presentation.support.*
 
 class Person
-
-val person = Person()

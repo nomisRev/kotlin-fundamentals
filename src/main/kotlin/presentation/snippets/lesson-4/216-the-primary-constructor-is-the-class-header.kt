@@ -6,8 +6,13 @@ package presentation.snippets.lesson4.slide216
 import presentation.support.*
 
 class Person(name: String, age: Int) {
-  val name: String = name
-  var age: Int = age
+  val name: String
+  var age: Int
+  
+  init {
+      this.name = name
+      this.age = age
+  }
 }
 
 val person = Person("Olivia", 42)

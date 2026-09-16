@@ -5,11 +5,9 @@ package presentation.snippets.lesson4.slide247
 
 import presentation.support.*
 
-suspend fun main() {
-    Employee(
-        id = EmployeeId(1),
-        departmentId =  DepartmentId(7),
-        name = Name("Simon"),
-        email = Email("simon.vergauwen@jetbrains.com")
-    )
-}
+data class Employee(
+  val id: EmployeeId,
+  val departmentId: DepartmentId,
+  val name: Name,
+  val email: Email
+)

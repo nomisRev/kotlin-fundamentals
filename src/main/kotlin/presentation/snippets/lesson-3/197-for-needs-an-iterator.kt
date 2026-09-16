@@ -5,14 +5,14 @@ package presentation.snippets.lesson3.slide197
 
 import presentation.support.*
 
-class Team(private val members: List<Member>)
-
-operator fun Team.iterator(): Iterator<Member> = members.iterator()
+class Team(private val members: List<Member>) {
+  operator fun iterator(): Iterator<Member> = members.iterator()
+}
 
 val team = Team([Member("Ada", 36), Member("Linus", 17)])
 
 suspend fun main() {
-    for (member in team) {
-        println(member.name)
-    }
+  for (member in team) {
+      println(member.name)
+  }
 }

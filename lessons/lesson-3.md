@@ -50,6 +50,20 @@ val increment: (Int) -> Int = {
 
 ---
 
+# Ignore a parameter with `_`
+
+> Like `val _ =` for return values, `_` marks a value we deliberately ignore
+
+<DrawnAnnotation text="_" label="The argument is still required, but we don't use it" />
+
+```kotlin
+val alwaysOne: (Int) -> Int = { _ -> 1 }
+
+alwaysOne(42) // 1
+```
+
+---
+
 # Parameterless lambdas
 
 <DrawnAnnotation text="()" label="The parameter types list may be empty" />

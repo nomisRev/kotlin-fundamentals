@@ -9,6 +9,4 @@ import presentation.support.*
 
 suspend fun main() {
  [1, 2, 3].filter { it % 2 == 0 }
-
- [1, 2, 3].filterNot { it % 2 == 0 }
 }

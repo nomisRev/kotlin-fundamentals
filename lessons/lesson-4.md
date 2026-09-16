@@ -613,6 +613,51 @@ println(counter.total)
 
 ---
 
+# Java libraries opt in with `@CheckReturnValue`
+
+> Error Prone, FindBugs, Spring and jOOQ ship one too
+
+<DrawnAnnotation text="@CheckReturnValue" label="Read as `@MustUseReturnValues`, unannotated Java is never checked" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.60, y: 0.307 } }"/>
+
+```java
+import org.jetbrains.annotations.CheckReturnValue;
+
+@CheckReturnValue
+public class Money {
+  private final long cents;
+
+  public Money(long cents) { this.cents = cents; }
+
+  public Money plus(Money other) { return new Money(cents + other.cents); }
+}
+```
+
+<Warning :line="2" text="price.plus(Money(250))" message="Unused return value of 'plus'.">
+
+```kotlin
+val price = Money(1000)
+price.plus(Money(250))
+```
+
+</Warning>
+
+<!--
+Even in `full` mode the checker only treats the functions of your own module as
+must-use. A Java library has to say so itself, and the checker reads these
+annotations as `@MustUseReturnValues`:
+
+- `com.google.errorprone.annotations.CheckReturnValue`
+- `edu.umd.cs.findbugs.annotations.CheckReturnValue`
+- `org.jetbrains.annotations.CheckReturnValue`
+- `org.springframework.lang.CheckReturnValue`
+- `org.jooq.CheckReturnValue`
+
+`com.google.errorprone.annotations.CanIgnoreReturnValue` is read as
+`@IgnorableReturnValue`.
+-->
+
+---
+
 # Avoid primitive obsession
 
 > A primitive is not always enough

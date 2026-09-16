@@ -12,6 +12,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.11.0")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
   implementation("io.projectreactor:reactor-core:3.7.11")
+  implementation("org.jetbrains:annotations:26.0.1")
 }
 
 kotlin {

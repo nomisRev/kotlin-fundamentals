@@ -6,10 +6,5 @@ package presentation.snippets.lesson4.slide264
 import presentation.support.*
 
 object Environment {
-    @JvmStatic
-    var current = "production"
-}
-
-suspend fun main() {
-    println(Environment.current) // production
+  var current = "production"
 }

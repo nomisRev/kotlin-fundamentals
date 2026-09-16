@@ -5,14 +5,6 @@ package presentation.snippets.lesson4.slide294
 
 import presentation.support.*
 
-open class Person(val name: String, val age: Int) {
-    open fun hello() { 
-        println("Hello, I am $name.")
-    }
-}
+open class Person(val name: String, val age: Int)
 
-class Student(val id: String, name: String, age: Int) : Person(name, age) {
-    override fun hello() {
-        println("Hello, I am $name. I am a student.")
-    }
-}
+class Student(val id: String, name: String, age: Int) : Person(name, age)

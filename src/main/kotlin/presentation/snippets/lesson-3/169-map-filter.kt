@@ -8,5 +8,6 @@ import presentation.support.*
  fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
  fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
 
-val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
-    .filter { it != null }
+suspend fun main() {
+ [1, 2, 3].map { if (it % 2 == 0) it else null }
+}

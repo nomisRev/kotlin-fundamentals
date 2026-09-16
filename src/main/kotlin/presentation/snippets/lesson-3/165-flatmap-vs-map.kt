@@ -8,11 +8,3 @@ import presentation.support.*
 fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 
 fun <A, B> Iterable<A>.flatMap(transform: (A) -> Iterable<B>): List<B> = TODO()
-
-suspend fun main() {
-    [1, 2, 3].map { it + 1 }
-
-    [1, 2, 3].map { [it, it+1] }
-
-    [1, 2, 3].flatMap { [it, it+1] }
-}

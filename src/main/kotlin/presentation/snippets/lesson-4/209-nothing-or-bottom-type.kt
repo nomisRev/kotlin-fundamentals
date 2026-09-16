@@ -6,11 +6,3 @@ package presentation.snippets.lesson4.slide209
 import presentation.support.*
 
 fun TODO(): Nothing = throw NotImplementedError()
-
-val int: Int = TODO()
-
-val string: String = TODO()
-
-val bool: Boolean = TODO()
-
-fun program(): Unit = TODO()

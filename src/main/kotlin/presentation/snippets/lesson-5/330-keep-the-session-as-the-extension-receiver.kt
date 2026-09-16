@@ -9,13 +9,11 @@ import kotlinx.html.stream.createHTML
 
 fun Agenda.render(): String = createHTML().body {
   h1 { +title }
-  +sessions
+  sessions.forEach { it.card() }
 }
 
 context(html: FlowContent)
-operator fun Iterable<Session>.unaryPlus() = forEach {
-    with(it) {
-        val label = "$title · $minutes min"
-        html.div("session") { +label }
-    }
+fun Session.card() {
+  val label = "$title · $minutes min"
+  html.div("session") { +label }
 }

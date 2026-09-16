@@ -8,6 +8,5 @@ import presentation.support.*
 fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T> = TODO()
 
 suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"]
-        .associate { it.length to it.encodeToByteArray() }
+    ["a", "aaa", "bb", "ab", "ccc"].associateBy { it.length }
 }
