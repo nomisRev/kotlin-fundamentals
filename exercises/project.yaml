@@ -1,0 +1,16 @@
+# One module per cluster of exercise slides. A module's tests only compile once
+# every function the cluster asks for exists, so keeping the clusters apart
+# means an unfinished cluster never blocks the tests of another.
+modules:
+  - ./closed-types
+  - ./collections
+  - ./control-flow
+  - ./coroutines
+  - ./data-classes
+  - ./dsl
+  - ./functions
+  - ./iteration
+  - ./lambdas
+  - ./nullability
+  - ./properties
+  - ./strings

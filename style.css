@@ -81,6 +81,9 @@
   --fundamentals-purple: #7954f6;
   --fundamentals-pink: #eb55e6;
   --fundamentals-blue: var(--code-window-amper-color);
+  /* Cancellation is not a failure: amber for `cancel()`, `CancellationException`
+     and cancelled Jobs; red stays for Throwables and mistakes. */
+  --fundamentals-cancel: #d97706;
   --fundamentals-ink: #1f2023;
 
   /* Default colour for DrawnAnnotation strokes and labels. Keep the hard
@@ -95,6 +98,7 @@
 }
 
 html.dark {
+  --fundamentals-cancel: #fbbf24;
   --fundamentals-ink: #f5f3ff;
 }
 
@@ -398,3 +402,11 @@ html.dark .multi-dollar-template .shiki-magic-move-item[style*="--shiki-dark: #6
 .slidev-layout .jobtree-centre { width: min(100%, 50rem); margin: 5rem auto 0; }
 .slidev-layout .jobtree-centre .jobtree-node { font-size: 1.6rem; }
 .slidev-layout .jobtree-centre .jobtree-fan { height: 4.5rem; }
+
+/* Lesson 6: the coroutine timeline and the channel diagram. On a `timeline-slide`
+   they share the slide with a code window, so the window loses its bottom margin
+   and the diagram tightens up. */
+.slidev-layout.timeline-slide .slidev-code-wrapper { margin-bottom: 0.4rem; }
+.slidev-layout.timeline-slide :is(.flow-timeline, .channel-diagram) { margin-top: 0.4rem; }
+.slidev-layout.timeline-slide .ft-box { padding-top: 2.4rem; }
+.slidev-layout.timeline-slide .ft-legend { margin-bottom: 0.3rem; }

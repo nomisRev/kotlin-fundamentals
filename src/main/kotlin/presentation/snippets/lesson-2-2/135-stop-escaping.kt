@@ -7,6 +7,6 @@ import presentation.support.*
 
 fun payload(name: String): String = "{ \"${'$'}id\": \"$name\" }"
 
-fun main() {
-  check(payload("kodee") == "{ \"${'$'}id\": \"kodee\" }")
+suspend fun main() {
+    check(payload("kodee") == "{ \"${'$'}id\": \"kodee\" }")
 }

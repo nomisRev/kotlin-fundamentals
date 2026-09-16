@@ -25,6 +25,7 @@ kotlin {
   // - collection literals (`[1, 2, 3]`), lesson 2
   // - the unused return value checker (`@MustUseReturnValues`/`@IgnorableReturnValue`), lesson 2
   // - context-sensitive resolution (bare enum entries in a `when`), lesson 3
+  // - explicit backing fields (`val count: StateFlow<Int>` with `field = MutableStateFlow(0)`), lesson 6
   compilerOptions.freeCompilerArgs.addAll(
     "-Xcollection-literals",
     "-Xreturn-value-checker=full",
@@ -35,7 +36,8 @@ kotlin {
     "-Xexplicit-context-arguments",
     "-Xlocal-type-aliases",
     "-Xname-based-destructuring=complete",
-    "-Xallow-returns-result-of"
+    "-Xallow-returns-result-of",
+    "-Xexplicit-backing-fields",
   )
 }
 
@@ -60,7 +62,6 @@ kotlin.sourceSets.named("lesson5") {
   kotlin.srcDir("src/main/kotlin")
   kotlin.include("presentation/support/Agenda*.kt")
   kotlin.include("presentation/snippets/lesson-5/**")
-  kotlin.include("exercises/lesson5/**")
 }
 configurations[lesson5.implementationConfigurationName].extendsFrom(configurations.implementation.get())
 
@@ -75,14 +76,3 @@ kotlin.sourceSets.named("lesson6") {
 lesson6.java.srcDirs("src/main/java")
 lesson6.java.include("presentation/support/**", "snippets/lesson-6/**")
 configurations[lesson6.implementationConfigurationName].extendsFrom(configurations.implementation.get())
-
-// The incomplete student starter is checked only when explicitly requested.
-val lesson5ReferenceCheck = tasks.register<JavaExec>("lesson5ReferenceCheck") {
-  classpath = lesson5.runtimeClasspath
-  mainClass.set("presentation.support.AgendaChecksKt")
-}
-tasks.register<JavaExec>("lesson5ExerciseCheck") {
-  classpath = lesson5.runtimeClasspath
-  mainClass.set("exercises.lesson5.AgendaChecksKt")
-}
-tasks.check { dependsOn(lesson5ReferenceCheck) }

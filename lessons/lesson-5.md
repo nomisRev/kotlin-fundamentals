@@ -462,31 +462,31 @@ greet(logger = Logger("APP"), name = "Grace")
 ```
 
 ---
-layout: default
-kodee: sitting
+class: exercise-slide
+kodee: heart
 ---
 
-<div class="lesson-number">Exercise · 20 minutes</div>
+<div class="lesson-number">Exercise 1 / 5</div>
 
-# Complete the agenda builder
+# Build the session
 
-Implement the TODOs in `AgendaExercise.kt`.
+> `build()` `require`s a positive duration, the defaults are `null` and `30`
 
-- Build and validate sessions; configure children with `apply`.
-- Add `Session.insert()` and delegate `unaryPlus()` to it.
-- Return an agenda with a snapshot of its session list.
-- Implement `Agenda.totalMinutes()` with the collection API.
-
-<!--
-The file lives under src/main/kotlin. Models, markers, scheduling, and rendering
-are supplied. README instructions give the Gradle command for running checks.
-Allow 12 minutes for construction, 5 for member extensions, and 3 for validation.
-Reference code is separate so students can work without immediately seeing it.
--->
+```kotlin
+check(SessionBuilder("Talk").build() == Session("Talk", null, 30))
+check(runCatching { SessionBuilder("Talk").apply { minutes = 0 }.build() }.isFailure)
+```
 
 ---
+class: exercise-slide
+kodee: heart
+---
 
-# Make this program work
+<div class="lesson-number">Exercise 2 / 5</div>
+
+# Insert with `+`
+
+> `insert()` is a member extension, `unaryPlus()` delegates to it
 
 ```kotlin
 val program = agenda("Kotlin afternoon") {
@@ -498,53 +498,64 @@ val program = agenda("Kotlin afternoon") {
   +coffeeBreak
 }
 
-check(program.totalMinutes() == 65)
 check(program.sessions.last() == coffeeBreak)
 ```
 
-<!--
-The slide uses the reference implementation so the deck itself compiles. Students
-run the same behavior against their exercise package with lesson5ExerciseCheck.
-A supplied Session with a non-positive duration must be rejected by insert too.
--->
-
+---
+class: exercise-slide
+kodee: heart
 ---
 
-# Check the boundaries
+<div class="lesson-number">Exercise 3 / 5</div>
 
-- An omitted duration becomes 30 minutes; speaker defaults to `null`.
-- Zero and negative durations are rejected, including inserted sessions.
-- An empty agenda is valid and totals zero.
-- Reusing a builder cannot change an earlier agenda's list.
-- Scheduling at 09:00 and 14:00 leaves the agenda unchanged.
+# Build the agenda
 
-<!--
-Ask learners to explain why toList matters. Check the DSL-marker failure in the
-IDE by moving a session inside another session; do not leave broken code in source.
--->
-
----
-
-# Extend the DSL with a reusable helper
+> `build()` snapshots the list with `toList()`, `agenda` is `apply` then `build()`
 
 ```kotlin
-fun AgendaBuilder.lightningTalk(title: String, speaker: String) {
-  session(title) {
-    this.speaker = speaker
-    minutes = 5
-  }
-}
+val builder = AgendaBuilder("Snapshot")
+with(builder) { +coffeeBreak }
+val before = builder.build()
+with(builder) { +coffeeBreak }
 
-val program = agenda("Lightning talks") {
-  lightningTalk("Receivers", "Ada")
-}
+check(before.sessions.size == 1)
+check(builder.build().sessions.size == 2)
 ```
 
-<!--
-Optional stretch. this.speaker disambiguates the builder property from the outer
-function parameter. This is an extension of the DSL receiver itself, whereas
-Session.insert is a member extension on another value inside its scope.
--->
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 4 / 5</div>
+
+# Total the minutes
+
+> `sumOf` over the sessions
+
+```kotlin no-compile
+check(program.totalMinutes() == 65)
+check(agenda("Empty") {}.totalMinutes() == 0)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 5 / 5</div>
+
+# Add `lightningTalk`
+
+> An ordinary extension on `AgendaBuilder`, `this.speaker` picks the property
+
+```kotlin no-compile
+val talks = agenda("Lightning talks") {
+  lightningTalk("Receivers", "Ada")
+}
+
+check(talks.sessions.single() == Session("Receivers", "Ada", 5))
+```
 
 ---
 

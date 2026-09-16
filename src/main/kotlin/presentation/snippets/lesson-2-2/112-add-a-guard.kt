@@ -11,9 +11,12 @@ fun ticketPrice(age: Int, student: Boolean): Int = when (age) {
   else -> 6
 }
 
-fun main() {
+suspend fun main() {
   check(ticketPrice(8, student = false) == 5)
+
   check(ticketPrice(20, student = true) == 8)
+
   check(ticketPrice(20, student = false) == 12)
+
   check(ticketPrice(70, student = true) == 6)
 }

@@ -1,0 +1,9 @@
+# Shared by every exercise module: the same experimental flags the slides use.
+settings:
+  kotlin:
+    freeCompilerArgs:
+      - "-Xcollection-literals"
+      - "-Xintrinsic-const-evaluation"
+      - "-Xreturn-value-checker=full"
+      - "-Xcontext-sensitive-resolution"
+      - "-Xname-based-destructuring=complete"

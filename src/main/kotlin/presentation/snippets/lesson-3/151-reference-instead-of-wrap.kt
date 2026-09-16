@@ -7,6 +7,6 @@ import presentation.support.*
 
 val len: (String) -> Int = { it.length }
 
-fun main() {
-  check(len("Kotlin") == 6)
+suspend fun main() {
+    check(len("Kotlin") == 6)
 }

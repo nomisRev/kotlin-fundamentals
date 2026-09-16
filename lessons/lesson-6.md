@@ -10,7 +10,7 @@ kodee: wave
 
 # Coroutines
 
-## Structured concurrency, Java interop and Flow
+## Structured concurrency, interop, Flow and state
 
 ---
 
@@ -106,39 +106,81 @@ suspend fun main() {
 
 ---
 class: job-slide
-clicks: 0
 ---
 
 # `coroutineScope` opens a scope for children
 
 <DrawnAnnotation text="coroutineScope" label="Suspends until every child has completed"/>
-<DrawnAnnotation text="{" :line="2" label="`this: CoroutineScope`"/>
+<TypeHint :line="2" receiver="CoroutineScope">
 
-```kotlin
-import kotlinx.coroutines.coroutineScope
-
+```kotlin no-compile
 suspend fun dashboard(): Dashboard =
   coroutineScope {
-    val speaker = fetchSpeaker()
-    val talks = fetchTalks()
-    Dashboard(speaker, talks)
+      
   }
 ```
-
+</TypeHint>
 <JobTree :root="{ label: 'coroutineScope' }" />
 
 ---
 magicMove: true
 class: job-slide
-clicks: 4
 ---
 
 # `async` starts a child coroutine
 
-<DrawnAnnotation text="async { fetchSpeaker() }" label="Starts now, returns a `Deferred<Speaker>`" :on="1"/>
-<DrawnAnnotation text="async { fetchTalks() }" label="Both run at the same time" :on="2"/>
-<DrawnAnnotation text="speaker.await()" label="Suspends until the value is there" :on="3"/>
-<DrawnAnnotation text="talks.await()" label="Both done, the scope completes: 100 ms, not 200" :on="4"/>
+<DrawnAnnotation text="async { fetchSpeaker() }" label="Scheduled now, returns a `Deferred<Speaker>`"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `async` starts a child coroutine
+
+<DrawnAnnotation text="async { fetchTalks() }" label="Both run at the same time"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+    val talks = async { fetchTalks() }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+    { label: 'async fetchTalks()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 3
+---
+
+# `async` starts a child coroutine
+
+<DrawnAnnotation text="speaker.await()" label="Suspends until the value is there" :on="1"/>
+<DrawnAnnotation text="talks.await()" label="Both values are there" :on="2"/>
+<DrawnAnnotation text="coroutineScope" label="Both children done, the scope completes: 100 ms, not 200" :on="3"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -153,10 +195,10 @@ suspend fun dashboard(): Dashboard =
 ```
 
 <JobTree
-  :root="{ label: 'coroutineScope', done: 4 }"
+  :root="{ label: 'coroutineScope', done: 3 }"
   :children="[
-    { label: 'async fetchSpeaker()', at: 1, done: 3 },
-    { label: 'async fetchTalks()', at: 2, done: 4 },
+    { label: 'async fetchSpeaker()', done: 1 },
+    { label: 'async fetchTalks()', done: 2 },
   ]"
 />
 
@@ -189,13 +231,102 @@ fun CoroutineScope.launch(
 
 ---
 class: job-slide
-clicks: 2
 ---
 
 # `launch` runs work the scope still waits for
 
-<DrawnAnnotation text="launch" label="A child too: the scope waits for it" :on="1"/>
-<DrawnAnnotation text="Dashboard(speaker.await(), talks)" label="Returned only once the notification went out" :on="2"/>
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+  }
+```
+
+<JobTree :root="{ label: 'coroutineScope' }" />
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `launch` runs work the scope still waits for
+
+<DrawnAnnotation text="async { fetchSpeaker() }" label="A child, as before"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `launch` runs work the scope still waits for
+
+<DrawnAnnotation text="fetchTalks()" label="A plain suspending call: runs in the scope itself, no child"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+    val talks = fetchTalks()
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `launch` runs work the scope still waits for
+
+<DrawnAnnotation text="launch" label="A child too: the scope waits for it"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+    val talks = fetchTalks()
+    launch { notifyAttendees(talks.first()) }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+    { label: 'launch notifyAttendees()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 3
+---
+
+# `launch` runs work the scope still waits for
+
+<DrawnAnnotation text="speaker.await()" label="The value is there, the scope is still open" :on="1"/>
+<DrawnAnnotation text="launch" label="The notification went out" :on="2"/>
+<DrawnAnnotation text="coroutineScope" label="Only now does it complete and return the `Dashboard`" :on="3"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -212,23 +343,84 @@ suspend fun dashboard(): Dashboard =
 ```
 
 <JobTree
-  :root="{ label: 'coroutineScope', done: 2 }"
+  :root="{ label: 'coroutineScope', done: 3 }"
   :children="[
-    { label: 'async fetchSpeaker()', done: 2 },
-    { label: 'launch notifyAttendees()', at: 1, done: 2 },
+    { label: 'async fetchSpeaker()', done: 1 },
+    { label: 'launch notifyAttendees()', done: 2 },
   ]"
 />
 
 ---
 class: job-slide
-clicks: 3
+---
+
+# A failing child cancels its siblings
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+  }
+```
+
+<JobTree :root="{ label: 'coroutineScope' }" />
+
+---
+magicMove: true
+class: job-slide
+---
+
+# A failing child cancels its siblings
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# A failing child cancels its siblings
+
+<DrawnAnnotation text="error(&quot;Schedule down&quot;)" label="A child that will throw" color="red"/>
+
+```kotlin no-compile
+suspend fun dashboard(): Dashboard =
+  coroutineScope {
+    val speaker = async { fetchSpeaker() }
+    val talks = async { error("Schedule down") }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+    { label: 'async error(…)' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 4
 ---
 
 # A failing child cancels its siblings
 
 <DrawnAnnotation text="error(&quot;Schedule down&quot;)" label="Throws before `fetchSpeaker` finished" color="red" :on="1"/>
-<DrawnAnnotation text="async { fetchSpeaker() }" label="The scope cancels its other child" color="red" :on="2"/>
-<DrawnAnnotation text="coroutineScope" label="Then rethrows: the caller sees the `IllegalStateException`" color="red" :on="3"/>
+<DrawnAnnotation text="async { fetchSpeaker() }" label="The scope cancels its other child" color="var(--fundamentals-cancel)" :on="2"/>
+<DrawnAnnotation text="coroutineScope" label="Once the sibling is gone it rethrows: the caller sees the `IllegalStateException`" color="red" :on="4"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -243,12 +435,18 @@ suspend fun dashboard(): Dashboard =
 ```
 
 <JobTree
-  :root="{ label: 'coroutineScope', failed: 3 }"
+  :root="{ label: 'coroutineScope', failed: 4 }"
   :children="[
-    { label: 'async fetchSpeaker()', cancelled: 2 },
+    { label: 'async fetchSpeaker()', cancelling: 2, cancelled: 3 },
     { label: 'async error(…)', failed: 1 },
   ]"
 />
+
+<!--
+Click 1: the second child throws. Click 2: the scope cancels its sibling. Click 3:
+the sibling has finished cancelling. Click 4: only now does the scope fail and
+rethrow to the caller.
+-->
 
 ---
 clicks: 2
@@ -273,22 +471,35 @@ it, and the siblings keep running. Click 2 is the contrast on the next slide.
 -->
 
 ---
-clicks: 2
+clicks: 4
 ---
 
 # Cancellation still flows down
 
 <div class="jobtree-centre">
 <JobTree
-  :root="{ label: 'SupervisorJob', cancelled: 1 }"
+  :root="{ label: 'SupervisorJob', cancelling: 1, cancelled: 4 }"
   :children="[
-    { label: 'launch', cancelled: 2 },
-    { label: 'launch', cancelled: 2 },
-    { label: 'launch', cancelled: 2 },
+    { label: 'launch', cancelling: 2, cancelled: 3 },
+    { label: 'launch', cancelling: 2, cancelled: 3 },
+    { label: 'launch', cancelling: 2, cancelled: 3 },
   ]"
   :cancel="1"
 />
 </div>
+
+<v-click at="4">
+
+> `cancelAndJoin()` returns only once every child has finished
+
+</v-click>
+
+<!--
+Click 1: `cancel()` reaches the supervisor, which starts cancelling. Click 2: the
+cancellation flows down, every child is cancelling: running `finally` blocks,
+`NonCancellable` cleanup. Click 3: the children have finished. Click 4: only now is
+the parent completely cancelled, which is what `cancelAndJoin()` waits for.
+-->
 
 ---
 
@@ -316,13 +527,80 @@ val notifier = Notifier(
 
 ---
 class: job-slide
-clicks: 2
 ---
 
 # `cancel()` cancels the coroutine and its children
 
-<DrawnAnnotation text="job.cancel()" label="Cancels `launch`, and `launch` cancels both `async`" :on="1"/>
-<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" :on="2"/>
+<DrawnAnnotation text="scope.launch" label="A child of the application scope"/>
+
+```kotlin
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+}
+```
+
+<JobTree :root="{ label: 'launch' }" />
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `cancel()` cancels the coroutine and its children
+
+```kotlin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
+}
+```
+
+<JobTree
+  :root="{ label: 'launch' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# `cancel()` cancels the coroutine and its children
+
+```kotlin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
+val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
+  val talks = async { fetchTalks() }
+}
+```
+
+<JobTree
+  :root="{ label: 'launch' }"
+  :children="[
+    { label: 'async fetchSpeaker()' },
+    { label: 'async fetchTalks()' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 4
+---
+
+# `cancel()` cancels the coroutine and its children
+
+<DrawnAnnotation text="job.cancel()" label="Cancels `launch`, and `launch` cancels both `async`" color="var(--fundamentals-cancel)" :on="1"/>
+<DrawnAnnotation text="fetchSpeaker()" label="`delay` inside throws `CancellationException`: no value, no print" color="var(--fundamentals-cancel)" :on="2"/>
+<DrawnAnnotation text="scope.launch" label="Cancelled once both children are" color="var(--fundamentals-cancel)" :on="4"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -339,13 +617,19 @@ job.cancel()
 ```
 
 <JobTree
-  :root="{ label: 'launch', cancelled: 1 }"
+  :root="{ label: 'launch', cancelling: 1, cancelled: 4 }"
   :children="[
-    { label: 'async fetchSpeaker()', cancelled: 2 },
-    { label: 'async fetchTalks()', cancelled: 2 },
+    { label: 'async fetchSpeaker()', cancelling: 2, cancelled: 3 },
+    { label: 'async fetchTalks()', cancelling: 2, cancelled: 3 },
   ]"
   :cancel="1"
 />
+
+<!--
+Click 1: `cancel()` reaches `launch`. Click 2: it cancels both `async` children,
+whose `delay` throws. Click 3: the children have finished cancelling. Click 4: the
+`launch` is completely cancelled.
+-->
 
 ---
 
@@ -355,6 +639,8 @@ job.cancel()
 
 ```kotlin
 import kotlinx.coroutines.launch
+
+fun compute() = println(Random.nextInt())
 
 val job = scope.launch {
   while (true) {
@@ -377,6 +663,8 @@ magic-move
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+fun compute() = println(Random.nextInt())
+
 val job = scope.launch {
   while (isActive) {
     compute()
@@ -397,6 +685,8 @@ magic-move
 ```kotlin
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+
+fun compute() = println(Random.nextInt())
 
 val job = scope.launch {
   while (true) {
@@ -534,7 +824,7 @@ magic-move
 
 # Cancellation does not reach the SDK
 
-<DrawnAnnotation text="job.cancel()" label="The coroutine is cancelled, the `Call` keeps running" color="red"/>
+<DrawnAnnotation text="job.cancel()" label="The coroutine is cancelled, the `Call` keeps running" color="var(--fundamentals-cancel)"/>
 <DrawnAnnotation text="suspendCoroutine" label="Never learns about it: the callback resumes a dead coroutine" color="red"/>
 
 ```kotlin
@@ -698,17 +988,107 @@ fun readings(): Publisher<Int> = flow {
 
 ---
 class: job-slide
-clicks: 2
 ---
 
 # One scope composes all three
 
-<DrawnAnnotation text="sdk.speaker(id)" label="Callback, wrapped" :on="0" color="var(--drawn-annotation-color)" :sequential="false"/>
-<DrawnAnnotation text="sdk.talks(id).await()" label="`CompletableFuture`" :on="0" color="var(--drawn-annotation-color)" :sequential="false"/>
-<DrawnAnnotation text="asFlow().first()" label="`Publisher`" :on="0" color="var(--drawn-annotation-color)" :sequential="false"/>
-<DrawnAnnotation text="sdk.speaker(id)" label="→ `call.cancel()`" :on="2" color="red" :sequential="false"/>
-<DrawnAnnotation text="sdk.talks(id).await()" label="→ `future.cancel()`" :on="2" color="red" :sequential="false"/>
-<DrawnAnnotation text="asFlow().first()" label="→ `subscription.cancel()`" :on="2" color="red" :sequential="false"/>
+```kotlin no-compile
+suspend fun dashboard(id: Long): Dashboard =
+  coroutineScope {
+  }
+```
+
+<JobTree :root="{ label: 'coroutineScope' }" />
+
+---
+magicMove: true
+class: job-slide
+---
+
+# One scope composes all three
+
+<DrawnAnnotation text="sdk.speaker(id)" label="Callback, wrapped"/>
+
+```kotlin no-compile
+suspend fun dashboard(id: Long): Dashboard =
+  coroutineScope {
+    val speaker = async { sdk.speaker(id) }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async callback' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# One scope composes all three
+
+<DrawnAnnotation text="sdk.talks(id).await()" label="`CompletableFuture`"/>
+
+```kotlin no-compile
+suspend fun dashboard(id: Long): Dashboard =
+  coroutineScope {
+    val speaker = async { sdk.speaker(id) }
+    val talks = async { sdk.talks(id).await() }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async callback' },
+    { label: 'async future' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+---
+
+# One scope composes all three
+
+<DrawnAnnotation text="asFlow().first()" label="`Publisher`"/>
+
+```kotlin no-compile
+suspend fun dashboard(id: Long): Dashboard =
+  coroutineScope {
+    val speaker = async { sdk.speaker(id) }
+    val talks = async { sdk.talks(id).await() }
+    val live = async {
+      sdk.attendance(id).asFlow().first()
+    }
+  }
+```
+
+<JobTree
+  :root="{ label: 'coroutineScope' }"
+  :children="[
+    { label: 'async callback' },
+    { label: 'async future' },
+    { label: 'async publisher' },
+  ]"
+/>
+
+---
+magicMove: true
+class: job-slide
+clicks: 4
+---
+
+# One scope composes all three
+
+<DrawnAnnotation text="sdk.speaker(id)" label="→ `call.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
+<DrawnAnnotation text="sdk.talks(id).await()" label="→ `future.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
+<DrawnAnnotation text="asFlow().first()" label="→ `subscription.cancel()`" :on="2" color="var(--fundamentals-cancel)" :sequential="false"/>
+<DrawnAnnotation text="coroutineScope" label="Cancelled once every bridge has stopped its Java side" :on="4" color="var(--fundamentals-cancel)"/>
 
 ```kotlin
 import kotlinx.coroutines.async
@@ -733,18 +1113,20 @@ suspend fun dashboard(id: Long): Dashboard =
 ```
 
 <JobTree
-  :root="{ label: 'coroutineScope', cancelled: 1 }"
+  :root="{ label: 'coroutineScope', cancelling: 1, cancelled: 4 }"
   :children="[
-    { label: 'async callback', cancelled: 2 },
-    { label: 'async future', cancelled: 2 },
-    { label: 'async publisher', cancelled: 2 },
+    { label: 'async callback', cancelling: 2, cancelled: 3 },
+    { label: 'async future', cancelling: 2, cancelled: 3 },
+    { label: 'async publisher', cancelling: 2, cancelled: 3 },
   ]"
   :cancel="1"
 />
 
 <!--
 Click 1: the caller cancels the scope. Click 2: every bridge forwards it to its
-Java side. One `cancel()` at the top stops the SDK's work in all three styles.
+Java side. Click 3: the three children have finished cancelling. Click 4: the scope
+is completely cancelled. One `cancel()` at the top stops the SDK's work in all
+three styles.
 -->
 
 ---
@@ -964,6 +1346,33 @@ attendance()
 
 ---
 
+# Emitting is a `suspend` call
+
+<DrawnAnnotation text="suspend fun emit" label="Upstream waits inside `emit` until downstream is done with `value`"/>
+
+```kotlin no-compile
+fun interface FlowCollector<in T> {
+  suspend fun emit(value: T)
+}
+```
+
+---
+class: timeline-slide
+---
+
+# Upstream and downstream take turns
+
+<DrawnAnnotation text="attendance()" label="Upstream: `emit` suspends until `println` returned"/>
+<DrawnAnnotation text="println(count)" label="Downstream: runs while `emit` is suspended" color="var(--fundamentals-blue)"/>
+
+```kotlin
+attendance().collect { count -> println(count) }
+```
+
+<FlowTimeline :steps="['10', '20', '30']" loop="repeat(3)" up="emit" down="println" />
+
+---
+
 # `callbackFlow` wraps a subscription
 
 <DrawnAnnotation text="trySend(talk)" label="Called on the SDK's thread, hands the event to the collector"/>
@@ -1114,12 +1523,527 @@ fun main() = runBlocking {
 ```
 
 ---
+layout: intro
+class: section-slide
+kodee: wave
+---
 
-# Coroutines in four rules
+<div class="lesson-number">Lesson 6</div>
+
+# Channels
+
+## Values between coroutines
+
+---
+
+# A `Channel` hands values between coroutines
+
+<DrawnAnnotation text="Channel<Talk>()" label="A queue both sides suspend on"/>
+<DrawnAnnotation text="send" label="Suspends until someone receives"/>
+<DrawnAnnotation text="receive()" label="Suspends until someone sends" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+
+val channel = Channel<Talk>()
+
+coroutineScope {
+  launch { channel.send(Talk(10, "Structured concurrency")) }
+  println(channel.receive().title)
+}
+```
+```console
+Structured concurrency
+```
+
+---
+magic-move
+---
+
+# `close` ends the channel
+
+<DrawnAnnotation text="channel.close()" label="No more values: the receiving loop ends"/>
+<DrawnAnnotation text="for (talk in channel)" label="Suspends before every element, like `receive`" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+
+val channel = Channel<Talk>()
+
+coroutineScope {
+  launch {
+    for (talk in fetchTalks()) channel.send(talk)
+    channel.close()
+  }
+  for (talk in channel) println(talk.title)
+}
+```
+```console
+Structured concurrency
+Flow
+```
+
+---
+
+# `for` over a channel suspends in `hasNext()`
+
+<DrawnAnnotation text="suspend operator fun hasNext()" label="The `iterator()` contract from lesson 4, now suspending"/>
+<DrawnAnnotation text="next()" label="Never suspends: `hasNext` already fetched the value" color="var(--fundamentals-blue)"/>
+
+```kotlin no-compile
+interface ChannelIterator<out E> {
+  suspend operator fun hasNext(): Boolean
+  operator fun next(): E
+}
+```
+
+---
+
+# `produce` ties the channel to a scope
+
+<DrawnAnnotation text="produce" label="A child coroutine that owns the sending side: closes it when the block ends"/>
+<DrawnAnnotation text="CoroutineScope.talks()" label="Cancelled with the scope, like every child"/>
+<DrawnAnnotation text="ReceiveChannel<Talk>" label="The caller only sees the receiving side" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.coroutineScope
+
+fun CoroutineScope.talks(): ReceiveChannel<Talk> = produce {
+  for (talk in fetchTalks()) send(talk)
+}
+
+coroutineScope {
+  for (talk in talks()) println(talk.title)
+}
+```
+```console
+Structured concurrency
+Flow
+```
+
+---
+class: timeline-slide
+---
+
+# `buffer` puts a channel in between
+
+<DrawnAnnotation text="buffer(capacity = 3)" label="Upstream gets its own coroutine\n`emit` only waits once all 3 slots are full"/>
+
+```kotlin
+import kotlinx.coroutines.flow.buffer
+
+attendance()
+  .buffer(capacity = 3)
+  .collect { count -> println(count) }
+```
+
+<ChannelDiagram left="emit" right="collect" :capacity="3" />
+
+---
+
+# `flow { }` emits from one coroutine only
+
+<DrawnAnnotation text="launch { emit(" :line="3" label="`emit` from a child coroutine: the collector is not thread-safe" color="red"/>
+
+```kotlin
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+
+fun titles(): Flow<String> = flow {
+  coroutineScope {
+    launch { emit(fetchSpeaker().name) }
+    launch { emit(fetchTalks().first().title) }
+  }
+}
+
+titles().collect { title -> println(title) }
+```
+
+<v-clicks>
+
+<div class="stacktrace" aria-label="Application stack trace">
+  <div>Exception in thread "main" <span class="stacktrace-link">java.lang.IllegalStateException</span>: Flow invariant is violated:</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;Emission from another coroutine is detected.</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;FlowCollector is not thread-safe and concurrent emissions are prohibited.</div>
+  <div>&nbsp;&nbsp;&nbsp;&nbsp;To mitigate this restriction please use 'channelFlow' builder instead of 'flow'</div>
+</div>
+
+</v-clicks>
+
+---
+magic-move
+---
+
+# `channelFlow` emits from any coroutine
+
+<DrawnAnnotation text="channelFlow" label="A `ProducerScope`: a `CoroutineScope` with a `SendChannel`"/>
+<DrawnAnnotation text="send" :line="2" label="Through a channel to the collector, from any child" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
+
+fun titles(): Flow<String> = channelFlow {
+  launch { send(fetchSpeaker().name) }
+  launch { send(fetchTalks().first().title) }
+}
+
+titles().collect { title -> println(title) }
+```
+```console
+Ada
+Structured concurrency
+```
+
+---
+
+# `callbackFlow` is `channelFlow` plus `awaitClose`
+
+<DrawnAnnotation text="ProducerScope<T>" :line="1" label="`trySend` from the SDK's thread was a channel all along"/>
+<DrawnAnnotation text="callbackFlow" label="Same builder, but the block must end in `awaitClose`" color="var(--fundamentals-blue)"/>
+
+```kotlin no-compile
+fun <T> channelFlow(block: suspend ProducerScope<T>.() -> Unit): Flow<T>
+
+fun <T> callbackFlow(block: suspend ProducerScope<T>.() -> Unit): Flow<T>
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 3</div>
+
+# Produce the talks
+
+> `produce` closes the channel when its block ends
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.runBlocking
+
+fun CoroutineScope.talks(): ReceiveChannel<Talk> = TODO()
+
+fun main() = runBlocking {
+  val titles = buildList { for (talk in talks()) add(talk.title) }
+  check(titles == ["Structured concurrency", "Flow"])
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Sum a channel
+
+> `for` over the channel suspends until `close`
+
+```kotlin
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.runBlocking
+
+suspend fun ReceiveChannel<Int>.total(): Int = TODO()
+
+fun main() = runBlocking {
+  val readings = produce {
+    send(10)
+    send(20)
+    send(30)
+  }
+  check(readings.total() == 60)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Collect two flows at once
+
+> `channelFlow` may `send` from a child coroutine
+
+```kotlin
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+
+fun <T> both(first: Flow<T>, second: Flow<T>): Flow<T> = TODO()
+
+fun main() = runBlocking {
+  val titles = both(flowOf("Flow"), flowOf("Channels")).toList()
+  check(titles.sorted() == ["Channels", "Flow"])
+}
+```
+
+---
+layout: intro
+class: section-slide
+kodee: wave
+---
+
+<div class="lesson-number">Lesson 6</div>
+
+# StateFlow
+
+## A value that changes over time
+
+---
+
+# A `StateFlow` always has a value
+
+<DrawnAnnotation text="MutableStateFlow(0)" label="Starts with a value, is never empty"/>
+<DrawnAnnotation text="count.value = 10" label="Read or written right away, no coroutine needed" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.flow.MutableStateFlow
+
+val count = MutableStateFlow(0)
+
+println(count.value)
+count.value = 10
+println(count.value)
+```
+```console
+0
+10
+```
+
+---
+magic-move
+---
+
+# Collectors see the latest value
+
+<DrawnAnnotation text="count.collect" label="Starts with the current value, never completes"/>
+<DrawnAnnotation text="delay(100.milliseconds)" label="A slow collector"/>
+<DrawnAnnotation text="count.value = 20" label="Overwritten before the collector was ready: never seen" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+
+val count = MutableStateFlow(0)
+
+scope.launch {
+  count.collect { value ->
+    delay(100.milliseconds)
+    println(value)
+  }
+}
+
+delay(10.milliseconds)
+count.value = 10
+count.value = 20
+count.value = 30
+```
+```console
+0
+30
+```
+
+---
+
+# `update` changes the value atomically
+
+<DrawnAnnotation text="count.value = count.value + 1" label="Two threads read `0`, both write `1`" color="red"/>
+<DrawnAnnotation text="update" label="Retries when another thread wrote in between"/>
+
+```kotlin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
+
+val count = MutableStateFlow(0)
+
+count.value = count.value + 1
+
+count.update { value -> value + 1 }
+```
+
+---
+
+# Expose the read-only `StateFlow`
+
+<DrawnAnnotation text="private val _count" label="The underscore convention: two properties for one value"/>
+<DrawnAnnotation text="asStateFlow()" label="Callers read and collect, only the class writes" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+class Attendance {
+  private val _count = MutableStateFlow(0)
+  val count: StateFlow<Int> = _count.asStateFlow()
+
+  fun checkIn() {
+    _count.update { value -> value + 1 }
+  }
+}
+```
+
+---
+magic-move
+---
+
+# An explicit backing field replaces the underscore
+
+> `-Xexplicit-backing-fields`
+
+<DrawnAnnotation text="field = MutableStateFlow(0)" label="One property: the backing field keeps the wider type"/>
+<DrawnAnnotation text="count.update" label="Inside the class, `count` is the `MutableStateFlow`"/>
+<DrawnAnnotation text="StateFlow<Int>" label="Outside, it is what the declaration says" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+
+class Attendance {
+  val count: StateFlow<Int>
+    field = MutableStateFlow(0)
+
+  fun checkIn() {
+    count.update { value -> value + 1 }
+  }
+}
+```
+
+---
+magic-move
+---
+
+# Outside the class, `count` is read-only
+
+<InlineCompilerError text="value" :line="11" message="'val' cannot be reassigned.">
+
+```kotlin
+class Attendance {
+  val count: StateFlow<Int>
+    field = MutableStateFlow(0)
+
+  fun checkIn() {
+    count.update { value -> value + 1 }
+  }
+}
+
+val attendance = Attendance()
+attendance.count.value = 5
+```
+
+</InlineCompilerError>
+
+---
+
+# `stateIn` turns a cold flow into state
+
+<DrawnAnnotation text="stateIn" label="Collects upstream in `scope`, shares the latest value"/>
+<DrawnAnnotation text="SharingStarted.WhileSubscribed()" label="Upstream runs only while someone collects"/>
+<DrawnAnnotation text="initialValue = 0" label="Until the first reading arrives" color="var(--fundamentals-blue)"/>
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.reactive.asFlow
+
+class LiveAttendance(scope: CoroutineScope) {
+  val count: StateFlow<Int> =
+    sdk.attendance(10).asFlow().stateIn(
+      scope,
+      started = SharingStarted.WhileSubscribed(),
+      initialValue = 0,
+    )
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 2</div>
+
+# Count the check-ins
+
+> `update` keeps concurrent check-ins from being lost
+
+```kotlin
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.runBlocking
+
+class Attendance {
+  val count: StateFlow<Int> = TODO()
+  fun checkIn(): Unit = TODO()
+}
+
+fun main() = runBlocking {
+  val attendance = Attendance()
+  repeat(3) { attendance.checkIn() }
+  check(attendance.count.value == 3)
+}
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 2</div>
+
+# Keep the latest reading
+
+> `stateIn` needs a scope, a `SharingStarted` and an initial value
+
+```kotlin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
+
+fun CoroutineScope.latest(readings: Flow<Int>): StateFlow<Int> = TODO()
+
+fun main() = runBlocking {
+  val count = latest(flowOf(10, 20, 30))
+  yield()
+  check(count.value == 30)
+}
+```
+
+---
+
+# Coroutines in six rules
 
 - `suspend` → waits without blocking, needs a coroutine to run in
 - `coroutineScope` → every child completes, fails or is cancelled with its parent
 - `suspendCancellableCoroutine`, `await()`, `asFlow()` → every Java style has a bridge, all of them cancellable
 - `Flow` → cold, lazy, and cancelled with its collector
+- `Channel` → hot, `send` and `receive` suspend, `for` waits for `close`
+- `StateFlow` → always has a value, collectors see the latest one
 
 > **Every coroutine has a parent.**

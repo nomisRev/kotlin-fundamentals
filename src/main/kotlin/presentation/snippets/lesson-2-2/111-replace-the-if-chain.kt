@@ -10,8 +10,10 @@ fun grade(score: Int): String =
   else if (score >= 80) "B"
   else "F"
 
-fun main() {
+suspend fun main() {
   check(grade(95) == "A")
+
   check(grade(85) == "B")
+
   check(grade(40) == "F")
 }

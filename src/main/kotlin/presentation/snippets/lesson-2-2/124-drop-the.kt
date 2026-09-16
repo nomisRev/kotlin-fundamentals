@@ -10,8 +10,10 @@ fun firstInitial(name: String?): Char {
   return name!!.uppercase().first()
 }
 
-fun main() {
+suspend fun main() {
   check(firstInitial("simon") == 'S')
+
   check(firstInitial(null) == '?')
+
   check(firstInitial("") == '?')
 }

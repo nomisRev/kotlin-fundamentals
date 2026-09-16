@@ -1,0 +1,22 @@
+product: jvm/app
+
+dependencies:
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
+  # Lesson 6: the Reactive Streams bridge and the Reactor-backed Java SDK.
+  - org.jetbrains.kotlinx:kotlinx-coroutines-reactive:1.11.0
+  - org.reactivestreams:reactive-streams:1.0.4
+  - io.projectreactor:reactor-core:3.7.11
+
+test-dependencies:
+  - org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0
+
+settings:
+  kotlin:
+    freeCompilerArgs:
+      - "-Xcollection-literals"
+      - "-Xintrinsic-const-evaluation"
+      - "-Xreturn-value-checker=full"
+      - "-Xcontext-sensitive-resolution"
+      - "-Xname-based-destructuring=complete"
+      # Lesson 6: `val count: StateFlow<Int>` with `field = MutableStateFlow(0)`.
+      - "-Xexplicit-backing-fields"

@@ -11,7 +11,8 @@ fun abs(x: Int): Int {
   return result
 }
 
-fun main() {
+suspend fun main() {
   check(abs(-3) == 3)
+
   check(abs(4) == 4)
 }

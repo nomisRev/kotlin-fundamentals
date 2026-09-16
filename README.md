@@ -48,6 +48,40 @@ npm run build
 npm run export
 ```
 
+## Exercises
+
+`exercises/` is a [Kotlin Toolchain](https://kotlin-toolchain.org) project with
+one module per cluster of exercise slides, in deck order: `functions`,
+`control-flow`, `nullability`, `strings` (lesson 2), `lambdas`, `collections`,
+`iteration` (lesson 3), `data-classes`, `closed-types`, `properties` (lesson 4),
+`dsl` (lesson 5) and `coroutines` (lesson 6). Every exercise has a JUnit test;
+the slide shows the assertions, the KDoc in the module's source file states the
+task.
+
+Where the body is the lesson, the function is there with a `= TODO()` body.
+Where writing the declaration is the lesson (an extension, a `vararg`, an
+`infix` or `operator` function, a nullable signature, a data class), the KDoc
+describes the shape and the function is not there yet: the module's tests do not
+compile until it is, so the first step of such an exercise is to make the tests
+compile, the second to make them pass. Modules are kept apart for that reason:
+an unfinished module never blocks the tests of another.
+
+```bash
+cd exercises
+./kotlin test                              # every module
+./kotlin test --include-module functions   # one module
+```
+
+`exercises/solutions/` mirrors the exercise files with reference solutions.
+`exercises/check-solutions.sh` copies the project to a temporary directory,
+overlays the solutions and runs the tests, which is how the tests themselves are
+checked (the starter project deliberately does not compile):
+
+```bash
+exercises/check-solutions.sh
+exercises/check-solutions.sh --include-module dsl
+```
+
 ## Lesson 5: DSLs and builders
 
 The lesson takes approximately 75 minutes: 55 minutes of examples and discussion,
@@ -55,24 +89,13 @@ then a 20-minute exercise. It assumes extensions from lesson 2 and receiver lamb
 and collections from lesson 4. Lesson 4 is maintained separately; lesson 5 is
 included after the currently available lesson 3 in the main deck.
 
-Students edit `src/main/kotlin/exercises/lesson5/AgendaExercise.kt`. Models,
-`@AgendaDsl`, scheduling, and display configuration are supplied. Complete the TODOs
-and run:
+The exercises are the `dsl` module of the exercises project (see below):
+`exercises/dsl/src/dsl/AgendaBuilder.kt` holds the builders with `= TODO()`
+bodies and the task as KDoc, `exercises/dsl/test/dsl/AgendaTest.kt` the tests.
+The complete reference the slides compile against is
+`src/main/kotlin/presentation/support/Agenda.kt`:
 
 ```bash
-./gradlew lesson5ExerciseCheck
-```
-
-This command intentionally fails until the starter is completed. The acceptance
-checks cover defaults, declaration order, positive durations (including inserted
-sessions), independent snapshots, and scheduling/rendering the same agenda with
-different runtime parameters. As an IDE check, try nesting `session` inside a
-session block: the shared DSL marker should reject implicit outer access.
-
-The complete reference is `src/main/kotlin/presentation/support/Agenda.kt`:
-
-```bash
-./gradlew lesson5ReferenceCheck
 npm run snippets:check
 ./gradlew compileLesson5Kotlin
 ```
@@ -88,16 +111,22 @@ context arguments are not needed for this lesson.
 Structured concurrency with an animated Job hierarchy beside the code
 (`components/JobTree.vue`, staged by the slide's `clicks:` count), wrapping a
 Java SDK in each of its asynchronous styles (callback, `CompletableFuture`,
-Reactive Streams `Publisher`), one scope composing all three, and Flow. The
-Java SDK the slides wrap is `src/main/java/presentation/support/ConferenceSdk.java`;
-the Kotlin helpers are in `src/main/kotlin/presentation/support/Conference.kt`.
+Reactive Streams `Publisher`), one scope composing all three, Flow as a pull-based
+stream (`components/FlowTimeline.vue`), channels (`Channel`, `produce`, the
+suspending `for`, `buffer` and `channelFlow`, with `components/ChannelDiagram.vue`)
+and `StateFlow`, whose read-only view uses an explicit backing field
+(`-Xexplicit-backing-fields`, enabled in `build.gradle.kts` and `exercises/module.yaml`).
+The lesson uses KotlinX Coroutines only. The Java SDK the slides wrap is
+`src/main/java/presentation/support/ConferenceSdk.java`; the Kotlin helpers are in
+`src/main/kotlin/presentation/support/Conference.kt`.
 
-The exercises live in `exercises/src/coroutines/` (Kotlin Toolchain project,
-`= TODO()` bodies with the task as KDoc) with tests in `exercises/test/coroutines/`:
+The exercises are the `coroutines` module of the exercises project (see below):
+`exercises/coroutines/src/coroutines/` holds the `= TODO()` bodies with the task
+as KDoc, `exercises/coroutines/test/coroutines/` the tests:
 
 ```bash
 cd exercises
-./kotlin test
+./kotlin test --include-module coroutines
 ```
 
 The lesson's fences compile on their own, Java SDK included:

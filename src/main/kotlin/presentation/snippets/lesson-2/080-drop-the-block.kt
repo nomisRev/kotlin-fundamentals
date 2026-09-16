@@ -10,6 +10,6 @@ fun average(a: Int, b: Int): Int {
   return total / 2
 }
 
-fun main() {
+suspend fun main() {
   check(average(4, 8) == 6)
 }

@@ -10,3 +10,6 @@ slides-export/
 .gradle/
 build/
 .kotlin/
+
+# Kotlin Toolchain project for the exercises
+exercises/.idea/

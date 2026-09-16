@@ -375,10 +375,8 @@ fun abs(x: Int): Int {
   return result
 }
 
-fun main() {
-  check(abs(-3) == 3)
-  check(abs(4) == 4)
-}
+check(abs(-3) == 3)
+check(abs(4) == 4)
 ```
 
 ---
@@ -398,11 +396,9 @@ fun grade(score: Int): String =
   else if (score >= 80) "B"
   else "F"
 
-fun main() {
-  check(grade(95) == "A")
-  check(grade(85) == "B")
-  check(grade(40) == "F")
-}
+check(grade(95) == "A")
+check(grade(85) == "B")
+check(grade(40) == "F")
 ```
 
 ---
@@ -423,12 +419,10 @@ fun ticketPrice(age: Int, student: Boolean): Int = when (age) {
   else -> 6
 }
 
-fun main() {
-  check(ticketPrice(8, student = false) == 5)
-  check(ticketPrice(20, student = true) == 8)
-  check(ticketPrice(20, student = false) == 12)
-  check(ticketPrice(70, student = true) == 6)
-}
+check(ticketPrice(8, student = false) == 5)
+check(ticketPrice(20, student = true) == 8)
+check(ticketPrice(20, student = false) == 12)
+check(ticketPrice(70, student = true) == 6)
 ```
 
 ---
@@ -440,18 +434,14 @@ kodee: heart
 
 # Cover every entry
 
-> `when (light)` without `else`, the compiler knows all three entries
+> `next(light)` returns the one after it, `when (light)` without `else`
 
-```kotlin
+```kotlin no-compile
 enum class Light { RED, AMBER, GREEN }
 
-fun next(light: Light): Light = TODO()
-
-fun main() {
-  check(next(Light.RED) == Light.GREEN)
-  check(next(Light.GREEN) == Light.AMBER)
-  check(next(Light.AMBER) == Light.RED)
-}
+check(next(Light.RED) == Light.GREEN)
+check(next(Light.GREEN) == Light.AMBER)
+check(next(Light.AMBER) == Light.RED)
 ```
 
 ---
@@ -463,16 +453,12 @@ kodee: heart
 
 # Run the body first
 
-> `do` divides by `10` at least once, so `0` still has one digit
+> `digitCount(n)`, `do` divides by `10` at least once, so `0` still has one digit
 
-```kotlin
-fun digitCount(n: Int): Int = TODO()
-
-fun main() {
-  check(digitCount(0) == 1)
-  check(digitCount(7) == 1)
-  check(digitCount(2024) == 4)
-}
+```kotlin no-compile
+check(digitCount(0) == 1)
+check(digitCount(7) == 1)
+check(digitCount(2024) == 4)
 ```
 
 ---
@@ -484,15 +470,11 @@ kodee: heart
 
 # Stop early
 
-> A `for` loop that `break`s when it reaches `stopAt`
+> `sumUntil` adds up a `List<Int>`, a `for` loop that `break`s at `stopAt`
 
-```kotlin
-fun sumUntil(numbers: List<Int>, stopAt: Int): Int = TODO()
-
-fun main() {
-  check(sumUntil(listOf(1, 2, 3, 4, 5), stopAt = 4) == 6)
-  check(sumUntil(listOf(4, 6, 8), stopAt = 4) == 0)
-}
+```kotlin no-compile
+check(sumUntil([1, 2, 3, 4, 5], stopAt = 4) == 6)
+check(sumUntil([4, 6, 8], stopAt = 4) == 0)
 ```
 
 ---
@@ -607,15 +589,11 @@ kodee: heart
 
 # Call it safely
 
-> `uppercase()` behind a `?.`, no `if`
+> `shout` takes a `String?` and returns a `String?`, `uppercase()` behind a `?.`
 
-```kotlin
-fun shout(text: String?): String? = TODO()
-
-fun main() {
-  check(shout("hi") == "HI")
-  check(shout(null) == null)
-}
+```kotlin no-compile
+check(shout("hi") == "HI")
+check(shout(null) == null)
 ```
 
 ---
@@ -627,15 +605,11 @@ kodee: heart
 
 # Fall back with Elvis
 
-> `?.` gives an `Int?`, `?:` turns it into an `Int`
+> `lengthOrZero` takes a `String?` and returns an `Int`, `?.` then `?:`
 
-```kotlin
-fun lengthOrZero(text: String?): Int = TODO()
-
-fun main() {
-  check(lengthOrZero("Kotlin") == 6)
-  check(lengthOrZero(null) == 0)
-}
+```kotlin no-compile
+check(lengthOrZero("Kotlin") == 6)
+check(lengthOrZero(null) == 0)
 ```
 
 ---
@@ -655,11 +629,9 @@ fun firstInitial(name: String?): Char {
   return name!!.uppercase().first()
 }
 
-fun main() {
-  check(firstInitial("simon") == 'S')
-  check(firstInitial(null) == '?')
-  check(firstInitial("") == '?')
-}
+check(firstInitial("simon") == 'S')
+check(firstInitial(null) == '?')
+check(firstInitial("") == '?')
 ```
 
 ---
@@ -803,14 +775,10 @@ kodee: heart
 
 # Interpolate
 
-> `$name` for the variable, `${...}` for the expression
+> `birthday(name, age)`, `$name` for the variable, `${...}` for the expression
 
-```kotlin
-fun birthday(name: String, age: Int): String = TODO()
-
-fun main() {
-  check(birthday("Ada", 36) == "Ada turns 37 next year")
-}
+```kotlin no-compile
+check(birthday("Ada", 36) == "Ada turns 37 next year")
 ```
 
 ---
@@ -822,14 +790,10 @@ kodee: heart
 
 # Frame it with a raw string
 
-> One raw string with `$item` and `$price`, `trimIndent()` removes the indentation
+> `receipt(item, price)`, one raw string with `$item` and `$price`, then `trimIndent()`
 
-```kotlin
-fun receipt(item: String, price: Double): String = TODO()
-
-fun main() {
-  check(receipt("Coffee", 3.5) == "Coffee costs 3.5\n----------\nThank you!")
-}
+```kotlin no-compile
+check(receipt("Coffee", 3.5) == "Coffee costs 3.5\n----------\nThank you!")
 ```
 
 ---
@@ -846,7 +810,5 @@ kodee: heart
 ```kotlin
 fun payload(name: String): String = "{ \"${'$'}id\": \"$name\" }"
 
-fun main() {
-  check(payload("kodee") == "{ \"${'$'}id\": \"kodee\" }")
-}
+check(payload("kodee") == "{ \"${'$'}id\": \"kodee\" }")
 ```

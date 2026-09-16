@@ -836,6 +836,56 @@ println(mail) // alice@example.com
 ```
 
 ---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 3</div>
+
+# Declare `Member`
+
+> A data class with `name` and `age`, equality and `toString()` come for free
+
+```kotlin no-compile
+check(Member("Ada", 36) == Member("Ada", 36))
+check(Member("Ada", 36).toString() == "Member(name=Ada, age=36)")
+check(Member("Ada", 36).copy(age = 37) == Member("Ada", 37))
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Give `age` a domain type
+
+> A `value class` around an `Int`, its `init` block `require`s `0` or more
+
+```kotlin no-compile
+check(Age(36).value == 36)
+check(Age(36) == Age(36))
+check(runCatching { Age(-1) }.isFailure)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Make `Age` sortable
+
+> `Comparable<Age>`, delegate `compareTo` to the wrapped `Int`
+
+```kotlin no-compile
+check(Age(17) < Age(36))
+check([Age(36), Age(17), Age(25)].sorted() == [Age(17), Age(25), Age(36)])
+```
+
+---
 
 # An `object` is a single instance
 
@@ -1178,6 +1228,58 @@ fun message(state: UiState) = when (state) {
 </SmartCast>
 </SmartCast>
 </SmartCast>
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 3</div>
+
+# Parse in the companion
+
+> A `companion object` with `parse`, a static factory in Kotlin clothes
+
+```kotlin no-compile
+data class Version(val major: Int, val minor: Int)
+
+check(Version.parse("2.4") == Version(2, 4))
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Carry data in an entry
+
+> `Priority` has `LOW`, `MEDIUM` and `HIGH`, each with a `level`
+
+```kotlin no-compile
+check(Priority.HIGH.level == 3)
+check(Priority.entries.map { it.level } == [1, 2, 3])
+check(Priority.valueOf("LOW") == Priority.LOW)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Close the hierarchy
+
+> A `sealed class Shape`, `area` is one `when` without `else`
+
+```kotlin no-compile
+check(area(Shape.Empty) == 0.0)
+check(area(Shape.Circle(1.0)) == PI)
+check(area(Shape.Rectangle(2.0, 3.0)) == 6.0)
+check(Shape.Empty.toString() == "Empty")
+```
 
 ---
 
@@ -1593,5 +1695,76 @@ true
 ```
 
 </InlineCompilerError>
+
+---
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 3</div>
+
+# Expose the read, keep the write
+
+> `count` gets a `private set`, `increment()` is the only write
+
+```kotlin no-compile
+class Counter {
+  var count: Int = 0
+}
+
+val counter = Counter()
+counter.increment()
+counter.increment()
+check(counter.count == 2)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Compute the getter
+
+> `count` and `isEmpty` are computed by a `get()`, no backing field
+
+```kotlin no-compile
+class Inventory {
+  private val items = mutableListOf<String>()
+
+  fun add(item: String) {
+    items.add(item)
+  }
+}
+
+val inventory = Inventory()
+check(inventory.isEmpty)
+inventory.add("Kodee")
+check(inventory.count == 1)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Validate in the setter
+
+> A `set(value)` that `require`s `5..30` before writing `field`
+
+```kotlin no-compile
+class Thermostat {
+  var target: Int = 20
+}
+
+val thermostat = Thermostat()
+thermostat.target = 25
+check(runCatching { thermostat.target = 40 }.isFailure)
+check(thermostat.target == 25)
+```
 
 ---

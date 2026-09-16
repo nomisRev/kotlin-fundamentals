@@ -161,13 +161,11 @@ kodee: heart
 
 > One parameter, so `it` will do
 
-```kotlin
-val isEven: (Int) -> Boolean = TODO()
+```kotlin no-compile
+val isEven: (Int) -> Boolean
 
-fun main() {
-  check(isEven(4))
-  check(!isEven(7))
-}
+check(isEven(4))
+check(!isEven(7))
 ```
 
 ---
@@ -181,12 +179,10 @@ kodee: heart
 
 > Two parameters, so `it` is off the table
 
-```kotlin
-val add: (Int, Int) -> Int = TODO()
+```kotlin no-compile
+val add: (Int, Int) -> Int
 
-fun main() {
-  check(add(2, 3) == 5)
-}
+check(add(2, 3) == 5)
 ```
 
 ---
@@ -200,12 +196,10 @@ kodee: heart
 
 > `this` is the `String`, so `uppercase()` needs no qualifier
 
-```kotlin
-val shout: String.() -> String = TODO()
+```kotlin no-compile
+val shout: String.() -> String
 
-fun main() {
-  check("hi".shout() == "HI!")
-}
+check("hi".shout() == "HI!")
 ```
 
 ---
@@ -222,9 +216,7 @@ kodee: heart
 ```kotlin
 val len: (String) -> Int = { it.length }
 
-fun main() {
-  check(len("Kotlin") == 6)
-}
+check(len("Kotlin") == 6)
 ```
 
 ---
@@ -655,17 +647,13 @@ kodee: heart
 
 # Transform
 
-> `map` each `Member` to its `name`
+> `names` takes a `List<Member>`, `map` each `Member` to its `name`
 
-```kotlin
+```kotlin no-compile
 class Member(val name: String, val age: Int)
 
-fun names(members: List<Member>): List<String> = TODO()
-
-fun main() {
-  val members = [Member("Ada", 36), Member("Linus", 17)]
-  check(names(members) == ["Ada", "Linus"])
-}
+val members = [Member("Ada", 36), Member("Linus", 17)]
+check(names(members) == ["Ada", "Linus"])
 ```
 
 ---
@@ -677,18 +665,14 @@ kodee: heart
 
 # Select
 
-> `filter` on `age >= 18`
+> `adults` keeps the members of 18 and older, `filter` on `age >= 18`
 
-```kotlin
+```kotlin no-compile
 class Member(val name: String, val age: Int)
 
-fun adults(members: List<Member>): List<Member> = TODO()
-
-fun main() {
-  val ada = Member("Ada", 36)
-  val members = [ada, Member("Linus", 17)]
-  check(adults(members) == [ada])
-}
+val ada = Member("Ada", 36)
+val members = [ada, Member("Linus", 17)]
+check(adults(members) == [ada])
 ```
 
 ---
@@ -700,14 +684,10 @@ kodee: heart
 
 # Flatten
 
-> `flatMap`, `toList()` turns a `String` into its `Char`s
+> `letters` turns a `List<String>` into every `Char`, `flatMap` and `toList()`
 
-```kotlin
-fun letters(words: List<String>): List<Char> = TODO()
-
-fun main() {
-  check(letters(["ab", "c"]) == ['a', 'b', 'c'])
-}
+```kotlin no-compile
+check(letters(["ab", "c"]) == ['a', 'b', 'c'])
 ```
 
 ---
@@ -719,14 +699,10 @@ kodee: heart
 
 # Keep the non-null type
 
-> `toIntOrNull()` returns `Int?`, `mapNotNull` drops the `null`s
+> `numbers(input)`, `toIntOrNull()` returns `Int?`, `mapNotNull` drops the `null`s
 
-```kotlin
-fun numbers(input: List<String>): List<Int> = TODO()
-
-fun main() {
-  check(numbers(["1", "two", "3"]) == [1, 3])
-}
+```kotlin no-compile
+check(numbers(["1", "two", "3"]) == [1, 3])
 ```
 
 ---
@@ -738,14 +714,10 @@ kodee: heart
 
 # Group
 
-> `groupBy` on `length`
+> `byLength` returns a `Map<Int, List<String>>`, `groupBy` on `length`
 
-```kotlin
-fun byLength(words: List<String>): Map<Int, List<String>> = TODO()
-
-fun main() {
-  check(byLength(["a", "bb", "cc"]) == mapOf(1 to ["a"], 2 to ["bb", "cc"]))
-}
+```kotlin no-compile
+check(byLength(["a", "bb", "cc"]) == mapOf(1 to ["a"], 2 to ["bb", "cc"]))
 ```
 
 ---
@@ -757,21 +729,17 @@ kodee: heart
 
 # Chain
 
-> `filter`, then `sortedBy`, then `map`
+> `adultNamesByAge`, youngest first: `filter`, then `sortedBy`, then `map`
 
-```kotlin
+```kotlin no-compile
 class Member(val name: String, val age: Int)
 
-fun adultNamesByAge(members: List<Member>): List<String> = TODO()
-
-fun main() {
-  val members = [
-    Member("Ada", 36),
-    Member("Linus", 17),
-    Member("Grace", 25),
-  ]
-  check(adultNamesByAge(members) == ["Grace", "Ada"])
-}
+val members = [
+  Member("Ada", 36),
+  Member("Linus", 17),
+  Member("Grace", 25),
+]
+check(adultNamesByAge(members) == ["Grace", "Ada"])
 ```
 
 ---
@@ -812,21 +780,17 @@ class: exercise-slide
 kodee: heart
 ---
 
-<div class="lesson-number">Exercise</div>
+<div class="lesson-number">Exercise 1 / 1</div>
 
 # Return a function
 
-> Return a lambda that captures `prefix`
+> `startsWith(prefix)` returns a `(String) -> Boolean` that captures `prefix`
 
-```kotlin
-fun startsWith(prefix: String): (String) -> Boolean = TODO()
-
-fun main() {
-  val isK = startsWith("K")
-  check(isK("Kotlin"))
-  check(!isK("Java"))
-  check(["Kotlin", "Java"].filter(startsWith("K")) == ["Kotlin"])
-}
+```kotlin no-compile
+val isK = startsWith("K")
+check(isK("Kotlin"))
+check(!isK("Java"))
+check(["Kotlin", "Java"].filter(startsWith("K")) == ["Kotlin"])
 ```
 
 ---
@@ -1065,10 +1029,8 @@ class Member(val name: String, val age: Int)
 
 class Team(private val members: List<Member>)
 
-fun main() {
-  val team = Team([Member("Ada", 36), Member("Linus", 17)])
-  check(team.map { it.name } == ["Ada", "Linus"])
-}
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
+check(team.map { it.name } == ["Ada", "Linus"])
 ```
 
 ---
@@ -1087,8 +1049,6 @@ class Team(private val members: List<Member>) : Iterable<Member> {
   override operator fun iterator(): Iterator<Member> = members.iterator()
 }
 
-fun main() {
-  val team: Team = [Member("Ada", 36), Member("Linus", 17)]
-  check(team.count() == 2)
-}
+val team: Team = [Member("Ada", 36), Member("Linus", 17)]
+check(team.count() == 2)
 ```

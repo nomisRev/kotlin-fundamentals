@@ -714,9 +714,7 @@ fun average(a: Int, b: Int): Int {
   return total / 2
 }
 
-fun main() {
-  check(average(4, 8) == 6)
-}
+check(average(4, 8) == 6)
 ```
 
 ---
@@ -730,13 +728,11 @@ kodee: heart
 
 > `by` should be optional and fall back to `1`
 
-```kotlin
+```kotlin no-compile
 fun increment(x: Int, by: Int): Int = x + by
 
-fun main() {
-  check(increment(1) == 2)
-  check(increment(1, by = 5) == 6)
-}
+check(increment(1) == 2)
+check(increment(1, by = 5) == 6)
 ```
 
 ---
@@ -748,15 +744,13 @@ kodee: heart
 
 # Name the argument
 
-> Make `main` compile without touching `sum`
+> `twoTerms(a, c)` calls `sum` without a `b`, so `c` needs its name
 
-```kotlin
+```kotlin no-compile
 fun sum(a: Int, b: Int = 0, c: Int): Int = a + b + c
 
-fun main() {
-  check(sum(1, 1) == 2)
-  check(sum(1, 1, 1) == 3)
-}
+check(twoTerms(1, 1) == 2)
+check(twoTerms(1, 2) == 3)
 ```
 
 ---
@@ -768,18 +762,14 @@ kodee: heart
 
 # Take any number of arguments
 
-> `IntArray` already has `max()`
+> `largest` takes any number of `Int`s, `IntArray` already has `max()`
 
-```kotlin
-fun largest(vararg numbers: Int): Int = TODO()
+```kotlin no-compile
+check(largest(3, 9, 4) == 9)
+check(largest(7) == 7)
 
-fun main() {
-  check(largest(3, 9, 4) == 9)
-  check(largest(7) == 7)
-
-  val scores = intArrayOf(12, 40, 8)
-  check(largest(*scores) == 40)
-}
+val scores = intArrayOf(12, 40, 8)
+check(largest(*scores) == 40)
 ```
 
 ---
@@ -791,15 +781,11 @@ kodee: heart
 
 # Extend `Int`
 
-> `this` is the receiver
+> `isEven` is an extension on `Int`, `this` is the receiver
 
-```kotlin
-fun Int.isEven(): Boolean = TODO()
-
-fun main() {
-  check(4.isEven())
-  check(!7.isEven())
-}
+```kotlin no-compile
+check(4.isEven())
+check(!7.isEven())
 ```
 
 ---
@@ -813,13 +799,9 @@ kodee: heart
 
 > `10 percentOf 200` should read like a sentence
 
-```kotlin
-fun Int.percentOf(total: Int): Int = TODO()
-
-fun main() {
-  check(10 percentOf 200 == 20)
-  check(50 percentOf 8 == 4)
-}
+```kotlin no-compile
+check(10 percentOf 200 == 20)
+check(50 percentOf 8 == 4)
 ```
 
 ---
@@ -831,15 +813,11 @@ kodee: heart
 
 # Implement `*`
 
-> The number is the receiver this time
+> `*` desugars to `times`, the number is the receiver this time
 
-```kotlin
-fun Int.times(word: String): String = word.repeat(this)
-
-fun main() {
-  check(3 * "Ho" == "HoHoHo")
-  check(0 * "Hi" == "")
-}
+```kotlin no-compile
+check(3 * "Ho" == "HoHoHo")
+check(0 * "Hi" == "")
 ```
 
 ---
