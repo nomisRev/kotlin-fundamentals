@@ -1636,7 +1636,7 @@ attendance()
 
 # `flow { }` emits from one coroutine only
 
-<DrawnAnnotation text="launch { emit(" :line="3" label="`emit` from a child coroutine: the collector is not thread-safe" color="red"/>
+<DrawnAnnotation text="launch { emit(" :line="3" label="`emit` from a child coroutine: the collector is not thread-safe" color="red" :geometry="{ label: { x: 0.4861, y: 0.4097 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.coroutineScope
@@ -1671,8 +1671,8 @@ magic-move
 
 # `channelFlow` emits from any coroutine
 
-<DrawnAnnotation text="channelFlow" label="A `ProducerScope`: a `CoroutineScope` with a `SendChannel`"/>
-<DrawnAnnotation text="send" :line="2" label="Through a channel to the collector, from any child" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="channelFlow" label="A `ProducerScope`: a `CoroutineScope` with a `SendChannel`" :geometry="{ label: { x: 0.5474, y: 0.6366 } }"/>
+<DrawnAnnotation text="send" :line="2" label="Through a channel to the collector, from any child" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5174, y: 0.6925 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.Flow
@@ -1696,7 +1696,7 @@ Structured concurrency
 # `callbackFlow` is `channelFlow` plus `awaitClose`
 
 <DrawnAnnotation text="ProducerScope<T>" :line="1" label="`trySend` from the SDK's thread was a channel all along"/>
-<DrawnAnnotation text="callbackFlow" label="Same builder, but the block must end in `awaitClose`" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="callbackFlow" label="Same builder, but the block must end in `awaitClose`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5881, y: 0.4406 } }"/>
 
 ```kotlin no-compile
 fun <T> channelFlow(block: suspend ProducerScope<T>.() -> Unit): Flow<T>
@@ -1797,8 +1797,8 @@ kodee: wave
 
 # A `StateFlow` always has a value
 
-<DrawnAnnotation text="MutableStateFlow(0)" label="Starts with a value, is never empty"/>
-<DrawnAnnotation text="count.value = 10" label="Read or written right away, no coroutine needed" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="MutableStateFlow(0)" label="Starts with a value, is never empty" :geometry="{ label: { x: 0.5634, y: 0.2676 } }"/>
+<DrawnAnnotation text="count.value = 10" label="Read or written right away, no coroutine needed" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5078, y: 0.3859 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -1820,9 +1820,9 @@ magic-move
 
 # Collectors see the latest value
 
-<DrawnAnnotation text="count.collect" label="Starts with the current value, never completes"/>
-<DrawnAnnotation text="delay(100.milliseconds)" label="A slow collector"/>
-<DrawnAnnotation text="count.value = 20" label="Overwritten before the collector was ready: never seen" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="count.collect" label="Starts with the current value, never completes" :geometry="{ label: { x: 0.6069, y: 0.3575 } }"/>
+<DrawnAnnotation text="delay(100.milliseconds)" />
+<DrawnAnnotation text="count.value = 20" label="Overwritten before the collector was ready: never seen" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5161, y: 0.7599 } }"/>
 
 ```kotlin
 import kotlin.time.Duration.Companion.milliseconds
@@ -1853,8 +1853,8 @@ count.value = 30
 
 # `update` changes the value atomically
 
-<DrawnAnnotation text="count.value = count.value + 1" label="Two threads read `0`, both write `1`" color="red"/>
-<DrawnAnnotation text="update" label="Retries when another thread wrote in between"/>
+<DrawnAnnotation text="count.value = count.value + 1" label="Two threads read `0`, both write `1` unsafe atomic operation" color="red" :geometry="{ label: { x: 0.6676, y: 0.3005 } }"/>
+<DrawnAnnotation text="update" label="Retries when another thread wrote in between" :geometry="{ label: { x: 0.3779, y: 0.4759 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -1871,8 +1871,8 @@ count.update { value -> value + 1 }
 
 # Expose the read-only `StateFlow`
 
-<DrawnAnnotation text="private val _count" label="The underscore convention: two properties for one value"/>
-<DrawnAnnotation text="asStateFlow()" label="Callers read and collect, only the class writes" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="_count" on="0" label="The underscore convention: two properties for one value" :geometry="{ label: { x: 0.4483, y: 0.4952 } }"/>
+<DrawnAnnotation text="asStateFlow()" on="1" label="Callers read and collect, only the class writes" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.5204, y: 0.5401 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -1898,9 +1898,9 @@ magic-move
 
 > Enabled by default since Kotlin 2.4
 
-<DrawnAnnotation text="field = MutableStateFlow(0)" label="One property: the backing field keeps the wider type"/>
-<DrawnAnnotation text="count.update" label="Inside the class, `count` is the `MutableStateFlow`"/>
-<DrawnAnnotation text="StateFlow<Int>" label="Outside, it is what the declaration says" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="StateFlow<Int>" on="0" label="Outside, it is what the declaration says" :geometry="{ label: { x: 0.6245, y: 0.3783 } }"/>
+<DrawnAnnotation text="field = MutableStateFlow(0)" on="1" label="One property: the backing field keeps the wider type" :geometry="{ label: { x: 0.6516, y: 0.4644 } }"/>
+<DrawnAnnotation text="count.update" on="1" />
 
 ```kotlin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -1945,9 +1945,9 @@ attendance.count.value = 5
 
 # `stateIn` turns a cold flow into state
 
-<DrawnAnnotation text="stateIn" label="Collects upstream in `scope`, shares the latest value"/>
-<DrawnAnnotation text="SharingStarted.WhileSubscribed()" label="Upstream runs only while someone collects"/>
-<DrawnAnnotation text="initialValue = 0" label="Until the first reading arrives" color="var(--fundamentals-blue)"/>
+<DrawnAnnotation text="stateIn" on="0" label="Collects upstream in `scope`, shares the latest value" :geometry="{ label: { x: 0.6049, y: 0.4800 } }"/>
+<DrawnAnnotation text="SharingStarted.WhileSubscribed()" on="1" label="Upstream runs only while someone collects" :geometry="{ label: { x: 0.5694, y: 0.4748 } }"/>
+<DrawnAnnotation text="initialValue = 0" on="2" label="Until the first reading arrives"  :geometry="{ label: { x: 0.5668, y: 0.4788 } }"/>
 
 ```kotlin
 import kotlinx.coroutines.CoroutineScope

@@ -13,11 +13,11 @@ defineProps({
 
 <template>
   <div class="channel-diagram" role="img" :aria-label="`${producers} ${left} coroutine(s) send into a channel of ${capacity}; ${consumers} ${right} coroutine(s) take from it`">
-    <div class="cd-side">
-      <span class="cd-title">{{ left }} {{ producers === 1 ? 'coroutine' : 'coroutines' }}</span>
-      <div class="cd-box">
-        <svg v-for="i in producers" :key="i" viewBox="0 0 120 20" class="cd-arrow cd-arrow--up"><path d="M0 10 H100 M88 2 L104 10 L88 18" /></svg>
-      </div>
+    <span class="cd-title">{{ left }} {{ producers === 1 ? 'coroutine' : 'coroutines' }}</span>
+    <span></span>
+    <span class="cd-title">{{ right }} {{ consumers === 1 ? 'coroutine' : 'coroutines' }}</span>
+    <div class="cd-box">
+      <svg v-for="i in producers" :key="i" viewBox="0 0 120 20" class="cd-arrow cd-arrow--up"><path d="M0 10 H100 M88 2 L104 10 L88 18" /></svg>
     </div>
     <div class="cd-channel">
       <div class="cd-slots">
@@ -25,26 +25,24 @@ defineProps({
       </div>
       <span class="cd-channel-label">Channel({{ capacity }})</span>
     </div>
-    <div class="cd-side">
-      <span class="cd-title">{{ right }} {{ consumers === 1 ? 'coroutine' : 'coroutines' }}</span>
-      <div class="cd-box">
-        <svg v-for="i in consumers" :key="i" viewBox="0 0 120 20" class="cd-arrow cd-arrow--down"><path d="M0 10 H100 M88 2 L104 10 L88 18" /></svg>
-      </div>
+    <div class="cd-box">
+      <svg v-for="i in consumers" :key="i" viewBox="0 0 120 20" class="cd-arrow cd-arrow--down"><path d="M0 10 H100 M88 2 L104 10 L88 18" /></svg>
     </div>
   </div>
 </template>
 
 <style scoped>
-.channel-diagram { --cd-up: var(--fundamentals-purple, #7954f6); --cd-down: var(--fundamentals-blue, #06b6d4); --cd-ink: var(--fundamentals-ink, #1f2023); display: flex; align-items: flex-end; justify-content: center; gap: 1.2rem; width: 100%; margin-top: 1rem; color: var(--cd-ink); font-family: var(--slidev-font-sans); }
-.cd-side { display: grid; gap: 0.6rem; }
+/* Two rows: the coroutine titles, then the boxes with the channel between them.
+   The channel cell holds only the slots so they centre on the boxes; the label hangs below. */
+.channel-diagram { --cd-up: var(--fundamentals-purple, #7954f6); --cd-down: var(--fundamentals-blue, #06b6d4); --cd-ink: var(--fundamentals-ink, #1f2023); display: grid; grid-template-columns: auto auto auto; align-items: center; justify-content: center; gap: 0.6rem 1.2rem; width: 100%; margin-top: 1rem; color: var(--cd-ink); font-family: var(--slidev-font-sans); }
 .cd-title { font-size: 1.4rem; font-weight: 700; }
 .cd-box { display: grid; gap: 0.7rem; padding: 1.2rem 2.4rem; border: 3px dashed var(--cd-ink); border-radius: 1.4rem; }
 .cd-arrow { width: 13rem; height: 1.6rem; fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .cd-arrow--up { stroke: var(--cd-up); }
 .cd-arrow--down { stroke: var(--cd-down); }
-.cd-channel { display: grid; justify-items: center; gap: 0.5rem; }
+.cd-channel { position: relative; display: grid; justify-items: center; }
 .cd-slots { display: grid; width: 5.4rem; border: 3px dashed var(--cd-ink); border-radius: 1rem; overflow: hidden; }
 .cd-slot { height: 2.3rem; }
 .cd-slot + .cd-slot { border-top: 3px solid var(--cd-ink); }
-.cd-channel-label { font-family: var(--slidev-font-mono); font-size: 1.3rem; font-weight: 700; }
+.cd-channel-label { position: absolute; top: calc(100% + 0.5rem); white-space: nowrap; font-family: var(--slidev-font-mono); font-size: 1.3rem; font-weight: 700; }
 </style>
