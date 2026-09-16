@@ -2,11 +2,15 @@ package closedtypes
 
 import kotlin.math.PI
 
-data class Version(val major: Int, val minor: Int) {
+@ConsistentCopyVisibility
+data class Version private constructor(val major: Int, val minor: Int) {
   companion object {
-    fun parse(text: String): Version {
+    fun parse(text: String): Version? {
       val parts = text.split(".")
-      return Version(parts[0].toInt(), parts[1].toInt())
+      if (parts.size != 2) return null
+      val major = parts[0].toIntOrNull() ?: return null
+      val minor = parts[1].toIntOrNull() ?: return null
+      return Version(major, minor)
     }
   }
 }

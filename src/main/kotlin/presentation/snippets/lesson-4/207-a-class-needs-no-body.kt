@@ -5,6 +5,6 @@ package presentation.snippets.lesson4.slide207
 
 import presentation.support.*
 
-class Person
-
-val person = Person()
+class Person constructor() {
+    /** **/
+}

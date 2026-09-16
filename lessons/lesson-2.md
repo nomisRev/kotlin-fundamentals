@@ -698,6 +698,47 @@ true
 </style>
 
 ---
+
+# Declarations are public by default
+
+<DrawnAnnotation text="fun String.shout()" label="No modifier is `public`" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.48, y: 0.243 } }"/>
+<DrawnAnnotation text="private fun" label="`private` at top level means this file" :geometry="{ label: { x: 0.36, y: 0.337 } }"/>
+
+```kotlin
+fun String.shout(): String = normalized().uppercase() + "!"
+
+private fun String.normalized(): String = trim().replace("  ", " ")
+
+println("  hello   world ".shout())
+```
+```console
+HELLO WORLD!
+```
+
+---
+magic-move
+---
+
+# Declarations are public by default
+
+<DrawnAnnotation text="// Main.kt" label="Another file in the same module" :geometry="{ label: { x: 0.36, y: 0.478 } }"/>
+<InlineCompilerError text="normalized()" :line="9" message="Cannot access 'normalized': it is private in file">
+
+```kotlin
+// Strings.kt
+fun String.shout(): String = normalized().uppercase() + "!"
+
+private fun String.normalized(): String = trim().replace("  ", " ")
+
+
+// Main.kt
+println("  hello   world ".shout())
+println("  hello   world ".normalized())
+```
+
+</InlineCompilerError>
+
+---
 class: exercise-slide
 kodee: heart
 ---

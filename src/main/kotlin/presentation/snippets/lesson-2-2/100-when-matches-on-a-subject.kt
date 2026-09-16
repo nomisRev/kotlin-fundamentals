@@ -9,6 +9,9 @@ fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
-    specialValue() -> println("x matches the special value")
+    3, 4 -> {
+      println("Multiline code block!")
+      println("3 or 4")
+    }
   }
 }

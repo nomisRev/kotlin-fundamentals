@@ -5,14 +5,6 @@ package presentation.snippets.lesson4.slide210
 
 import presentation.support.*
 
-class Person(name: String, age: Int) {
-  val name: String
-  var age: Int
-  
-  init {
-      this.name = name
-      this.age = age
-  }
-}
+class Person constructor()
 
-val person = Person("Olivia", 42)
+val person = Person()

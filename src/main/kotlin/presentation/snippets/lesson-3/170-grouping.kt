@@ -5,12 +5,4 @@ package presentation.snippets.lesson3.slide170
 
 import presentation.support.*
 
-fun <T, K, V> Iterable<T>.groupBy(
-    keySelector: (T) -> K,
-    valueTransform: (T) -> V
-): Map<K, List<V>> = TODO()
-
-suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"]
-      .groupBy({ it.length }) { it.encodeToByteArray() }
-}
+fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> = TODO()

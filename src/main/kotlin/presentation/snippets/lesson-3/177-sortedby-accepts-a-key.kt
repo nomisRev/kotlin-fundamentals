@@ -5,10 +5,8 @@ package presentation.snippets.lesson3.slide177
 
 import presentation.support.*
 
-fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
-    selector: (T) -> R?
-): List<T> = TODO()
+fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T> = TODO()
 
 suspend fun main() {
-    ["a", "aaa", "bb", "ab", "ccc"].sortedWith { a, b -> a.compareTo(b) }
+    ["a", "aaa", "bb", "ab", null, "ccc", null].sortedBy { it?.length }
 }

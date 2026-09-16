@@ -150,6 +150,59 @@ fun html(block: HtmlBuilder.() -> Unit): String =
 ```
 
 ---
+magic-move
+---
+
+# Only `html` builds an `HtmlBuilder`
+
+<DrawnAnnotation text="internal constructor" label="Only this module can construct it" :geometry="{ label: { x: 0.74, y: 0.196 } }"/>
+<DrawnAnnotation text="HtmlBuilder.()" :line="13" label="The type stays public, it is the receiver" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.78, y: 0.807 } }"/>
+
+```kotlin
+class HtmlBuilder internal constructor() {
+    private val buffer = StringBuilder()
+        
+    fun body(block: BodyBuilder.() -> Unit) {
+        buffer.append("<body>")
+        BodyBuilder(buffer).block()
+        buffer.append("</body>")
+    }
+    
+    override fun toString(): String = buffer.toString()
+}
+
+fun html(block: HtmlBuilder.() -> Unit): String = 
+    HtmlBuilder().apply(block).toString()
+```
+
+---
+magic-move
+---
+
+# Only `html` builds an `HtmlBuilder`
+
+<InlineCompilerError text="HtmlBuilder.() -> Unit" :line="13" message="'public' function exposes its 'internal' parameter type argument 'HtmlBuilder'">
+
+```kotlin
+internal class HtmlBuilder {
+    private val buffer = StringBuilder()
+        
+    fun body(block: BodyBuilder.() -> Unit) {
+        buffer.append("<body>")
+        BodyBuilder(buffer).block()
+        buffer.append("</body>")
+    }
+    
+    override fun toString(): String = buffer.toString()
+}
+
+fun html(block: HtmlBuilder.() -> Unit): String = 
+    HtmlBuilder().apply(block).toString()
+```
+
+</InlineCompilerError>
+
+---
 
 # Special syntax
 

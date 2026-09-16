@@ -3,9 +3,12 @@ package closedtypes
 /**
  * Exercise 1 / 3: parse in the companion.
  *
- * Give `Version` a companion object with a `parse(text: String): Version`
- * that turns `"2.4"` into `Version(2, 4)`, so that `Version.parse("2.4")`
- * reads like a static factory.
+ * Make the constructor of `Version` private and give it a companion object
+ * with a `parse(text: String): Version?` that turns `"2.4"` into a `Version`
+ * with `major = 2` and `minor = 4`, and anything else into `null`, so that
+ * `Version.parse("2.4")` reads like a static factory and is the only way to
+ * get a `Version`. Keep `data` for `==`, and add `@ConsistentCopyVisibility`
+ * so `copy()` does not reopen the door the private constructor closed.
  */
 data class Version(val major: Int, val minor: Int)
 

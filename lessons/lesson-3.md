@@ -807,6 +807,7 @@ check(["Kotlin", "Java"].filter(startsWith("K")) == ["Kotlin"])
 
 # `for` needs an `iterator()`
 
+<DrawnAnnotation text="private val members" label="`iterator()` is the API, the list is not" :geometry="{ label: { x: 0.62, y: 0.243 } }"/>
 <InlineCompilerError :line="5" text="team" message="For-loop range must have an 'iterator()' method">
 
 ```kotlin

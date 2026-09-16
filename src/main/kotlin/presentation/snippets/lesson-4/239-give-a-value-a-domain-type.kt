@@ -5,11 +5,14 @@ package presentation.snippets.lesson4.slide239
 
 import presentation.support.*
 
-suspend fun main() {
-    Employee(
-        id = EmployeeId(1),
-        departmentId =  DepartmentId(7),
-        name = Name("Simon"),
-        email = Email("simon.vergauwen@jetbrains.com")
-    )
-}
+@JvmInline
+value class EmployeeId(val value: Long)
+
+@JvmInline
+value class DepartmentId(val value: Long)
+
+@JvmInline
+value class Email(val value: String)
+
+@JvmInline
+value class Name(val value: String)

@@ -176,6 +176,40 @@ public class JavaUsage {
 ```
 
 ---
+magic-move
+---
+
+# `private set` keeps the write inside the class
+
+<DrawnAnnotation text="private set" label="Only `Person` writes it, `birthday()` is the API" :geometry="{ label: { x: 0.45, y: 0.29 } }"/>
+<DrawnAnnotation text="value.getAge();" label="From Java there is only a getter" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.6, y: 0.705 } }"/>
+
+```kotlin
+class Person(val name: String, age: Int) {
+  var age: Int = age
+    private set
+
+  fun birthday() {
+    age++
+  }
+}
+```
+
+<InlineCompilerError text="setAge(34)" message="setAge(int) has private access in Person">
+
+```java
+public class JavaUsage {
+  void example(Person value) {
+    int age = value.getAge();
+    value.birthday();
+    value.setAge(34);
+  }
+}
+```
+
+</InlineCompilerError>
+
+---
 
 # Getters and setters become properties in Kotlin
 
@@ -963,6 +997,93 @@ val zero = Vector.Zero
 ```
 
 ---
+magic-move
+---
+
+# The companion is the only door
+
+<DrawnAnnotation text="fun of(" label="Validate, then construct" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.8, y: 0.525 } }"/>
+<Warning text="private constructor" message="Private primary constructor is exposed\nvia the generated 'copy()' method of a 'data' class.">
+
+```kotlin
+data class Vector private constructor(
+    val x: Double,
+    val y: Double,
+) {
+    companion object {
+        val Zero: Vector = Vector(0.0, 0.0)
+
+        fun of(x: Double, y: Double): Vector {
+            require(x.isFinite() && y.isFinite()) { "Vector must be finite" }
+            return Vector(x, y)
+        }
+    }
+}
+
+val unit = Vector.of(1.0, 0.0)
+```
+
+</Warning>
+
+---
+magic-move
+---
+
+# The companion is the only door
+
+<DrawnAnnotation text="@ConsistentCopyVisibility" label="`copy()` takes the constructor's visibility, no back door" :geometry="{ label: { x: 0.65, y: 0.196 } }"/>
+
+```kotlin
+@ConsistentCopyVisibility
+data class Vector private constructor(
+    val x: Double,
+    val y: Double,
+) {
+    companion object {
+        val Zero: Vector = Vector(0.0, 0.0)
+
+        fun of(x: Double, y: Double): Vector {
+            require(x.isFinite() && y.isFinite()) { "Vector must be finite" }
+            return Vector(x, y)
+        }
+    }
+}
+
+val unit = Vector.of(1.0, 0.0)
+```
+
+---
+magic-move
+---
+
+# The companion is the only door
+
+<InlineCompilerError text="Vector(Double.NaN, 0.0)" message="Cannot access 'constructor': it is private in 'Vector'">
+<InlineCompilerError text="copy(x = Double.NaN)" message="Cannot access 'copy': it is private in 'Vector'">
+
+```kotlin
+@ConsistentCopyVisibility
+data class Vector private constructor(
+    val x: Double,
+    val y: Double,
+) {
+    companion object {
+        fun of(x: Double, y: Double): Vector {
+            require(x.isFinite() && y.isFinite()) { "Vector must be finite" }
+            return Vector(x, y)
+        }
+    }
+}
+
+val broken = Vector(Double.NaN, 0.0)
+
+val copied = Vector.of(1.0, 0.0).copy(x = Double.NaN)
+```
+
+</InlineCompilerError>
+</InlineCompilerError>
+
+---
 
 # Companion extensions and blocks (Not released)
 
@@ -1240,12 +1361,14 @@ kodee: heart
 
 # Parse in the companion
 
-> A `companion object` with `parse`, a static factory in Kotlin clothes
+> A `private constructor` and a `companion object` with `parse`, a static factory in Kotlin clothes.
+> `data` keeps `==`, `@ConsistentCopyVisibility` keeps `copy` private
 
 ```kotlin no-compile
 data class Version(val major: Int, val minor: Int)
 
-check(Version.parse("2.4") == Version(2, 4))
+check(Version.parse("2.4") == Version.parse("2.4"))
+check(Version.parse("banana") == null)
 ```
 
 ---
@@ -1534,6 +1657,61 @@ val person = Person("Ada", 35)
 </InlineCompilerError>
 
 ---
+magic-move
+---
+
+# `protected` is the subclass API
+
+<DrawnAnnotation text="protected abstract fun greeting" label="Only subclasses see it" :geometry="{ label: { x: 0.78, y: 0.243 } }"/>
+<DrawnAnnotation text="fun hello()" :line="4" label="The public API stays in the base class" color="var(--fundamentals-blue)" :geometry="{ label: { x: 0.48, y: 0.337 } }"/>
+
+```kotlin
+abstract class Person(val name: String, val age: Int) {
+    protected abstract fun greeting(): String
+
+    fun hello() {
+        println("${greeting()}, I am $name.")
+    }
+}
+
+class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    override fun greeting(): String = "Hi"
+}
+
+Student("s-1", "Ada", 36).hello()
+```
+```console
+Hi, I am Ada.
+```
+
+---
+magic-move
+---
+
+# `protected` is the subclass API
+
+<DrawnAnnotation text="protected" :line="2" label="Not package-visible like Java's" :geometry="{ label: { x: 0.76, y: 0.243 } }"/>
+<InlineCompilerError text=".greeting()" message="Cannot access 'greeting': it is protected in 'Person'">
+
+```kotlin
+abstract class Person(val name: String, val age: Int) {
+    protected abstract fun greeting(): String
+
+    fun hello() {
+        println("${greeting()}, I am $name.")
+    }
+}
+
+class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    override fun greeting(): String = "Hi"
+}
+
+Student("s-1", "Ada", 36).greeting()
+```
+
+</InlineCompilerError>
+
+---
 
 # Choose the closed type deliberately
 
@@ -1652,57 +1830,6 @@ true
 false
 ```
 
----
-
-# Expose the read, keep the write
-
-<DrawnAnnotation text="private set"/>
-<DrawnAnnotation text="isOpen = true" label="Only the class itself can write it" :geometry="{ label: { x: 0.3217, y: 0.5135 } }"/>
-
-```kotlin
-class Connection {
-  var isOpen: Boolean = false
-    private set
-
-  fun open() {
-    isOpen = true
-  }
-}
-```
-
----
-magic-move
----
-
-# Expose the read, keep the write
-
-<DrawnAnnotation text="connection.isOpen" label="Anyone can read it" :geometry="{ label: { x: 0.4436, y: 0.6789 }, connector: { type: 'quadratic', start: { x: 0.3372, y: 0.6939 }, control: { x: 0.3481, y: 0.7020 }, end: { x: 0.3600, y: 0.7008 } } }"/>
-<InlineCompilerError occurrence="5" text="isOpen" message="Cannot access 'isOpen': it is private">
-
-```kotlin
-class Connection {
-  var isOpen: Boolean = false
-    private set
-
-  fun open() {
-    isOpen = true
-  }
-}
-
-val connection = Connection()
-println(connection.isOpen)
-connection.open()
-println(connection.isOpen)
-connection.isOpen = false
-```
-```console
-false
-true
-```
-
-</InlineCompilerError>
-
----
 ---
 class: exercise-slide
 kodee: heart

@@ -97,10 +97,9 @@ The complete reference the slides compile against is
 
 ```bash
 npm run snippets:check
-./gradlew compileLesson5Kotlin
+./gradlew build
 ```
 
-The lesson-specific tasks compile independently of other lesson snippets.
 The slide snippets compile against Ktor's actual server-core API; the context
 parameter examples do not require starting a server. Kotlin 2.4 supports context
 parameters without the old experimental context-parameter flag. Explicit named
@@ -129,9 +128,9 @@ cd exercises
 ./kotlin test --include-module coroutines
 ```
 
-The lesson's fences compile on their own, Java SDK included:
+The lesson's fences compile with the rest of the deck, Java SDK included:
 
 ```bash
 npm run snippets:check
-./gradlew compileLesson6Kotlin compileLesson6Java
+./gradlew build
 ```
