@@ -5,8 +5,10 @@ package presentation.snippets.lesson3.slide162
 
 import presentation.support.*
 
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
 
 suspend fun main() {
  [1, 2, 3].filter { it % 2 == 0 }
+
+ [1, 2, 3].filterNot { it % 2 == 0 }
 }

@@ -5,9 +5,6 @@ package presentation.snippets.lesson4.slide212
 
 import presentation.support.*
 
-class Person(name: String, age: Int) {
-  val name: String = name
-  var age: Int = age
-}
+class Person(val name: String, var age: Int)
 
 val person = Person("Olivia", 42)

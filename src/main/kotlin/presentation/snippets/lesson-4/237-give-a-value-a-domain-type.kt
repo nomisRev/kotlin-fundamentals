@@ -5,14 +5,9 @@ package presentation.snippets.lesson4.slide237
 
 import presentation.support.*
 
-@JvmInline
-value class EmployeeId(val value: Long)
-
-@JvmInline
-value class DepartmentId(val value: Long)
-
-@JvmInline
-value class Email(val value: String)
-
-@JvmInline
-value class Name(val value: String)
+data class Employee(
+  val id: EmployeeId,
+  val departmentId: DepartmentId,
+  val name: Name,
+  val email: Email
+)

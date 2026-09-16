@@ -113,7 +113,7 @@ way back to `computeScore`, the function that actually made the value must-use.
 
 # Context-sensitive resolution drops the qualifier
 
-> `-Xcontext-sensitive-resolution` · see Lesson 3, "Context-sensitive resolution drops the qualifier"
+> `-Xcontext-sensitive-resolution` · see Lesson 4, "Context-sensitive resolution drops the qualifier"
 
 <DrawnAnnotation text="CONNECTION ->" label="`Problem.` is implied by the subject"/>
 
@@ -216,7 +216,7 @@ fun demo() {
 
 # Destructuring matches by name, not position
 
-> `-Xname-based-destructuring=complete` · see Lesson 3, "Name-based destructuring is safe"
+> `-Xname-based-destructuring=complete` · see Lesson 4, "Name-based destructuring is safe"
 
 <DrawnAnnotation text="(y, x)" label="Declared out of order, still binds by property name"/>
 
@@ -237,7 +237,7 @@ magic-move
 
 # Destructuring matches by name, not position
 
-> `-Xname-based-destructuring=complete` · see Lesson 3, "Name-based destructuring is safe"
+> `-Xname-based-destructuring=complete` · see Lesson 4, "Name-based destructuring is safe"
 
 <DrawnAnnotation text="[a, b]" label="Square brackets stay positional, via `componentN()`"/>
 

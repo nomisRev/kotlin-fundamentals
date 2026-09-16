@@ -18,5 +18,3 @@ settings:
       - "-Xreturn-value-checker=full"
       - "-Xcontext-sensitive-resolution"
       - "-Xname-based-destructuring=complete"
-      # Lesson 6: `val count: StateFlow<Int>` with `field = MutableStateFlow(0)`.
-      - "-Xexplicit-backing-fields"

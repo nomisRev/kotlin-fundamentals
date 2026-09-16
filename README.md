@@ -115,7 +115,7 @@ Reactive Streams `Publisher`), one scope composing all three, Flow as a pull-bas
 stream (`components/FlowTimeline.vue`), channels (`Channel`, `produce`, the
 suspending `for`, `buffer` and `channelFlow`, with `components/ChannelDiagram.vue`)
 and `StateFlow`, whose read-only view uses an explicit backing field
-(`-Xexplicit-backing-fields`, enabled in `build.gradle.kts` and `exercises/module.yaml`).
+(enabled by default since Kotlin 2.4).
 The lesson uses KotlinX Coroutines only. The Java SDK the slides wrap is
 `src/main/java/presentation/support/ConferenceSdk.java`; the Kotlin helpers are in
 `src/main/kotlin/presentation/support/Conference.kt`.

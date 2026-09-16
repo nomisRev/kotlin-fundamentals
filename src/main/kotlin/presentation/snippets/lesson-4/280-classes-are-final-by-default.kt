@@ -5,6 +5,6 @@ package presentation.snippets.lesson4.slide280
 
 import presentation.support.*
 
-open class Person
+open class Person(val name: String, val age: Int)
 
-class Student : Person()
+class Student(val id: String, name: String, age: Int) : Person(name, age)

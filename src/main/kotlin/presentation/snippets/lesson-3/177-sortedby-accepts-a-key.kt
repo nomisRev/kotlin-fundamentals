@@ -7,8 +7,8 @@ import presentation.support.*
 
 fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
     selector: (T) -> R?
-): List<T>
+): List<T> = TODO()
 
 suspend fun main() {
-    ["a", "aaa", "bb", "ab", null, "ccc", null].sortedByDescending { it?.length }
+    ["a", "aaa", "bb", "ab", "ccc"].sortedWith { a, b -> a.compareTo(b) }
 }

@@ -17,3 +17,8 @@ suspend fun ConferenceSdk.speaker(id: Long): Speaker =
         continuation.resumeWithException(error)
     })
   }
+
+suspend fun main() {
+  val speaker = sdk.speaker(1)
+  println(speaker.name)
+}

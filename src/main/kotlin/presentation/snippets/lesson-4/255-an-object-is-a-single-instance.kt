@@ -8,3 +8,7 @@ import presentation.support.*
 object Environment {
   var current = "production"
 }
+
+suspend fun main() {
+  println(Environment.current) // production
+}

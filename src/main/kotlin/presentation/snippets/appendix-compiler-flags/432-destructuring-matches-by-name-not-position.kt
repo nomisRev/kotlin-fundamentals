@@ -9,7 +9,7 @@ data class Point(val x: Int, val y: Int)
 
 fun demo() {
   val point = Point(x = 1, y = 2)
-  val (y, x) = point
+  val [a, b] = point
 
-  println("y=$y x=$x") // y=2 x=1
+  println("a=$a b=$b") // a=1 b=2
 }

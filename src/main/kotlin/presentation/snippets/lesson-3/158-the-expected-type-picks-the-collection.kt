@@ -11,12 +11,10 @@ val set: Set<Int> = [1, 2, 3, 3]
 
 val mutable: MutableList<Int> = [1, 2, 3]
 
+val iterable: Iterable<Int> = [1, 2, 3]
+
+fun sum(numbers: Iterable<Int>): Int = numbers.sum()
+
 suspend fun main() {
-    mutable.add(4)
-
-    println(numbers)
-
-    println(set)
-
-    println(mutable)
+    sum([1, 2, 3])
 }

@@ -638,6 +638,7 @@ whose `delay` throws. Click 3: the children have finished cancelling. Click 4: t
 <DrawnAnnotation text="compute()" label="No suspension point: `cancel()` is never observed, the loop runs forever" color="red"/>
 
 ```kotlin
+import kotlin.random.Random
 import kotlinx.coroutines.launch
 
 fun compute() = println(Random.nextInt())
@@ -660,6 +661,7 @@ magic-move
 <DrawnAnnotation text="isActive" label="`false` once the coroutine is cancelled"/>
 
 ```kotlin
+import kotlin.random.Random
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
@@ -683,6 +685,7 @@ magic-move
 <DrawnAnnotation text="ensureActive()" label="Throws `CancellationException` instead, like every suspension point"/>
 
 ```kotlin
+import kotlin.random.Random
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
@@ -1910,7 +1913,7 @@ magic-move
 
 # An explicit backing field replaces the underscore
 
-> `-Xexplicit-backing-fields`
+> Enabled by default since Kotlin 2.4
 
 <DrawnAnnotation text="field = MutableStateFlow(0)" label="One property: the backing field keeps the wider type"/>
 <DrawnAnnotation text="count.update" label="Inside the class, `count` is the `MutableStateFlow`"/>

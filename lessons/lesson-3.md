@@ -60,24 +60,14 @@ val lazyOne: () -> Int = { 1 }
 
 ---
 
-# Lambda parameter names
-
-<DrawnAnnotation text="message: String" label="Lambda parameters may _suggest_ names\nThese can be used by LSP or IDE"/>
-
-```kotlin
-val print: (message: String) -> Unit = { 
-    println(message)
-}
-```
-
----
-
 # Null result vs nullable lambda
 
 <DrawnAnnotation text="Unit?" label="Nullable return type" :geometry="{ label: { x: 0.3866, y: 0.2625 } }"/>
 <DrawnAnnotation text="(() -> Unit)?" color="var(--code-window-amper-color)" label="Nullable lambda" />
 
 ```kotlin
+import kotlin.random.Random
+
 val nullable: () -> Unit? = { if (Random.nextBoolean()) Unit else null }
 
 
@@ -226,7 +216,7 @@ check(len("Kotlin") == 6)
 > A higher-order function is a function that takes or returns other functions as arguments or values
 
 ```kotlin
-fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
+fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 ```
 
 ---
@@ -238,7 +228,7 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 
 
 ```kotlin
-fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
+fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 
 [1, 2, 3].map({ input -> input * 2 })
 ```
@@ -251,7 +241,7 @@ fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
 <DrawnAnnotation text=" }" label="Parentheses can be omitted"/>
 
 ```kotlin
-fun <A> Iterable<A>.map(transform: (A) -> B): List<B>
+fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
 
 [1, 2, 3].map { it * 2 }
 ```
@@ -273,6 +263,8 @@ class: collection-hierarchy-slide
 ---
 
 # A collection literal is a `List` by default
+
+> `-Xcollection-literals` · experimental in Kotlin 2.4
 
 <DrawnAnnotation text="[1, 2, 3]" label="No expected type, so the literal is a `List<Int>`" />
 
@@ -337,10 +329,10 @@ sum([1, 2, 3])
 <DrawnAnnotation text="-> Iterable<B>" label="`map` A to _many_ B's and _flatten_ nested lists" color="var(--code-window-amper-color)"/>
 
 ```kotlin
-fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
+fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
  
  
-fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
+fun <A, B> Iterable<A>.flatMap(transform: (A) -> Iterable<B>): List<B> = TODO()
 ```
 
 ---
@@ -350,8 +342,8 @@ magic-move
 # FlatMap vs Map
 
 ```kotlin
-fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
-fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
+fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
+fun <A, B> Iterable<A>.flatMap(transform: (A) -> Iterable<B>): List<B> = TODO()
 
 [1, 2, 3].map { it + 1 }
 [1, 2, 3].map { [it, it+1] }
@@ -370,7 +362,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 <DrawnAnnotation text="-> Boolean" label="If `true` it's allowed to _pass through_ the filter"  :geometry="{ label: { x: 0.6872, y: 0.2790 } }"/>
 
 ```kotlin
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
  
 [1, 2, 3].filter { it % 2 == 0 }
 ```
@@ -385,7 +377,7 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 <DrawnAnnotation text="filterNot" label="filterNot flips the predicate"  :geometry="{ label: { x: 0.5932, y: 0.3410 } }"/>
 
 ```kotlin
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
  
 [1, 2, 3].filter { it % 2 == 0 }
 [1, 2, 3].filterNot { it % 2 == 0 }
@@ -402,8 +394,8 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 <DrawnAnnotation text="else null" label="Our transformations may return nullable values" />
 
 ```kotlin
- fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
  
 [1, 2, 3].map { if (it % 2 == 0) it else null }
 ```
@@ -419,8 +411,8 @@ fun <A> Iterable<A>.flatMap(tranform: (A) -> Iterable<B>): List<B>
 <DrawnAnnotation text="it != null" label="We can filter out values, but lose the smart casting in the result" />
 
 ```kotlin
- fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
 
 val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
     .filter { it != null }
@@ -437,7 +429,7 @@ val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
 <DrawnAnnotation text="mapNotNull" label="Preserve the non-null type" occurrence="2" />
 
 ```kotlin
-fun <A> Iterable<A>.mapNotNull(tranform: (A) -> B?): List<B>
+fun <A, B> Iterable<A>.mapNotNull(transform: (A) -> B?): List<B> = TODO()
  
 val result: List<Int> = [1, 2, 3].mapNotNull { if (it % 2 == 0) it else null }
 ```
@@ -451,7 +443,7 @@ val result: List<Int> = [1, 2, 3].mapNotNull { if (it % 2 == 0) it else null }
 
 <DrawnAnnotation text="filterIsInstance" label="Filter by type" occurrence="2"  :geometry="{ label: { x: 0.5438, y: 0.4888 } }"/>
 
-```kotlin
+```kotlin no-compile
 fun <reified R> Iterable<*>.filterIsInstance(): List<R>
 
 val numbers: List<Number> = [1, 2, 3.0, 4.0f, 0x10]
@@ -473,11 +465,11 @@ println(ints)
 <DrawnAnnotation text="reified" label="Inlines a _reified_ function call with `KClass<R>` as parameter"  :geometry="{ label: { x: 0.3541, y: 0.2750 } }"/>
 
 ```kotlin
-inline fun <reified R> Iterable<*>.filterIsInstance(): List<R>
+inline fun <reified R> Iterable<*>.filterIsInstance(): List<R> = TODO()
 ```
 <div style="height: 4rem"></div>
 
-```java
+```java no-compile
 public <R> List<R> filterIsInstance(Iterable<R> values, Class<R> clazz)
 ```
 
@@ -488,7 +480,7 @@ public <R> List<R> filterIsInstance(Iterable<R> values, Class<R> clazz)
 <DrawnAnnotation text="List<T>" label="Aggregate values for a given key"  :geometry="{ label: { x: 0.7857, y: 0.2766 } }"/>
 
 ```kotlin
-fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
+fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> = TODO()
 ```
 
 ---
@@ -496,7 +488,7 @@ fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
 # Grouping
 
 ```kotlin
-fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
+fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"].groupBy { it.length }
 ```
@@ -512,7 +504,7 @@ fun <T, K> Iterable<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>>
 fun <T, K, V> Iterable<T>.groupBy(
     keySelector: (T) -> K,
     valueTransform: (T) -> V
-): Map<K, List<V>>
+): Map<K, List<V>> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"]
   .groupBy({ it.length }) { it.encodeToByteArray() }
@@ -528,7 +520,7 @@ fun <T, K, V> Iterable<T>.groupBy(
 <DrawnAnnotation text="T" occurrence="4" label="Only keeps last seen value" />
 
 ```kotlin
-fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
+fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T> = TODO()
 ```
 
 ---
@@ -536,7 +528,7 @@ fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
 # Associate
 
 ```kotlin
-fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
+fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"].associateBy { it.length }
 ```
@@ -549,7 +541,7 @@ fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
 # Associate
 
 ```kotlin
-fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
+fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"]
     .associate { it.length to it.encodeToByteArray() }
@@ -563,7 +555,7 @@ fun <T, K> Iterable<T>.associateBy(keySelector: (T) -> K): Map<K, T>
 # sortedBy accepts a key
 
 ```kotlin
-fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T>
+fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"].sortedBy { it.length }
 ```
@@ -576,7 +568,7 @@ fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T>
 # sortedBy accepts a key
 
 ```kotlin
-fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T>
+fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T> = TODO()
 
 ["a", "aaa", "bb", "ab", null, "ccc", null].sortedBy { it?.length }
 ```
@@ -591,7 +583,7 @@ fun <T, R : Comparable<R>> Iterable<T>.sortedBy(selector: (T) -> R?): List<T>
 ```kotlin
 fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
     selector: (T) -> R?
-): List<T>
+): List<T> = TODO()
 
 ["a", "aaa", "bb", "ab", null, "ccc", null].sortedByDescending { it?.length }
 ```
@@ -606,7 +598,7 @@ fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
 ```kotlin
 fun <T, R : Comparable<R>> Iterable<T>.sortedByDescending(
     selector: (T) -> R?
-): List<T>
+): List<T> = TODO()
 
 ["a", "aaa", "bb", "ab", "ccc"].sortedWith { a, b -> a.compareTo(b) }
 ```
@@ -764,7 +756,7 @@ val selected = members.filter(overThirty)
 
 ```kotlin
 var minimumAge = 18
-val eligible: (Int) -> Boolean = { it.age >= minimumAge }
+val eligible: (Int) -> Boolean = { it >= minimumAge }
 
 eligible(28)
 minimumAge = 30
@@ -909,12 +901,14 @@ Linus
 
 # `Iterable` unlocks the collections API
 
-<InlineCompilerError :line="5" text="filter" message="Unresolved reference 'filter' on receiver of type 'Team'">
+<InlineCompilerError :line="7" text="filter" message="Unresolved reference 'filter' on receiver of type 'Team'">
 
 ```kotlin
 class Team(private val members: List<Member>) {
   operator fun iterator(): Iterator<Member> = members.iterator()
 }
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
 
 team.filter { it.age >= 18 }
     .map { it.name }
@@ -935,6 +929,8 @@ magic-move
 class Team(private val members: List<Member>) : Iterable<Member> {
   override operator fun iterator(): Iterator<Member> = members.iterator()
 }
+
+val team = Team([Member("Ada", 36), Member("Linus", 17)])
 
 team.filter { it.age >= 18 }
     .map { it.name }

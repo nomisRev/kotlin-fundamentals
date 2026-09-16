@@ -7,4 +7,8 @@ import presentation.support.*
 
 class TextBuffer {
   var text = ""
+    set(value) {
+      println("Appending text: $value")
+      field += value
+    }
 }

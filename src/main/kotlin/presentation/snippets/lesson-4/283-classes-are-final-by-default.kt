@@ -11,8 +11,8 @@ open class Person(val name: String, val age: Int) {
     }
 }
 
-class Student(val id: String, name: String, age: Int) : Person(name, age) {
-    override fun hello() {
+open class Student(val id: String, name: String, age: Int) : Person(name, age) {
+    final override fun hello() {
         println("Hello, I am $name. I am a student.")
     }
 }

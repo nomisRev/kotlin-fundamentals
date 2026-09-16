@@ -8,7 +8,9 @@ import presentation.support.*
 class Person(name: String, val age: Int) {
   val name = name.lowercase()
   
-  constructor(member: Member): this(member.name, member.age)
+  constructor(member: Member): this(member.name, member.age) {
+      require(member.name.isNotBlank()) { "A person needs a name" }
+  }
 
   init {
     require(age >= 0) { "Age cannot be negative" }

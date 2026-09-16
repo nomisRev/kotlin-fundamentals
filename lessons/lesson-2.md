@@ -321,7 +321,7 @@ val unit: Unit = helloWorld()
 <DrawnAnnotation text=" {" />
 <DrawnAnnotation text="}" label="Function with _block body_"  :geometry="{ label: { x: 0.2760, y: 0.3319 } }"/>
 
-```kotlin
+```kotlin no-compile
 fun sum(a: Int, b: Int): Int {
 }
 ```
@@ -624,7 +624,7 @@ magic-move
 ```kotlin
 fun sum(a: Int, b: Int): Int = a + b
 
-operator fun Int.plus(b: Int): Int = this + b
+infix operator fun Int.plus(b: Int): Int = this + b
 
 sum(1, 2)
 1 plus 2

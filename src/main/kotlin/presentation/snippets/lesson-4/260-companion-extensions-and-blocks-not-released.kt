@@ -4,6 +4,7 @@
 package presentation.snippets.lesson4.slide260
 
 import presentation.support.*
+import java.util.UUID
 
 data class Vector(val x: Double, val y: Double) {
     companion {
@@ -13,3 +14,6 @@ data class Vector(val x: Double, val y: Double) {
 
 companion val Vector.UnitX
   get() = Vector(1.0, 0.0)
+
+companion val UUID.Empty
+  get() = UUID(0L, 0L)

@@ -6,3 +6,5 @@ package presentation.snippets.lesson3.slide145
 import presentation.support.*
 
 val len: String.() -> Int = String::length
+
+val len2: (String) -> Int = len

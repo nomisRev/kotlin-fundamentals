@@ -7,10 +7,14 @@ import presentation.support.*
 
 @MustUseReturnValues
 class Calculator {
-  fun calculate(): Int = 42
+  private var total = 0
+  fun calculate(): Int = total
+
+  @IgnorableReturnValue
+  fun add(value: Int): Calculator = apply { total += value }
 }
 
 fun example(calculator: Calculator) {
-  calculator.calculate()
+  calculator.add(1)
   val result = calculator.calculate()
 }

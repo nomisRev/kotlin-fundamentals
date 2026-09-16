@@ -5,6 +5,6 @@ package presentation.snippets.lesson4.slide209
 
 import presentation.support.*
 
-class Person constructor()
+class Person @MyAnnotation internal constructor()
 
 val person = Person()

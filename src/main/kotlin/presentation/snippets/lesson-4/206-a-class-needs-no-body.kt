@@ -5,6 +5,4 @@ package presentation.snippets.lesson4.slide206
 
 import presentation.support.*
 
-class Person constructor() {
-    /** **/
-}
+class Person

@@ -9,9 +9,11 @@ enum class Direction { NORTH, SOUTH, EAST, WEST }
 
 val direction = Direction.NORTH
 
-fun arrow(direction: Direction) = when (direction) {
-  Direction.NORTH -> "↑"
-  Direction.SOUTH -> "↓"
-  Direction.EAST -> "→"
-  Direction.WEST -> "←"
+fun arrow(direction: Direction) {
+  if (direction == NORTH || direction == SOUTH) return
+  
+  when (direction) {
+    Direction.EAST -> "→"
+    Direction.WEST -> "←"
+  }
 }

@@ -8,3 +8,9 @@ import presentation.support.*
 val len: String.() -> Int = String::length
 
 val len2: (String) -> Int = len
+
+suspend fun main() {
+    "test".len()
+
+    len2("test")
+}

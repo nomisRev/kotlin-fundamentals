@@ -6,8 +6,9 @@ package presentation.snippets.lesson4.slide222
 import presentation.support.*
 
 class Outer {
+    val name = "Outer"
 
-  class Nested
+  inner class Nested {
+      val fullName = "$name.Inner"
+  }
 }
-
-val nested = Outer.Nested()

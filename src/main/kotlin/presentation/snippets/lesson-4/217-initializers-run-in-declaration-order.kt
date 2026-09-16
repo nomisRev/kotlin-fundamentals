@@ -7,7 +7,9 @@ import presentation.support.*
 
 class Person(name: String, val age: Int) {
   val name = name.lowercase()
-    
+  
+  constructor(member: Member): this(member.name, member.age)
+
   init {
     require(age >= 0) { "Age cannot be negative" }
   }

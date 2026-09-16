@@ -12,3 +12,7 @@ class Outer {
       val fullName = "$name.Inner"
   }
 }
+
+val outerClass = Outer()
+
+val innerClass = outerClass.Nested()

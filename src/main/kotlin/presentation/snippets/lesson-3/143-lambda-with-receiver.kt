@@ -5,4 +5,4 @@ package presentation.snippets.lesson3.slide143
 
 import presentation.support.*
 
-val extension: String.() -> Int = { this.length }
+val extension: String.() -> Int = { length }

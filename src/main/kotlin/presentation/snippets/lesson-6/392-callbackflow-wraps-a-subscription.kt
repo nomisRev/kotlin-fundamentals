@@ -7,9 +7,16 @@ import presentation.support.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.take
 
 fun ConferenceSdk.scheduleChanges(): Flow<Talk> =
   callbackFlow {
     val subscription = onScheduleChange { talk -> trySend(talk) }
     awaitClose { subscription.unsubscribe() }
   }
+
+suspend fun main() {
+  sdk.scheduleChanges()
+    .take(2)
+    .collect { talk -> println(talk.title) }
+}

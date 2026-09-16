@@ -4,14 +4,17 @@
 package presentation.snippets.lesson4.slide284
 
 import presentation.support.*
+import kotlin.uuid.Uuid
 
 open class Person(val name: String, val age: Int) {
+    open val id = Uuid.random().toString()
+    
     open fun hello() { 
         println("Hello, I am $name.")
     }
 }
 
-open class Student(val id: String, name: String, age: Int) : Person(name, age) {
+open class Student(override val id: String, name: String, age: Int) : Person(name, age) {
     final override fun hello() {
         println("Hello, I am $name. I am a student.")
     }

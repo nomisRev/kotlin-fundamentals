@@ -25,7 +25,6 @@ kotlin {
   // - collection literals (`[1, 2, 3]`), lesson 2
   // - the unused return value checker (`@MustUseReturnValues`/`@IgnorableReturnValue`), lesson 2
   // - context-sensitive resolution (bare enum entries in a `when`), lesson 3
-  // - explicit backing fields (`val count: StateFlow<Int>` with `field = MutableStateFlow(0)`), lesson 6
   compilerOptions.freeCompilerArgs.addAll(
     "-Xcollection-literals",
     "-Xreturn-value-checker=full",
@@ -37,7 +36,6 @@ kotlin {
     "-Xlocal-type-aliases",
     "-Xname-based-destructuring=complete",
     "-Xallow-returns-result-of",
-    "-Xexplicit-backing-fields",
   )
 }
 
@@ -61,6 +59,7 @@ val lesson5 = sourceSets.create("lesson5")
 kotlin.sourceSets.named("lesson5") {
   kotlin.srcDir("src/main/kotlin")
   kotlin.include("presentation/support/Agenda*.kt")
+  kotlin.include("presentation/support/Html.kt")
   kotlin.include("presentation/snippets/lesson-5/**")
 }
 configurations[lesson5.implementationConfigurationName].extendsFrom(configurations.implementation.get())

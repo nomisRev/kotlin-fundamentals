@@ -4,10 +4,14 @@
 package presentation.snippets.lesson6.slide360
 
 import presentation.support.*
+import kotlin.random.Random
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+fun compute() = println(Random.nextInt())
+
 val job = scope.launch {
-  while (true) {
+  while (isActive) {
     compute()
   }
 }

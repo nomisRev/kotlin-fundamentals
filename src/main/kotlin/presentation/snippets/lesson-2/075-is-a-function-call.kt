@@ -7,7 +7,7 @@ import presentation.support.*
 
 fun sum(a: Int, b: Int): Int = a + b
 
-operator fun Int.plus(b: Int): Int = this + b
+infix operator fun Int.plus(b: Int): Int = this + b
 
 suspend fun main() {
     sum(1, 2)

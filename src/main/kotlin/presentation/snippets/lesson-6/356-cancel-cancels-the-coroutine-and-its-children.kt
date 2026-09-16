@@ -4,7 +4,9 @@
 package presentation.snippets.lesson6.slide356
 
 import presentation.support.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 val job = scope.launch {
+  val speaker = async { fetchSpeaker() }
 }

@@ -73,7 +73,7 @@ fun max(first: Int, second: Int): Int =
 ```kotlin
 val value = if (predicate()) "truthy" else "falsey"
 ```
-```java
+```java no-compile
 String value = predicate() ? "truthy" : "falsey";
 ```
 

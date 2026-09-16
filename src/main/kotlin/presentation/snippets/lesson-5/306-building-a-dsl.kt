@@ -13,6 +13,8 @@ class HtmlBuilder {
         BodyBuilder(buffer).block()
         buffer.append("</body>")
     }
+    
+    override fun toString(): String = buffer.toString()
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()

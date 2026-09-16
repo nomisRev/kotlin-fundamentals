@@ -17,7 +17,10 @@ kodee: wave
 # HTML
 
 ```kotlin
-html {
+import kotlinx.html.*
+import kotlinx.html.stream.createHTML
+
+createHTML().html {
     body {
         div {
             a("https://kotlinlang.org") {
@@ -35,7 +38,7 @@ html {
 
 ```kotlin
 class HtmlBuilder {
-    fun body(block: BodyBuilder.() -> Unit) = TODO()       
+    fun body(block: BodyBuilder.() -> Unit): Unit = TODO()       
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()
@@ -53,7 +56,7 @@ magic-move
 
 ```kotlin
 class HtmlBuilder {
-    fun body(block: BodyBuilder.() -> Unit) = TODO()       
+    fun body(block: BodyBuilder.() -> Unit): Unit = TODO()       
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()
@@ -75,7 +78,7 @@ magic-move
 class HtmlBuilder {
     private val buffer = StringBuilder()
     
-    fun body(block: BodyBuilder.() -> Unit) = TODO()
+    fun body(block: BodyBuilder.() -> Unit): Unit = TODO()
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()
@@ -117,7 +120,7 @@ class HtmlBuilder {
         buffer.append("</body>")
     }
     
-    fun toString(): String = buffer.toString()
+    override fun toString(): String = buffer.toString()
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()
@@ -139,7 +142,7 @@ class HtmlBuilder {
         buffer.append("</body>")
     }
     
-    fun toString(): String = buffer.toString()
+    override fun toString(): String = buffer.toString()
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = 
@@ -150,7 +153,7 @@ fun html(block: HtmlBuilder.() -> Unit): String =
 
 # Special syntax
 
-```kotlin
+```kotlin no-compile
 a("https://kotlinlang.org") {
     target = ATarget.blank
     +"Main site"
@@ -161,7 +164,7 @@ a("https://kotlinlang.org") {
 
 # Special syntax
 
-```kotlin
+```kotlin no-compile
 class A {
     var target: ATarget
     operator fun String.unaryPlus(): Unit

@@ -11,3 +11,13 @@ class TextBuffer {
   val isEmpty: Boolean
     get() = text.isEmpty()
 }
+
+val buffer = TextBuffer()
+
+suspend fun main() {
+  println(buffer.isEmpty)
+
+  buffer.text = "Hello"
+
+  println(buffer.isEmpty)
+}

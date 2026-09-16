@@ -4,8 +4,5 @@
 package presentation.snippets.lesson22.slide92
 
 import presentation.support.*
-import kotlin.random.Random
 
 val value = if (predicate()) "truthy" else "falsey"
-
-fun compute() = println(Random.nextInt())

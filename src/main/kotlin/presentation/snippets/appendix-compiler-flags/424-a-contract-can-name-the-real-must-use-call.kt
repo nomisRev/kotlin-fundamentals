@@ -4,13 +4,17 @@
 package presentation.snippets.appendixcompilerflags.slide424
 
 import presentation.support.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 
 @MustUseReturnValues
 class Scoreboard {
   fun computeScore(): Int = 42
 }
 
+@OptIn(ExperimentalContracts::class)
 fun <T, R> T.myLet(block: (T) -> R): R {
+  contract { returnsResultOf(block) }
   println("running…")
   return block(this)
 }

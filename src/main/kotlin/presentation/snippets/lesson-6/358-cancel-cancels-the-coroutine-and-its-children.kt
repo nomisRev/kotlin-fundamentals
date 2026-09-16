@@ -10,4 +10,10 @@ import kotlinx.coroutines.launch
 val job = scope.launch {
   val speaker = async { fetchSpeaker() }
   val talks = async { fetchTalks() }
+  println(speaker.await().name)
+  println(talks.await().size)
+}
+
+suspend fun main() {
+  job.cancel()
 }

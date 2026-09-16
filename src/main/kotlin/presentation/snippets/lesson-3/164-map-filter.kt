@@ -5,9 +5,8 @@ package presentation.snippets.lesson3.slide164
 
 import presentation.support.*
 
- fun <A> Iterable<A>.map(tranform: (A) -> B): List<B>
- fun <A> Iterable<A>.filter(tranform: (A) -> Boolean): List<A>
+ fun <A, B> Iterable<A>.map(transform: (A) -> B): List<B> = TODO()
+ fun <A> Iterable<A>.filter(predicate: (A) -> Boolean): List<A> = TODO()
 
-suspend fun main() {
- [1, 2, 3].map { if (it % 2 == 0) it else null }
-}
+val result: List<Int?> = [1, 2, 3].map { if (it % 2 == 0) it else null }
+    .filter { it != null }

@@ -9,3 +9,5 @@ class Outer {
 
   class Nested
 }
+
+val nested = Outer.Nested()

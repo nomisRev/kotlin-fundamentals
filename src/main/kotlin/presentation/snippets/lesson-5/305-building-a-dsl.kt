@@ -8,7 +8,11 @@ import presentation.support.*
 class HtmlBuilder {
     private val buffer = StringBuilder()
     
-    fun body(block: BodyBuilder.() -> Unit) = TODO()
+    fun body(block: BodyBuilder.() -> Unit) {
+        buffer.append("<body>")
+        BodyBuilder(buffer).block()
+        buffer.append("</body>")
+    }
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()

@@ -9,10 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
  *
  * Keep the number of check-ins in a `MutableStateFlow` and expose it as a
  * read-only [StateFlow]: either with an explicit backing field
- * (`val count: StateFlow<Int>` followed by `field = MutableStateFlow(0)`,
- * `-Xexplicit-backing-fields` is enabled in `module.yaml`) or with the
- * `_count` / `asStateFlow()` pair. [checkIn] adds one with `update`, so that
- * concurrent check-ins are never lost.
+ * (`val count: StateFlow<Int>` followed by `field = MutableStateFlow(0)`) or
+ * with the `_count` / `asStateFlow()` pair. [checkIn] adds one with `update`,
+ * so that concurrent check-ins are never lost.
  */
 class Attendance {
   val count: StateFlow<Int> = TODO()

@@ -5,7 +5,7 @@ package presentation.snippets.lesson4.slide230
 
 import presentation.support.*
 
-data class Tags(
-    val key: String,
-    val tags: Array<String>
-)
+data class Tags(val key: String, val tags: Array<String>) {
+    override fun equals(other: Any?): Boolean = TODO()
+    override fun hashCode(): Int = TODO()
+}

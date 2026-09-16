@@ -6,3 +6,12 @@ package presentation.snippets.lesson4.slide262
 import presentation.support.*
 
 enum class Direction { NORTH, SOUTH, EAST, WEST }
+
+val direction = Direction.NORTH
+
+fun arrow(direction: Direction) = when (direction) {
+  Direction.NORTH -> "↑"
+  Direction.SOUTH -> "↓"
+  Direction.EAST -> "→"
+  Direction.WEST -> "←"
+}

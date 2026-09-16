@@ -102,7 +102,7 @@ magic-move
 # The primary constructor is the class header
 
 ```kotlin
-class Person @MyAnnotation private constructor()
+class Person @MyAnnotation internal constructor()
 
 val person = Person()
 ```
@@ -179,8 +179,8 @@ public class JavaUsage {
 
 # Getters and setters become properties in Kotlin
 
-<DrawnAnnotation text="value.state" label="A Java getter is read as a property" :geometry="{ label: { x: 0.5089, y: 0.6692 } }"/>
-<DrawnAnnotation text="value.count = 2" label="A getter and setter pair becomes a mutable property" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.5145, y: 0.7538 } }"/>
+<DrawnAnnotation text="value.name" label="A Java getter is read as a property" :geometry="{ label: { x: 0.5089, y: 0.6692 } }"/>
+<DrawnAnnotation text="value.age = 34" label="A getter and setter pair becomes a mutable property" color="var(--code-window-amper-color)" :geometry="{ label: { x: 0.5145, y: 0.7538 } }"/>
 
 ```java
 public class Person {
@@ -194,9 +194,9 @@ public class Person {
 ```
 
 ```kotlin
-fun example(value: JavaBean) {
-  val state = value.state
-  value.count = 2
+fun example(value: Person) {
+  val name = value.name
+  value.age = 34
 }
 ```
 
@@ -263,14 +263,14 @@ class Person(name: String, val age: Int) {
 
 # Initializers run in declaration order
 
-<DrawnAnnotation text="require(member.isNotBot)" label="Can include an initializer that runs **after** all super init"  :geometry="{ label: { x: 0.4542, y: 0.4661 } }"/>
+<DrawnAnnotation text="require(member.name.isNotBlank())" label="Can include an initializer that runs **after** all super init"  :geometry="{ label: { x: 0.4542, y: 0.4661 } }"/>
 
 ```kotlin
 class Person(name: String, val age: Int) {
   val name = name.lowercase()
   
   constructor(member: Member): this(member.name, member.age) {
-      require(member.isNotBot) { "A bot cannot be a person" }
+      require(member.name.isNotBlank()) { "A person needs a name" }
   }
 
   init {
@@ -365,7 +365,7 @@ class Outer {
 }
 
 val outerClass = Outer()
-val innerClass = outerClass.Inner()
+val innerClass = outerClass.Nested()
 ```
 
 ---
@@ -514,10 +514,10 @@ magic-move
 <DrawnAnnotation text="copy" label="Compiler generated method to `copy` an instance with new values" :geometry="{ label: { x: 0.5055, y: 0.3508 } }"/>
 <DrawnAnnotation text="age = " label="Relies on argument names, and default values"  :geometry="{ label: { x: 0.4308, y: 0.7371 } }"/>
 
-```kotlin
+```kotlin no-compile
 data class User(val name: String, val age: Int) {
-    fun copy(name: String = this.name, age: Int = this.age): Person {
-        return Person(name, age)
+    fun copy(name: String = this.name, age: Int = this.age): User {
+        return User(name, age)
     }
 }
 
@@ -780,7 +780,7 @@ println(email)    // kotliner
 
 # Name-based destructuring is safe
 
-> Preview in Kotlin 2.4
+> `-Xname-based-destructuring=complete` · preview in Kotlin 2.4
 
 <DrawnAnnotation text="email" :occurrence="2"/>
 <DrawnAnnotation text="email" :occurrence="3" label="Destructured by name, not by position" :geometry="{ label: { x: 0.4035, y: 0.6797 } }"/>
@@ -801,7 +801,7 @@ magic-move
 
 # Name-based destructuring is safe
 
-> Preview in Kotlin 2.4
+> `-Xname-based-destructuring=complete` · preview in Kotlin 2.4
 
 <DrawnAnnotation text="[name, mail]" label="Square brackets are explicitly positional, risky but useful for collections" :geometry="{ label: { x: 0.5032, y: 0.6776 } }"/>
 
@@ -821,7 +821,7 @@ magic-move
 
 # Name-based destructuring is safe
 
-> Preview in Kotlin 2.4
+> `-Xname-based-destructuring=complete` · preview in Kotlin 2.4
 
 <DrawnAnnotation text="(val name = username, val mail = email)" label="Prefer renaming name-based components explicitly" :geometry="{ label: { x: 0.3494, y: 0.6754 } }"/>
 
@@ -994,6 +994,8 @@ companion val Vector.UnitX
 <DrawnAnnotation text="UUID" label="Create static extensions on types we do not own nor have a `companion` defined"  :geometry="{ label: { x: 0.4719, y: 0.9086 } }"/>
 
 ```kotlin
+import java.util.UUID
+
 data class Vector(val x: Double, val y: Double) {
     companion {
         val Zero: Vector = Vector(0.0, 0.0)
@@ -1462,6 +1464,8 @@ open class Student(val id: String, name: String, age: Int) : Person(name, age) {
 <DrawnAnnotation text="override val" label="Same applies to properties" />
 
 ```kotlin
+import kotlin.uuid.Uuid
+
 open class Person(val name: String, val age: Int) {
     open val id = Uuid.random().toString()
     
@@ -1485,6 +1489,8 @@ open class Student(override val id: String, name: String, age: Int) : Person(nam
 <DrawnAnnotation text="override var" label="Allowed to change `val` to `var` but not other way around" />
 
 ```kotlin
+import kotlin.uuid.Uuid
+
 open class Person(val name: String, val age: Int) {
     open val id = Uuid.random().toString()
     

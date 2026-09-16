@@ -7,14 +7,15 @@ import presentation.support.*
 
 class HtmlBuilder {
     private val buffer = StringBuilder()
-    
+        
     fun body(block: BodyBuilder.() -> Unit) {
         buffer.append("<body>")
         BodyBuilder(buffer).block()
         buffer.append("</body>")
     }
     
-    fun toString(): String = buffer.toString()
+    override fun toString(): String = buffer.toString()
 }
 
-fun html(block: HtmlBuilder.() -> Unit): String = TODO()
+fun html(block: HtmlBuilder.() -> Unit): String = 
+    HtmlBuilder().apply(block).toString()

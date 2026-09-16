@@ -6,7 +6,11 @@ package presentation.snippets.lesson5.slide303
 import presentation.support.*
 
 class HtmlBuilder {
-    fun body(block: BodyBuilder.() -> Unit) = TODO()       
+    fun body(block: BodyBuilder.() -> Unit): Unit = TODO()       
 }
 
 fun html(block: HtmlBuilder.() -> Unit): String = TODO()
+
+val index = html {
+    body { }
+}
