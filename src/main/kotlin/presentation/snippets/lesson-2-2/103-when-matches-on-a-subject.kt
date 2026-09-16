@@ -5,8 +5,9 @@ package presentation.snippets.lesson22.slide103
 
 import presentation.support.*
 
-fun describe(x: Int) = when (x) {
-  1 -> "x == 1"
-  2 -> "x == 2"
-  else -> "x is neither 1 nor 2"
+fun describe(x: Int) {
+  when (x) {
+    1 -> println("x == 1")
+    2 -> println("x == 2")
+  }
 }

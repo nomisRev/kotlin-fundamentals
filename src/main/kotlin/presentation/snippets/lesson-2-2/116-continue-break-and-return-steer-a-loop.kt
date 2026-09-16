@@ -7,8 +7,8 @@ import presentation.support.*
 
 fun printOdd() {
   for (d in 1..10) {
-    if (d % 2 == 0) break
+    if (d % 2 == 0) return
     else print("$d, ")
   }
   println("done")
-} // 1, done
+} // 1,

@@ -5,5 +5,11 @@ package presentation.snippets.lesson22.slide98
 
 import presentation.support.*
 
-fun max(a: Int, b: Int): Int =
-  if (a > b) a else b
+fun max(first: Int, second: Int): Int =
+  if (first > second) {
+    println("First")
+    first
+  } else {
+    println("Second")
+    second
+  }

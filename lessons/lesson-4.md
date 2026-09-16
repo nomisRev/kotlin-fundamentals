@@ -314,6 +314,76 @@ class Person(name: String, val age: Int) {
 ```
 
 ---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 1 / 3</div>
+
+# Expose the read, keep the write
+
+> `count` gets a `private set`, `increment()` is the only write
+
+```kotlin no-compile
+class Counter {
+  var count: Int = 0
+}
+
+val counter = Counter()
+counter.increment()
+counter.increment()
+check(counter.count == 2)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 2 / 3</div>
+
+# Compute the getter
+
+> `count` and `isEmpty` are computed by a `get()`, no backing field
+
+```kotlin no-compile
+class Inventory {
+  private val items = mutableListOf<String>()
+
+  fun add(item: String) {
+    items.add(item)
+  }
+}
+
+val inventory = Inventory()
+check(inventory.isEmpty)
+inventory.add("Kodee")
+check(inventory.count == 1)
+```
+
+---
+class: exercise-slide
+kodee: heart
+---
+
+<div class="lesson-number">Exercise 3 / 3</div>
+
+# Validate in the setter
+
+> A `set(value)` that `require`s `5..30` before writing `field`
+
+```kotlin no-compile
+class Thermostat {
+  var target: Int = 20
+}
+
+val thermostat = Thermostat()
+thermostat.target = 25
+check(runCatching { thermostat.target = 40 }.isFailure)
+check(thermostat.target == 25)
+```
+
+---
 
 # Member functions
 
@@ -1850,169 +1920,3 @@ Student("s-1", "Ada", 36).greeting()
     font-size: 1.9rem;
 }
 </style>
-
----
-
-# Setters are customizable
-
-```kotlin
-class TextBuffer {
-  var text = ""
-}
-```
-
----
-magic-move
----
-
-# Setters are customizable
-
-<DrawnAnnotation text="field += value" label="`field` is the property's backing field" :geometry="{ label: { x: 0.3561, y: 0.4540 } }"/>
-
-```kotlin
-class TextBuffer {
-  var text = ""
-    set(value) {
-      println("Appending text: $value")
-      field += value
-    }
-}
-```
-
----
-magic-move
----
-
-# Setters are customizable
-
-<DrawnAnnotation text="println(buffer.text)" label="Every write went through the setter" :geometry="{ label: { x: 0.4627, y: 0.7252 } }"/>
-
-```kotlin
-class TextBuffer {
-  var text = ""
-    set(value) {
-      println("Appending text: $value")
-      field += value
-    }
-}
-
-val buffer = TextBuffer()
-buffer.text = "Hello"
-buffer.text = ", world!"
-println(buffer.text)
-```
-```console
-Appending text: Hello
-Appending text: , world!
-Hello, world!
-```
-
----
-
-# A getter can compute the value
-
-<DrawnAnnotation text="get()" label="A custom getter runs on every access" on="0" :geometry="{ label: { x: 0.2431, y: 0.5099 } }"/>
-<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" on="1" :geometry="{ label: { x: 0.4171, y: 0.5199 } }"/>
-
-```kotlin
-class TextBuffer {
-  var text = ""
-
-  val isEmpty: Boolean
-    get() = text.isEmpty()
-}
-```
-
----
-magic-move
----
-
-# A getter can compute the value
-
-```kotlin
-class TextBuffer {
-  var text = ""
-
-  val isEmpty: Boolean
-    get() = text.isEmpty()
-}
-
-val buffer = TextBuffer()
-println(buffer.isEmpty)
-buffer.text = "Hello"
-println(buffer.isEmpty)
-```
-```console
-true
-false
-```
-
----
-class: exercise-slide
-kodee: heart
----
-
-<div class="lesson-number">Exercise 1 / 3</div>
-
-# Expose the read, keep the write
-
-> `count` gets a `private set`, `increment()` is the only write
-
-```kotlin no-compile
-class Counter {
-  var count: Int = 0
-}
-
-val counter = Counter()
-counter.increment()
-counter.increment()
-check(counter.count == 2)
-```
-
----
-class: exercise-slide
-kodee: heart
----
-
-<div class="lesson-number">Exercise 2 / 3</div>
-
-# Compute the getter
-
-> `count` and `isEmpty` are computed by a `get()`, no backing field
-
-```kotlin no-compile
-class Inventory {
-  private val items = mutableListOf<String>()
-
-  fun add(item: String) {
-    items.add(item)
-  }
-}
-
-val inventory = Inventory()
-check(inventory.isEmpty)
-inventory.add("Kodee")
-check(inventory.count == 1)
-```
-
----
-class: exercise-slide
-kodee: heart
----
-
-<div class="lesson-number">Exercise 3 / 3</div>
-
-# Validate in the setter
-
-> A `set(value)` that `require`s `5..30` before writing `field`
-
-```kotlin no-compile
-class Thermostat {
-  var target: Int = 20
-}
-
-val thermostat = Thermostat()
-thermostat.target = 25
-check(runCatching { thermostat.target = 40 }.isFailure)
-check(thermostat.target == 25)
-```

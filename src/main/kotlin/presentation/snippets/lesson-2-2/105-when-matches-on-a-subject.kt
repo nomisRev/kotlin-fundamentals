@@ -9,6 +9,9 @@ fun describe(x: Int) {
   when (x) {
     1 -> println("x == 1")
     2 -> println("x == 2")
-    3, 4 -> println("3 or 4")
+    3, 4 -> {
+      println("Multiline code block!")
+      println("3 or 4")
+    }
   }
 }

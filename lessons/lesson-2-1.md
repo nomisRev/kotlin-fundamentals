@@ -124,7 +124,7 @@ val number: Int = 42
 
 # Kotlin Property
 
-<DrawnAnnotation text="return 42" label="No backing field"  :geometry="{ label: { x: 0.3009, y: 0.4880 } }"/>
+<DrawnAnnotation text="text.isEmpty()" label="No backing field when the getter never reads `field`" :geometry="{ label: { x: 0.59, y: 0.447 } }"/>
 
 > `val` property has `get`
 
